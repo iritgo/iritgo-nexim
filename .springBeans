@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[2.2.1.v200811281800]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>src/main/resources/nexim.spring.xml</config>
+		<config>src/main/resources/nexim-configuration.spring.xml</config>
+		<config>src/main/resources/nexim-logger.spring.xml</config>
+		<config>src/main/resources/nexim-user.spring.xml</config>
+	</configs>
+	<configSets>
+		<configSet>
+			<name><![CDATA[All]]></name>
+			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>src/main/resources/nexim.spring.xml</config>
+				<config>src/main/resources/nexim-configuration.spring.xml</config>
+				<config>src/main/resources/nexim-logger.spring.xml</config>
+				<config>src/main/resources/nexim-user.spring.xml</config>
+			</configs>
+		</configSet>
+	</configSets>
+</beansProjectDescription>

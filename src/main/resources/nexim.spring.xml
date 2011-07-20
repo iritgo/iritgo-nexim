@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<import resource="nexim-logger.spring.xml" />
+	<import resource="nexim-user.spring.xml" />
+	<import resource="nexim-configuration.spring.xml" />
+
+	<bean id="de.iritgo.nexim.ClientServerHandler" class="de.iritgo.nexim.network.ClientServerHandler">
+		<property name="imConnectionHandler" ref="de.iritgo.nexim.IMConnectionHandler" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.Server2ServerHandler" class="de.iritgo.nexim.network.Server2ServerHandler">
+		<property name="imConnectionHandler" ref="de.iritgo.nexim.IMConnectionHandler" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.ClientNioSocketAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor">
+		<property name="handler" ref="de.iritgo.nexim.ClientServerHandler" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.ServerNioSocketAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor">
+		<property name="handler" ref="de.iritgo.nexim.Server2ServerHandler" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.SessionProcessorRegistry" class="de.iritgo.nexim.session.SessionProcessorRegistryImpl">
+		<property name="sessionProcessors" ref="de.iritgo.nexim.SessionProcessors"/>
+	</bean>
+
+	<util:map id="de.iritgo.nexim.SessionProcessors">
+		<entry key="http://etherx.jabber.org/streams:stream" value-ref="de.iritgo.nexim.Streams" />
+		<entry key="http://etherx.jabber.org/streams:error" value-ref="de.iritgo.nexim.StreamsError" />
+		<entry key="http://jabber.org/protocol/disco#info:query" value-ref="de.iritgo.nexim.xmpp.jabber.disco.InfoQuery" />
+		<entry key="http://jabber.org/protocol/disco#items:query" value-ref="de.iritgo.nexim.xmpp.jabber.disco.ItemQuery" />
+
+		<entry key="jabber:client:iq" value-ref="de.iritgo.nexim.xmpp.jabber.client.Iq" />
+		<entry key="jabber:client:message" value-ref="de.iritgo.nexim.xmpp.jabber.client.Message" />
+		<entry key="jabber:client:presence" value-ref="de.iritgo.nexim.xmpp.jabber.client.Presence" />
+		<entry key="jabber:client:priority" value-ref="de.iritgo.nexim.xmpp.jabber.client.Priority" />
+		<entry key="jabber:client:show" value-ref="de.iritgo.nexim.xmpp.jabber.client.Show" />
+		<entry key="jabber:client:status" value-ref="de.iritgo.nexim.xmpp.jabber.client.Status" />
+		<entry key="jabber:client:subject" value-ref="de.iritgo.nexim.xmpp.jabber.client.Subject" />
+		<entry key="jabber:client:body" value-ref="de.iritgo.nexim.xmpp.jabber.client.Body" />
+		<entry key="jabber:client:thread" value-ref="de.iritgo.nexim.xmpp.jabber.client.Thread" />
+
+		<entry key="jabber:iq:auth:query" value-ref="de.iritgo.nexim.xmpp.jabber.iq.auth.Query" />
+		<entry key="jabber:iq:auth:digest" value-ref="de.iritgo.nexim.xmpp.jabber.iq.auth.Digest" />
+		<entry key="jabber:iq:auth:password" value-ref="de.iritgo.nexim.xmpp.jabber.iq.auth.Password" />
+		<entry key="jabber:iq:auth:resource" value-ref="de.iritgo.nexim.xmpp.jabber.iq.auth.Resource" />
+		<entry key="jabber:iq:auth:username" value-ref="de.iritgo.nexim.xmpp.jabber.iq.auth.Username" />
+
+		<entry key="jabber:iq:browse:query" value-ref="de.iritgo.nexim.xmpp.jabber.iq.browse.Query" />
+		<entry key="jabber:iq:search:query" value-ref="de.iritgo.nexim.xmpp.jabber.iq.search.Query" />
+
+		<entry key="jabber:iq:oob:query" value-ref="de.iritgo.nexim.xmpp.jabber.iq.oob.Query" />
+
+		<entry key="jabber:iq:private:query" value-ref="de.iritgo.nexim.xmpp.jabber.iq.private.Query" />
+
+		<entry key="vcard-temp:vCard" value-ref="de.iritgo.nexim.xmpp.jabber.iq.vcardtemp.VCard" />
+
+
+		<entry key="urn:xmpp:ping:ping" value-ref="de.iritgo.nexim.xmpp.urn.xmpp.Ping" />
+
+		<entry key="jabber:iq:register:query" value-ref="de.iritgo.nexim.xmpp.jabber.iq.register.Query" />
+		<entry key="jabber:iq:register:username" value-ref="de.iritgo.nexim.xmpp.jabber.iq.register.Username" />
+		<entry key="jabber:iq:register:password" value-ref="de.iritgo.nexim.xmpp.jabber.iq.register.Password" />
+
+		<entry key="jabber:iq:roster:query" value-ref="de.iritgo.nexim.xmpp.jabber.iq.roster.Query" />
+		<entry key="jabber:iq:roster:item" value-ref="de.iritgo.nexim.xmpp.jabber.iq.roster.Item" />
+		<entry key="jabber:iq:roster:group" value-ref="de.iritgo.nexim.xmpp.jabber.iq.roster.Group" />
+
+		<entry key="jabber:server:iq" value-ref="de.iritgo.nexim.xmpp.jabber.server.Iq" />
+		<entry key="jabber:server:message" value-ref="de.iritgo.nexim.xmpp.jabber.server.Message" />
+		<entry key="jabber:server:presence" value-ref="de.iritgo.nexim.xmpp.jabber.server.Presence" />
+		<entry key="jabber:server:priority" value-ref="de.iritgo.nexim.xmpp.jabber.server.Priority" />
+		<entry key="jabber:server:show" value-ref="de.iritgo.nexim.xmpp.jabber.server.Show" />
+		<entry key="jabber:server:status" value-ref="de.iritgo.nexim.xmpp.jabber.server.Status" />
+		<entry key="jabber:server:subject" value-ref="de.iritgo.nexim.xmpp.jabber.server.Subject" />
+		<entry key="jabber:server:body" value-ref="de.iritgo.nexim.xmpp.jabber.server.Body" />
+		<entry key="jabber:server:thread" value-ref="de.iritgo.nexim.xmpp.jabber.server.Thread" />
+		<entry key="jabber:server:error" value-ref="de.iritgo.nexim.xmpp.jabber.server.Error" />
+		<entry key="jabber:server:dialback:result" value-ref="de.iritgo.nexim.xmpp.jabber.server.dialback.Result" />
+		<entry key="jabber:server:dialback:verify" value-ref="de.iritgo.nexim.xmpp.jabber.server.dialback.Verify" />
+	</util:map>
+
+	<bean id="de.iritgo.nexim.AbstractSessionProcessor" class="de.iritgo.nexim.session.DefaultSessionProcessor"
+		abstract="true">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="sessionProcessorRegistry" ref="de.iritgo.nexim.SessionProcessorRegistry" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.IMServer" class="de.iritgo.nexim.IMServerImpl" scope="prototype"
+		init-method="initialize">
+		<property name="clientNioSocketAcceptor" ref="de.iritgo.nexim.ClientNioSocketAcceptor" />
+		<property name="serverNioSocketAcceptor" ref="de.iritgo.nexim.ServerNioSocketAcceptor" />
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+		<property name="listenBacklog" value="5" />
+		<property name="bindAddress" value="" />
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.SessionFactory" class="de.iritgo.nexim.session.SessionFactoryImpl">
+		<lookup-method name="createServerSession" bean="de.iritgo.nexim.IMServerSession"/>
+		<lookup-method name="createClientSession" bean="de.iritgo.nexim.IMClientSession"/>
+	</bean>
+
+	<bean id="de.iritgo.nexim.S2SConnectorFactory" class="de.iritgo.nexim.S2SConnectorFactoryImpl">
+		<lookup-method name="createS2SConnector" bean="de.iritgo.nexim.S2SConnector"/>
+	</bean>
+
+	<bean id="de.iritgo.nexim.ServerParameters" class="de.iritgo.nexim.ServerParametersImpl"
+			init-method="initialize">
+		<property name="hostnames">
+			<util:list>
+				<value>172.16.2.2</value>
+			</util:list>
+		</property>
+		<property name="localClientPort" value="5222" />
+		<property name="localServerPort" value="5295" />
+		<property name="localSSLClientPort" value="5223" />
+		<property name="localSSLServerPort" value="5296" />
+		<property name="remoteServerPort" value="5269" />
+		<property name="localClientThreadPool" value="20" />
+		<property name="localSSLClientThreadPool" value="5" />
+		<property name="localServerThreadPool" value="10" />
+		<property name="localSSLServerThreadPool" value="1" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.IMConnectionHandler" class="de.iritgo.nexim.IMConnectionHandlerImpl"
+		init-method="initialize" parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="sessionsManager" ref="de.iritgo.nexim.SessionsManager" />
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+		<property name="imRouter" ref="de.iritgo.nexim.IMRouter" />
+		<property name="s2SConnectorManager" ref="de.iritgo.nexim.S2SConnectorManager" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.IMPresenceHolder" class="de.iritgo.nexim.presence.IMPresenceHolderImpl">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.IMRouter" class="de.iritgo.nexim.router.IMRouterImpl"
+		init-method="initialize">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+		<property name="sessionsManager" ref="de.iritgo.nexim.SessionsManager" />
+		<property name="deferrableMessageManager" ref="de.iritgo.nexim.DeferrableMessageManager" />
+		<property name="userDAO" ref="de.iritgo.nexim.UserDAO" />
+		<property name="messageLogger" ref="de.iritgo.nexim.MessageLogger" />
+		<property name="messageRecorder" ref="de.iritgo.nexim.MessageRecorder" />
+		<property name="deliveryMaxRetry" value="3" />
+		<property name="deliveryRetryDelay" value="500" />
+		<property name="deliveryMessageQueueTimeout" value="3600000" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.S2SConnectorManager" class="de.iritgo.nexim.S2SConnectorManagerImpl"
+		init-method="initialize">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="s2sConnectorFactory" ref="de.iritgo.nexim.S2SConnectorFactory" />
+		<property name="sessionsManager" ref="de.iritgo.nexim.SessionsManager" />
+		<property name="imRouter" ref="de.iritgo.nexim.IMRouter" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.S2SConnector" class="de.iritgo.nexim.S2SConnectorImpl" scope="prototype">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+		<property name="deliveryConnectionTimeout" value="6000" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.SubscriptionManager" class="de.iritgo.nexim.presence.SubscriptionManagerImpl">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="imPresenceHolder" ref="de.iritgo.nexim.IMPresenceHolder" />
+		<property name="rosterManager" ref="de.iritgo.nexim.RosterManager" />
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+	</bean>
+
+	<!-- Sessions -->
+
+	<bean id="de.iritgo.nexim.SessionsManager" class="de.iritgo.nexim.session.SessionsManagerImpl"
+		init-method="initialize">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="sessionFactory" ref="de.iritgo.nexim.SessionFactory" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.IMClientSession" class="de.iritgo.nexim.session.IMClientSessionImpl" scope="prototype"
+		init-method="initialize">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="imPresenceHolder" ref="de.iritgo.nexim.IMPresenceHolder" />
+		<property name="imRouter" ref="de.iritgo.nexim.IMRouter" />
+		<property name="userManager" ref="de.iritgo.nexim.UserManager" />
+		<property name="rosterManager" ref="de.iritgo.nexim.RosterManager" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.IMServerSession" class="de.iritgo.nexim.session.IMServerSessionImpl" scope="prototype"
+			init-method="initialize">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+		<property name="imRouter" ref="de.iritgo.nexim.IMRouter" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+	<!-- User -->
+
+	<bean id="de.iritgo.nexim.UserManager" class="de.iritgo.nexim.user.UserManagerImpl">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="rosterManager" ref="de.iritgo.nexim.RosterManager" />
+		<property name="userDAO" ref="de.iritgo.nexim.UserDAO" />
+		<property name="userPermissionService" ref="de.iritgo.nexim.UserPermissionService" />
+		<property name="configuration" ref="de.iritgo.nexim.Configuration" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.UserPermissionService" class="de.iritgo.nexim.user.UserPermissionServiceImpl">
+	</bean>
+
+	<!-- Logger -->
+
+	<bean id="de.iritgo.nexim.MessageLogger" class="de.iritgo.nexim.log.MessageLoggerImpl">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.MessageRecorder" class="de.iritgo.nexim.log.MessageRecorderImpl">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+	</bean>
+
+	<!-- Storage -->
+
+	<bean id="de.iritgo.nexim.DeferrableMessageManager" class="de.iritgo.nexim.user.deferrable.DeferrableMessageManagerImpl">
+		<property name="deferrableMessageDAO" ref="de.iritgo.nexim.DeferrableMessageDAO" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.DeferrableMessageDAO" class="de.iritgo.nexim.user.deferrable.DeferrableMessageDAOImpl"
+		init-method="initialize">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="encoding" value="UTF-8" />
+		<property name="filename" value="./deferrable-list.xml" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.PrivateDataManager" class="de.iritgo.nexim.user.privat.PrivateDataManagerImpl">
+		<property name="privateDataDAO" ref="de.iritgo.nexim.PrivateDataDAO" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.PrivateDataDAO" class="de.iritgo.nexim.user.privat.PrivateDataDAOImpl"
+		init-method="initialize">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="encoding" value="UTF-8" />
+		<property name="filename" value="./private.xml" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.RosterManager" class="de.iritgo.nexim.user.roster.RosterManagerImpl">
+		<property name="rosterDAO" ref="de.iritgo.nexim.RosterDAO" />
+		<property name="userPermissionService" ref="de.iritgo.nexim.UserPermissionService" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.RosterDAO" class="de.iritgo.nexim.user.roster.RosterDAOImpl"
+		init-method="initialize">
+		<property name="defaultNeximLogger" ref="de.iritgo.nexim.DefaultNeximLogger" />
+		<property name="encoding" value="UTF-8" />
+		<property name="filename" value="./roster-list.xml" />
+	</bean>
+
+	<!-- Streams -->
+
+	<bean id="de.iritgo.nexim.Streams" class="de.iritgo.nexim.xmpp.jabber.StreamsImpl" scope="prototype"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.StreamsError" class="de.iritgo.nexim.xmpp.jabber.ErrorImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.disco.InfoQuery" class="de.iritgo.nexim.xmpp.jabber.disco.InfoQueryImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.disco.ItemQuery" class="de.iritgo.nexim.xmpp.jabber.disco.ItemQueryImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+	</bean>
+
+	<!-- Client Tags -->
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.client.Iq" class="de.iritgo.nexim.xmpp.jabber.server.IqImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.client.Message" class="de.iritgo.nexim.xmpp.jabber.server.MessageImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.client.Presence" class="de.iritgo.nexim.xmpp.jabber.client.PresenceImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="imPresenceHolder" ref="de.iritgo.nexim.IMPresenceHolder" />
+		<property name="subscriptionManager" ref="de.iritgo.nexim.SubscriptionManager" />
+		<property name="rosterManager" ref="de.iritgo.nexim.RosterManager" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.client.Priority" class="de.iritgo.nexim.xmpp.jabber.client.PriorityImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.client.Show" class="de.iritgo.nexim.xmpp.jabber.client.ShowImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.client.Status" class="de.iritgo.nexim.xmpp.jabber.client.StatusImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.client.Subject" class="de.iritgo.nexim.xmpp.jabber.client.SubjectImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.client.Body" class="de.iritgo.nexim.xmpp.jabber.client.BodyImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.client.Thread" class="de.iritgo.nexim.xmpp.jabber.client.ThreadImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<!-- Auth Tags -->
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.auth.Query" class="de.iritgo.nexim.xmpp.jabber.iq.auth.QueryImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+		<property name="userManager" ref="de.iritgo.nexim.UserManager"/>
+		<property name="userDAO" ref="de.iritgo.nexim.UserDAO" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.auth.Digest" class="de.iritgo.nexim.xmpp.jabber.iq.auth.DigestImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.auth.Password" class="de.iritgo.nexim.xmpp.jabber.iq.auth.PasswordImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.auth.Resource" class="de.iritgo.nexim.xmpp.jabber.iq.auth.ResourceImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.auth.Username" class="de.iritgo.nexim.xmpp.jabber.iq.auth.UsernameImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<!-- Browse Tags -->
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.browse.Query" class="de.iritgo.nexim.xmpp.jabber.iq.browse.QueryImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.search.Query" class="de.iritgo.nexim.xmpp.jabber.iq.search.QueryImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+		<property name="userDAO" ref="de.iritgo.nexim.UserDAO" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.oob.Query" class="de.iritgo.nexim.xmpp.jabber.iq.oob.QueryImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.private.Query" class="de.iritgo.nexim.xmpp.jabber.iq.jprivate.QueryImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="privateDataManager" ref="de.iritgo.nexim.PrivateDataManager" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.vcardtemp.VCard" class="de.iritgo.nexim.xmpp.jabber.iq.vcardtemp.VCardImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+		<property name="privateDataManager" ref="de.iritgo.nexim.PrivateDataManager" />
+	</bean>
+
+	<!-- Service Tags -->
+
+	<bean id="de.iritgo.nexim.xmpp.urn.xmpp.Ping" class="de.iritgo.nexim.xmpp.urn.xmpp.ping.PingImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="sessionProcessorRegistry" ref="de.iritgo.nexim.SessionProcessorRegistry" />
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+	</bean>
+
+	<!-- Register Tags -->
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.register.Query" class="de.iritgo.nexim.xmpp.jabber.iq.register.QueryImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="serverParameters" ref="de.iritgo.nexim.ServerParameters" />
+		<property name="userManager" ref="de.iritgo.nexim.UserManager"/>
+		<property name="userDAO" ref="de.iritgo.nexim.UserDAO" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.register.Username" class="de.iritgo.nexim.xmpp.jabber.iq.register.UsernameImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.register.Password" class="de.iritgo.nexim.xmpp.jabber.iq.register.PasswordImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.register.Remove" class="de.iritgo.nexim.xmpp.jabber.iq.register.RemoveImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<!-- Roster Tags -->
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.roster.Query" class="de.iritgo.nexim.xmpp.jabber.iq.roster.QueryImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="imPresenceHolder" ref="de.iritgo.nexim.IMPresenceHolder" />
+		<property name="subscriptionManager" ref="de.iritgo.nexim.SubscriptionManager" />
+		<property name="userManager" ref="de.iritgo.nexim.UserManager" />
+		<property name="rosterManager" ref="de.iritgo.nexim.RosterManager" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.roster.Item" class="de.iritgo.nexim.xmpp.jabber.iq.roster.ItemImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.iq.roster.Group" class="de.iritgo.nexim.xmpp.jabber.iq.roster.GroupImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<!-- Server Tags -->
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.Iq" class="de.iritgo.nexim.xmpp.jabber.server.IqImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.Message" class="de.iritgo.nexim.xmpp.jabber.server.MessageImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.Presence" class="de.iritgo.nexim.xmpp.jabber.server.PresenceImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+		<property name="imPresenceHolder" ref="de.iritgo.nexim.IMPresenceHolder" />
+		<property name="subscriptionManager" ref="de.iritgo.nexim.SubscriptionManager" />
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.Priority" class="de.iritgo.nexim.xmpp.jabber.server.PriorityImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.Show" class="de.iritgo.nexim.xmpp.jabber.server.ShowImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.Status" class="de.iritgo.nexim.xmpp.jabber.server.StatusImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.Subject" class="de.iritgo.nexim.xmpp.jabber.server.SubjectImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.Body" class="de.iritgo.nexim.xmpp.jabber.server.BodyImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.Thread" class="de.iritgo.nexim.xmpp.jabber.server.ThreadImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.Error" class="de.iritgo.nexim.xmpp.jabber.server.ErrorImpl"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<!-- Dialback Tags -->
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.dialback.Result" class="de.iritgo.nexim.xmpp.jabber.server.dialback.ResultImpl" scope="prototype"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+	<bean id="de.iritgo.nexim.xmpp.jabber.server.dialback.Verify" class="de.iritgo.nexim.xmpp.jabber.server.dialback.VerifyImpl" scope="prototype"
+		parent="de.iritgo.nexim.AbstractSessionProcessor">
+	</bean>
+
+</beans>
