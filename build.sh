@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 optClean=
 optStage=1
 optFormat=
