@@ -45,8 +45,19 @@ function processOptions
 
 processOptions $options
 
-MVN="mvn $optMavenSettings"
-BUILD="./build.sh $settings"
+if [ ! -z "$optMavenSettings" ]
+then
+	MVN="mvn $optMavenSettings"
+else
+	MVN="mvn"
+fi
+
+if [ ! -z "$settings" ]
+then
+	BUILD="./build.sh $settings"
+else
+	BUILD="./build.sh"
+fi
 
 shift $(($OPTIND - 1))
 
