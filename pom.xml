@@ -51,6 +51,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2</version>
 				<configuration>
 					<mainClass>de.iritgo.nexim.App</mainClass>
 				</configuration>
