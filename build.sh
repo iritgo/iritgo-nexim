@@ -52,9 +52,9 @@ else
 	MVN="mvn"
 fi
 
-if [ ! -z "$settings" ]
+if [ ! -z "$optSettings" ]
 then
-	BUILD="./build.sh $settings"
+	BUILD="./build.sh $optSettings"
 else
 	BUILD="./build.sh"
 fi
