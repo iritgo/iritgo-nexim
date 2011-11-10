@@ -33,36 +33,36 @@ public class MessageImpl extends DefaultSessionProcessor implements Message
 {
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
-		XmlPullParser xpp = session.getXmlPullParser ();
+		XmlPullParser xpp = session.getXmlPullParser();
 
-		for (int i = 0, l = xpp.getAttributeCount (); i < l; i++)
+		for (int i = 0, l = xpp.getAttributeCount(); i < l; i++)
 		{
-			getLogger ().debug (
-							"Attribut ns: " + xpp.getAttributeNamespace (i) + " name: " + xpp.getAttributeName (i)
-											+ " value: " + xpp.getAttributeValue (i));
+			getLogger().debug(
+							"Attribut ns: " + xpp.getAttributeNamespace(i) + " name: " + xpp.getAttributeName(i)
+											+ " value: " + xpp.getAttributeValue(i));
 		}
 
-		IMMessage message = new IMMessage ();
+		IMMessage message = new IMMessage();
 
-		message.setTo (xpp.getAttributeValue ("", "to"));
-		message.setType (xpp.getAttributeValue ("", "type"));
+		message.setTo(xpp.getAttributeValue("", "to"));
+		message.setType(xpp.getAttributeValue("", "type"));
 
-		if (session.getConnectionType () == IMSession.C2S_CONNECTION)
+		if (session.getConnectionType() == IMSession.C2S_CONNECTION)
 		{
-			message.setFrom (((IMClientSession) session).getUser ().getJIDAndRessource ());
+			message.setFrom(((IMClientSession) session).getUser().getJIDAndRessource());
 		}
 		else
 		{
-			message.setFrom (xpp.getAttributeValue ("", "from"));
+			message.setFrom(xpp.getAttributeValue("", "from"));
 		}
 
-		super.process (session, message);
+		super.process(session, message);
 
-		IMRouter router = session.getRouter ();
+		IMRouter router = session.getRouter();
 
-		router.route (session, message);
+		router.route(session, message);
 
 		/*
 		 String iqMsg = session.getMessageData().getId();

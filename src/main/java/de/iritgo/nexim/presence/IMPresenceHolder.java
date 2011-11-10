@@ -26,9 +26,9 @@ import java.util.Collection;
 
 public interface IMPresenceHolder
 {
-	public void setPresence (String jidAndRessource, IMPresence presence);
+	public void setPresence(String jidAndRessource, IMPresence presence);
 
-	public Collection<IMPresence> getPresence (String jid);
+	public Collection<IMPresence> getPresence(String jid);
 
-	public IMPresence removePresence (String jidAndRessource);
+	public IMPresence removePresence(String jidAndRessource);
 }

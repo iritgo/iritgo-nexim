@@ -50,188 +50,188 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 
 	private RosterManager rosterManager;
 
-	public void setImPresenceHolder (IMPresenceHolder presenceHolder)
+	public void setImPresenceHolder(IMPresenceHolder presenceHolder)
 	{
 		this.presenceHolder = presenceHolder;
 	}
 
-	public void setSubscriptionManager (SubscriptionManager subscriptionManager)
+	public void setSubscriptionManager(SubscriptionManager subscriptionManager)
 	{
 		this.subscriptionManager = subscriptionManager;
 	}
 
-	public void setUserManager (UserManager userManager)
+	public void setUserManager(UserManager userManager)
 	{
 		this.userManager = userManager;
 	}
 
-	public void setRosterManager (RosterManager rosterManager)
+	public void setRosterManager(RosterManager rosterManager)
 	{
 		this.rosterManager = rosterManager;
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
-		String iqId = ((IMIq) context).getId ();
-		String type = ((IMIq) context).getType ();
+		String iqId = ((IMIq) context).getId();
+		String type = ((IMIq) context).getType();
 
-		getLogger ().debug ("Roster query type = " + type + " iqId " + iqId);
+		getLogger().debug("Roster query type = " + type + " iqId " + iqId);
 
-		if (IMIq.TYPE_GET.equals (type))
+		if (IMIq.TYPE_GET.equals(type))
 		{
-			get (iqId, (IMClientSession) session);
+			get(iqId, (IMClientSession) session);
 		}
-		else if (IMIq.TYPE_SET.equals (type))
+		else if (IMIq.TYPE_SET.equals(type))
 		{
-			set (iqId, (IMClientSession) session);
+			set(iqId, (IMClientSession) session);
 		}
 	}
 
 	// ------------------------------------------------------------------------
-	private void set (String iqId, IMClientSession session) throws Exception
+	private void set(String iqId, IMClientSession session) throws Exception
 	{
-		IMRosterItem roster = new IMRosterItem ();
+		IMRosterItem roster = new IMRosterItem();
 
 		//session.setRosterItem( roster );
-		super.process (session, roster);
+		super.process(session, roster);
 
 		// shall we remove?
-		if (IMRosterItem.SUBSCRIPTION_REMOVE.equals (roster.getSubscription ()))
+		if (IMRosterItem.SUBSCRIPTION_REMOVE.equals(roster.getSubscription()))
 		{
 			//removeFromRosterList( rosterList, roster.getJID() );
 			String rosterAck = "<iq type='set'><query xmlns='jabber:iq:roster'>";
 
-			rosterAck += roster.toString ();
+			rosterAck += roster.toString();
 			rosterAck += "</query></iq>";
 
 			rosterAck += "<iq type='result' id='" + iqId + "'/>";
 
-			emitToAllRegisteredSession (session, rosterAck);
+			emitToAllRegisteredSession(session, rosterAck);
 
 			// emit unsubscrib presence to removed buddy
-			IMPresence presence = new IMPresenceImpl ();
+			IMPresence presence = new IMPresenceImpl();
 
-			presence.setTo (roster.getJID ());
-			presence.setFrom (session.getUser ().getJID ());
-			presence.setType (IMPresence.TYPE_UNSUBSCRIBE);
-			subscriptionManager.process (session, presence);
+			presence.setTo(roster.getJID());
+			presence.setFrom(session.getUser().getJID());
+			presence.setType(IMPresence.TYPE_UNSUBSCRIBE);
+			subscriptionManager.process(session, presence);
 			// emit unsubscrib presence to removed buddy
-			presence = new IMPresenceImpl ();
-			presence.setTo (roster.getJID ());
-			presence.setFrom (session.getUser ().getJID ());
-			presence.setType (IMPresence.TYPE_UNSUBSCRIBED);
-			subscriptionManager.process (session, presence);
+			presence = new IMPresenceImpl();
+			presence.setTo(roster.getJID());
+			presence.setFrom(session.getUser().getJID());
+			presence.setType(IMPresence.TYPE_UNSUBSCRIBED);
+			subscriptionManager.process(session, presence);
 		}
 
 		// we set
 		else
 		{
-			getLogger ().debug ("Setting roster item " + roster);
+			getLogger().debug("Setting roster item " + roster);
 
-			String username = session.getUser ().getName ();
+			String username = session.getUser().getName();
 
-			IMRosterItem localroster = rosterManager.getItem (username, roster.getJID ());
+			IMRosterItem localroster = rosterManager.getItem(username, roster.getJID());
 
 			if (localroster == null)
 			{
-				roster.setSubscription (IMRosterItem.SUBSCRIPTION_NONE);
+				roster.setSubscription(IMRosterItem.SUBSCRIPTION_NONE);
 			}
 			else
 			{
-				localroster.setName (roster.getName ());
-				localroster.setGroup (roster.getGroup ());
+				localroster.setName(roster.getName());
+				localroster.setGroup(roster.getGroup());
 				roster = localroster;
 			}
 
 			// build roster ack string
-			if (roster.getName () == null || roster.getName ().length () == 0)
+			if (roster.getName() == null || roster.getName().length() == 0)
 			{
-				roster.setName (roster.getJID ());
+				roster.setName(roster.getJID());
 			}
 
-			if (roster.getGroup () == null || roster.getGroup ().length () == 0)
+			if (roster.getGroup() == null || roster.getGroup().length() == 0)
 			{
-				roster.setGroup ("General");
+				roster.setGroup("General");
 			}
 
-			getLogger ().debug ("Got roster: " + roster);
+			getLogger().debug("Got roster: " + roster);
 
 			//roster.setSubscription( IMRosterItem.SUBSCRIPTION_NONE );
-			String rosterAck = "<iq type='set' to='" + session.getUser ().getJIDAndRessource () + "' id='" + iqId
+			String rosterAck = "<iq type='set' to='" + session.getUser().getJIDAndRessource() + "' id='" + iqId
 							+ "'><query xmlns='jabber:iq:roster'>";
 
-			rosterAck += roster.toString ();
+			rosterAck += roster.toString();
 			rosterAck += "</query></iq>";
 
-			rosterAck += "<iq type='result' to='" + session.getUser ().getJIDAndRessource () + "' id='" + iqId + "'/>";
+			rosterAck += "<iq type='result' to='" + session.getUser().getJIDAndRessource() + "' id='" + iqId + "'/>";
 
-			String subscription = roster.getSubscription ();
+			String subscription = roster.getSubscription();
 
 			//			if (IMRosterItem.SUBSCRIPTION_FROM.equals (subscription)
 			//							|| IMRosterItem.SUBSCRIPTION_NONE.equals (subscription) || subscription == null)
 			{
-				emitToAllRegisteredSession (session, rosterAck);
+				emitToAllRegisteredSession(session, rosterAck);
 			}
 
 			// remove/replace prev occurence of the buddy
-			rosterManager.removeItem (username, roster.getJID ());
-			rosterManager.addItem (username, roster);
+			rosterManager.removeItem(username, roster.getJID());
+			rosterManager.addItem(username, roster);
 		} // else add buddy
 	} // set
 
 	// ------------------------------------------------------------------------
-	private void get (String iqId, final IMClientSession session) throws Exception
+	private void get(String iqId, final IMClientSession session) throws Exception
 	{
-		final StringBuffer s = new StringBuffer ("<iq type='" + IMIq.TYPE_RESULT + "' id='" + iqId + "' from='"
-						+ session.getUser ().getJIDAndRessource () + "'>" + "<query xmlns='jabber:iq:roster'>");
+		final StringBuffer s = new StringBuffer("<iq type='" + IMIq.TYPE_RESULT + "' id='" + iqId + "' from='"
+						+ session.getUser().getJIDAndRessource() + "'>" + "<query xmlns='jabber:iq:roster'>");
 
-		String username = session.getUser ().getName ();
+		String username = session.getUser().getName();
 
-		rosterManager.processItems (username, new RosterItemProcessor ()
+		rosterManager.processItems(username, new RosterItemProcessor()
 		{
-			public void process (IMRosterItem item) throws Exception
+			public void process(IMRosterItem item) throws Exception
 			{
-				s.append (item.toString ());
+				s.append(item.toString());
 			}
 		});
 
-		s.append ("</query></iq>");
-		session.writeOutputStream (s.toString ());
+		s.append("</query></iq>");
+		session.writeOutputStream(s.toString());
 
-		rosterManager.processItems (username, new RosterItemProcessor ()
+		rosterManager.processItems(username, new RosterItemProcessor()
 		{
-			public void process (IMRosterItem item) throws Exception
+			public void process(IMRosterItem item) throws Exception
 			{
-				String subscription = item.getSubscription ();
+				String subscription = item.getSubscription();
 
-				if (IMRosterItem.SUBSCRIPTION_BOTH.equals (subscription)
-								|| IMRosterItem.SUBSCRIPTION_TO.equals (subscription))
+				if (IMRosterItem.SUBSCRIPTION_BOTH.equals(subscription)
+								|| IMRosterItem.SUBSCRIPTION_TO.equals(subscription))
 				{
-					Collection col = presenceHolder.getPresence (item.getJID ());
+					Collection col = presenceHolder.getPresence(item.getJID());
 
-					if (col != null && ! col.isEmpty ())
+					if (col != null && ! col.isEmpty())
 					{
-						Iterator iter = col.iterator ();
+						Iterator iter = col.iterator();
 
-						while (iter.hasNext ())
+						while (iter.hasNext())
 						{
-							IMPresence currentPresence = (IMPresence) iter.next ();
+							IMPresence currentPresence = (IMPresence) iter.next();
 
-							session.writeOutputStream (currentPresence.toString ());
+							session.writeOutputStream(currentPresence.toString());
 						}
 					}
 
 					// probe the presence
 					else
 					{
-						IMPresence presence = new IMPresenceImpl ();
+						IMPresence presence = new IMPresenceImpl();
 
-						presence.setFrom (session.getUser ().getJID ());
-						presence.setTo (item.getJID ());
-						presence.setType (IMPresence.TYPE_PROBE);
-						session.getRouter ().route (session, presence);
+						presence.setFrom(session.getUser().getJID());
+						presence.setTo(item.getJID());
+						presence.setType(IMPresence.TYPE_PROBE);
+						session.getRouter().route(session, presence);
 					}
 				} // subscribtion
 			}
@@ -239,16 +239,16 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 	} // get
 
 	// ------------------------------------------------------------------------
-	private final void emitToAllRegisteredSession (IMClientSession session, String str) throws Exception
+	private final void emitToAllRegisteredSession(IMClientSession session, String str) throws Exception
 	{
 		// emit roster ack to client / should be all active ressource....
-		List sessionList = session.getRouter ().getAllRegisteredSession (session.getUser ().getName ());
+		List sessionList = session.getRouter().getAllRegisteredSession(session.getUser().getName());
 
-		for (int i = 0, l = sessionList.size (); i < l; i++)
+		for (int i = 0, l = sessionList.size(); i < l; i++)
 		{
-			IMSession s = (IMSession) sessionList.get (i);
+			IMSession s = (IMSession) sessionList.get(i);
 
-			s.writeOutputStream (str);
+			s.writeOutputStream(str);
 		}
 	}
 }

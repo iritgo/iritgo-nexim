@@ -34,25 +34,25 @@ public class Digester
 	};
 
 	// -----------------------------------------------------------------------
-	public static final String digest (long value)
+	public static final String digest(long value)
 	{
-		return digest (Long.toString (value));
+		return digest(Long.toString(value));
 	}
 
 	// -----------------------------------------------------------------------
-	public static final String digest (String value)
+	public static final String digest(String value)
 	{
 		String digest = null;
 
 		try
 		{
-			MessageDigest messageDigest = MessageDigest.getInstance ("SHA1");
+			MessageDigest messageDigest = MessageDigest.getInstance("SHA1");
 
-			digest = bytesToHex (messageDigest.digest (value.getBytes ()));
+			digest = bytesToHex(messageDigest.digest(value.getBytes()));
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace ();
+			e.printStackTrace();
 		}
 
 		return digest;
@@ -64,16 +64,16 @@ public class Digester
 	 * internally by <code>digest()</code>. Data is returned in
 	 * the format specified by the Jabber protocol.
 	 */
-	private static String bytesToHex (byte[] data)
+	private static String bytesToHex(byte[] data)
 	{
-		StringBuffer retval = new StringBuffer ();
+		StringBuffer retval = new StringBuffer();
 
 		for (int i = 0; i < data.length; i++)
 		{
-			retval.append (HEX[(data[i] >> 4) & 0x0F]);
-			retval.append (HEX[data[i] & 0x0F]);
+			retval.append(HEX[(data[i] >> 4) & 0x0F]);
+			retval.append(HEX[data[i] & 0x0F]);
 		}
 
-		return retval.toString ();
+		return retval.toString();
 	}
 }

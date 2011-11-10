@@ -29,7 +29,7 @@ public interface RosterManager
 	 * @param username The username
 	 * @param roster The roster list item
 	 */
-	public void addItem (String username, IMRosterItem item) throws AddRosterItemNotAllowedException;
+	public void addItem(String username, IMRosterItem item) throws AddRosterItemNotAllowedException;
 
 	/**
 	 * Remove a roster item
@@ -37,7 +37,7 @@ public interface RosterManager
 	 * @param username The user name
 	 * @param itemJID The itemJID to remove
 	 */
-	public void removeItem (String username, IMRosterItem item) throws RemoveRosterItemNotAllowedException;
+	public void removeItem(String username, IMRosterItem item) throws RemoveRosterItemNotAllowedException;
 
 	/**
 	 * Remove a roster item
@@ -45,7 +45,7 @@ public interface RosterManager
 	 * @param username The user name
 	 * @param itemJID The itemJID to remove
 	 */
-	public void removeItem (String username, String itemJID) throws RemoveRosterItemNotAllowedException;
+	public void removeItem(String username, String itemJID) throws RemoveRosterItemNotAllowedException;
 
 	/**
 	 * Get a roster item from the given user
@@ -54,12 +54,12 @@ public interface RosterManager
 	 * @param itemJID The item jid
 	 * @return
 	 */
-	public IMRosterItem getItem (String username, String itemJID);
+	public IMRosterItem getItem(String username, String itemJID);
 
 	/**
 	 * Processor pattern to iterate over the  item list
 	 *
 	 * @param itemProcessor
 	 */
-	public void processItems (String username, RosterItemProcessor itemProcessor) throws Exception;
+	public void processItems(String username, RosterItemProcessor itemProcessor) throws Exception;
 }

@@ -26,5 +26,5 @@ import de.iritgo.nexim.xmpp.Transitable;
 
 public interface MessageRecorder
 {
-	public void record (Transitable message);
+	public void record(Transitable message);
 }

@@ -29,7 +29,7 @@ public class UserPermissionServiceImpl implements UserPermissionService
 	/**
 	 * @see de.iritgo.nexim.user.UserPermissionService#allowNewUserRegistration()
 	 */
-	public boolean allowNewUserRegistration ()
+	public boolean allowNewUserRegistration()
 	{
 		return true;
 	}
@@ -37,7 +37,7 @@ public class UserPermissionServiceImpl implements UserPermissionService
 	/**
 	 * @see de.iritgo.nexim.user.UserPermissionService#allowNewUserRegistration(java.lang.String)
 	 */
-	public boolean allowNewUserRegistration (String username)
+	public boolean allowNewUserRegistration(String username)
 	{
 		return true;
 	}
@@ -45,7 +45,7 @@ public class UserPermissionServiceImpl implements UserPermissionService
 	/**
 	 * @see de.iritgo.nexim.user.UserPermissionService#allowRemoveUserRegistration()
 	 */
-	public boolean allowRemoveUserRegistration ()
+	public boolean allowRemoveUserRegistration()
 	{
 		return true;
 	}
@@ -53,7 +53,7 @@ public class UserPermissionServiceImpl implements UserPermissionService
 	/**
 	 * @see de.iritgo.nexim.user.UserPermissionService#allowRemoveUserRegistration(java.lang.String)
 	 */
-	public boolean allowRemoveUserRegistration (String username)
+	public boolean allowRemoveUserRegistration(String username)
 	{
 		return true;
 	}
@@ -61,7 +61,7 @@ public class UserPermissionServiceImpl implements UserPermissionService
 	/**
 	 * @see de.iritgo.nexim.user.UserPermissionService#allowAddRosterItem(java.lang.String, de.iritgo.nexim.user.roster.IMRosterItem)
 	 */
-	public boolean allowAddRosterItem (String username, IMRosterItem item)
+	public boolean allowAddRosterItem(String username, IMRosterItem item)
 	{
 		return true;
 	}
@@ -69,7 +69,7 @@ public class UserPermissionServiceImpl implements UserPermissionService
 	/**
 	 * @see de.iritgo.nexim.user.UserPermissionService#allowRemoveRosterItem(java.lang.String, de.iritgo.nexim.user.roster.IMRosterItem)
 	 */
-	public boolean allowRemoveRosterItem (String username, IMRosterItem item)
+	public boolean allowRemoveRosterItem(String username, IMRosterItem item)
 	{
 		return true;
 	}

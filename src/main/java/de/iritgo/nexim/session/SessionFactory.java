@@ -23,7 +23,7 @@ package de.iritgo.nexim.session;
 
 public interface SessionFactory
 {
-	public IMServerSession createServerSession ();
+	public IMServerSession createServerSession();
 
-	public IMClientSession createClientSession ();
+	public IMClientSession createClientSession();
 }

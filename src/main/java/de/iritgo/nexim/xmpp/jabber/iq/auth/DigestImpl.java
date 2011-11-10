@@ -29,8 +29,8 @@ import de.iritgo.nexim.session.IMSession;
 public class DigestImpl extends DefaultSessionProcessor implements Digest
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		((IMClientSession) session).getUser ().setDigest (session.getXmlPullParser ().getText ().trim ());
+		((IMClientSession) session).getUser().setDigest(session.getXmlPullParser().getText().trim());
 	}
 }

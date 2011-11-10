@@ -29,15 +29,15 @@ import de.iritgo.nexim.session.IMSession;
 public class ErrorImpl extends DefaultSessionProcessor implements Error
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		String errorCodeStr = session.getXmlPullParser ().getAttributeValue ("", "code");
+		String errorCodeStr = session.getXmlPullParser().getAttributeValue("", "code");
 
-		if (errorCodeStr != null && errorCodeStr.length () > 0)
+		if (errorCodeStr != null && errorCodeStr.length() > 0)
 		{
-			((IMPresence) context).setErrorCode (Integer.parseInt (errorCodeStr));
+			((IMPresence) context).setErrorCode(Integer.parseInt(errorCodeStr));
 		}
 
-		((IMPresence) context).setError (session.getXmlPullParser ().getText ().trim ());
+		((IMPresence) context).setError(session.getXmlPullParser().getText().trim());
 	}
 }

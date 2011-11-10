@@ -23,5 +23,5 @@ package de.iritgo.nexim;
 
 public interface IMServer
 {
-	public void shutdown ();
+	public void shutdown();
 }

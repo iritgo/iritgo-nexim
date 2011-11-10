@@ -44,105 +44,105 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 
 	private UserDAO userDAO;
 
-	public void setServerParameters (ServerParameters serverParameters)
+	public void setServerParameters(ServerParameters serverParameters)
 	{
 		this.serverParameters = serverParameters;
 	}
 
-	public void setUserManager (UserManager userManager)
+	public void setUserManager(UserManager userManager)
 	{
 		this.userManager = userManager;
 	}
 
-	public void setUserDAO (UserDAO userDAO)
+	public void setUserDAO(UserDAO userDAO)
 	{
 		this.userDAO = userDAO;
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
 		IMClientSession clientSession = (IMClientSession) session;
 
-		User currentUser = clientSession.getUser ();
-		User user = userManager.createNewUser ();
+		User currentUser = clientSession.getUser();
+		User user = userManager.createNewUser();
 
-		clientSession.setUser (user);
+		clientSession.setUser(user);
 
-		Map<Integer, Boolean> contextMap = new HashMap<Integer, Boolean> ();
+		Map<Integer, Boolean> contextMap = new HashMap<Integer, Boolean>();
 
-		contextMap.put (CTX_SHOULD_REMOVE, Boolean.FALSE);
-		super.process (session, contextMap);
+		contextMap.put(CTX_SHOULD_REMOVE, Boolean.FALSE);
+		super.process(session, contextMap);
 
-		String iqId = ((IMIq) context).getId ();
-		String type = ((IMIq) context).getType ();
+		String iqId = ((IMIq) context).getId();
+		String type = ((IMIq) context).getType();
 
 		// GET
-		if (IMIq.TYPE_GET.equals (type))
+		if (IMIq.TYPE_GET.equals(type))
 		{
 			String s = "<iq type='"
 							+ IMIq.TYPE_RESULT
 							+ "' id='"
 							+ iqId
 							+ "' from='"
-							+ serverParameters.getHostName ()
+							+ serverParameters.getHostName()
 							+ "'>"
 							+ "<query xmlns='jabber:iq:register'>"
 							+ "<instructions>Choose a username and password to register with this service.</instructions>"
 							+ "<password/><username/>" + "</query></iq>";
 
-			session.writeOutputStream (s);
+			session.writeOutputStream(s);
 		}
 
 		// SET
-		else if (IMIq.TYPE_SET.equals (type))
+		else if (IMIq.TYPE_SET.equals(type))
 		{
-			Boolean shouldRemove = (Boolean) contextMap.get (CTX_SHOULD_REMOVE);
+			Boolean shouldRemove = (Boolean) contextMap.get(CTX_SHOULD_REMOVE);
 
-			if (shouldRemove.booleanValue ())
+			if (shouldRemove.booleanValue())
 			{
 				try
 				{
-					userManager.removeUser (currentUser.getName ());
+					userManager.removeUser(currentUser.getName());
 
 					String s = "<iq type='" + IMIq.TYPE_RESULT + "' id='" + iqId + "' />";
 
-					session.writeOutputStream (s);
-					clientSession.setUser (null);
+					session.writeOutputStream(s);
+					clientSession.setUser(null);
 				}
 				catch (UnRegistrationNotAllowedException x)
 				{
 					String s = "<iq type='" + IMIq.TYPE_ERROR + "' id='" + iqId + "' />";
 
-					session.writeOutputStream (s);
+					session.writeOutputStream(s);
 				}
 			}
 
 			else
 			{ // no remove
 
-				User existingUser = userDAO.getUser (user.getName ());
+				User existingUser = userDAO.getUser(user.getName());
 
 				if (existingUser == null)
 				{
 					try
 					{
-						userManager.addUser (user);
+						userManager.addUser(user);
 
-						IMRouter router = session.getRouter ();
+						IMRouter router = session.getRouter();
 
-						router.registerSession (clientSession);
+						router.registerSession(clientSession);
 
 						String s = "<iq type='" + IMIq.TYPE_RESULT + "' id='" + iqId + "' />";
 
-						session.writeOutputStream (s);
+						session.writeOutputStream(s);
 					}
 					catch (RegistrationNotAllowedException x)
 					{
 						String s = "<iq type='" + IMIq.TYPE_ERROR + "' id='" + iqId + "' />";
 
-						session.writeOutputStream (s);
+						session.writeOutputStream(s);
 					}
 				}
 				else if (currentUser != null)
@@ -152,24 +152,24 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 					{
 						String s = null;
 
-						if (currentUser.getName () != null && currentUser.getName ().equals (user.getName ()))
+						if (currentUser.getName() != null && currentUser.getName().equals(user.getName()))
 						{
-							userManager.addUser (user);
+							userManager.addUser(user);
 							s = "<iq type='" + IMIq.TYPE_RESULT + "' id='" + iqId + "' />";
 						}
 						else
 						{
-							clientSession.setUser (currentUser);
+							clientSession.setUser(currentUser);
 							s = "<iq type='" + IMIq.TYPE_ERROR + "' id='" + iqId + "' />";
 						}
 
-						session.writeOutputStream (s);
+						session.writeOutputStream(s);
 					}
 					catch (RegistrationNotAllowedException x)
 					{
 						String s = "<iq type='" + IMIq.TYPE_ERROR + "' id='" + iqId + "' />";
 
-						session.writeOutputStream (s);
+						session.writeOutputStream(s);
 					}
 				}
 
@@ -178,7 +178,7 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 
 					String s = "<iq type='" + IMIq.TYPE_ERROR + "' id='" + iqId + "' />";
 
-					session.writeOutputStream (s);
+					session.writeOutputStream(s);
 				}
 			} // else shouldremove
 		}

@@ -29,21 +29,21 @@ import java.io.IOException;
 
 public interface S2SConnector extends Runnable
 {
-	public void setToHostname (String toHostname);
+	public void setToHostname(String toHostname);
 
-	public void setRouter (IMRouter router);
+	public void setRouter(IMRouter router);
 
-	public void setIMConnectionHandler (IMConnectionHandler connectionHandler);
+	public void setIMConnectionHandler(IMConnectionHandler connectionHandler);
 
-	public void setSessionsManager (SessionsManager sessionManager);
+	public void setSessionsManager(SessionsManager sessionManager);
 
-	public IMServerSession getSession () throws Exception;
+	public IMServerSession getSession() throws Exception;
 
-	public void sendResult () throws IOException;
+	public void sendResult() throws IOException;
 
-	public void sendVerify (String dialbackValue, String id) throws IOException;
+	public void sendVerify(String dialbackValue, String id) throws IOException;
 
-	public void run ();
+	public void run();
 
-	public boolean isAlive ();
+	public boolean isAlive();
 } // class

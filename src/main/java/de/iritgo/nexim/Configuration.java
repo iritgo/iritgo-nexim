@@ -28,12 +28,12 @@ public interface Configuration
 	 *
 	 * @return The supported authentication types
 	 */
-	public String[] getSupportedAuthenticationTypes ();
+	public String[] getSupportedAuthenticationTypes();
 
 	/**
 	 * Set the supported authentication types.
 	 *
 	 * @param supportedAuthenticationTypes The supported authentication types
 	 */
-	public void setSupportedAuthenticationTypes (String[] supportedAuthenticationTypes);
+	public void setSupportedAuthenticationTypes(String[] supportedAuthenticationTypes);
 }

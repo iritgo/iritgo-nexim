@@ -26,5 +26,5 @@ import de.iritgo.nexim.session.SessionProcessor;
 
 public interface Query extends SessionProcessor
 {
-	public Integer CTX_SHOULD_REMOVE = new Integer (1);
+	public Integer CTX_SHOULD_REMOVE = new Integer(1);
 }

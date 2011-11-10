@@ -26,11 +26,11 @@ import de.iritgo.nexim.session.IMSession;
 
 public interface SessionsManager
 {
-	public IMClientSession getNewClientSession () throws Exception;
+	public IMClientSession getNewClientSession() throws Exception;
 
-	public IMServerSession getNewServerSession () throws Exception;
+	public IMServerSession getNewServerSession() throws Exception;
 
-	public void release (IMSession session);
+	public void release(IMSession session);
 
-	public void releaseSessions ();
+	public void releaseSessions();
 }

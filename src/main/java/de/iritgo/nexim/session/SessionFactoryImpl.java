@@ -23,12 +23,12 @@ package de.iritgo.nexim.session;
 
 public class SessionFactoryImpl implements SessionFactory
 {
-	public IMServerSession createServerSession ()
+	public IMServerSession createServerSession()
 	{
 		return null;
 	}
 
-	public IMClientSession createClientSession ()
+	public IMClientSession createClientSession()
 	{
 		return null;
 	}

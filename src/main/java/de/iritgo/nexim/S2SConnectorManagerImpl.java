@@ -46,50 +46,50 @@ public class S2SConnectorManagerImpl implements S2SConnectorManager
 	private DefaultNeximLogger defaultNeximLogger;
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
-	public void setImRouter (IMRouter router)
+	public void setImRouter(IMRouter router)
 	{
 		this.router = router;
 	}
 
-	public void setSessionsManager (SessionsManager sessionsManager)
+	public void setSessionsManager(SessionsManager sessionsManager)
 	{
 		this.sessionsManager = sessionsManager;
 	}
 
-	public void setS2sConnectorFactory (S2SConnectorFactory connectorFactory)
+	public void setS2sConnectorFactory(S2SConnectorFactory connectorFactory)
 	{
 		s2sConnectorFactory = connectorFactory;
 	}
 
 	//-------------------------------------------------------------------------
-	public void initialize ()
+	public void initialize()
 	{
-		hostnameAndS2SMap = new HashMap<String, S2SConnector> ();
+		hostnameAndS2SMap = new HashMap<String, S2SConnector>();
 	}
 
 	//-------------------------------------------------------------------------
-	public void setConnectionHandler (IMConnectionHandler connectionHandler)
+	public void setConnectionHandler(IMConnectionHandler connectionHandler)
 	{
 		this.connectionHandler = connectionHandler;
 	}
 
 	//-------------------------------------------------------------------------
-	public IMServerSession getCurrentRemoteSession (String hostname) throws Exception
+	public IMServerSession getCurrentRemoteSession(String hostname) throws Exception
 	{
 		IMServerSession session = null;
 
 		synchronized (hostnameAndS2SMap)
 		{
-			S2SConnector s2s = hostnameAndS2SMap.get (hostname);
+			S2SConnector s2s = hostnameAndS2SMap.get(hostname);
 
-			if (s2s != null && ! s2s.getSession ().isClosed ())
+			if (s2s != null && ! s2s.getSession().isClosed())
 			{
-				session = s2s.getSession ();
+				session = s2s.getSession();
 			}
 		}
 
@@ -97,90 +97,90 @@ public class S2SConnectorManagerImpl implements S2SConnectorManager
 	}
 
 	//----------------------------------------------------------------------
-	public IMServerSession getRemoteSessionWaitForValidation (String hostname, long timeout) throws Exception
+	public IMServerSession getRemoteSessionWaitForValidation(String hostname, long timeout) throws Exception
 	{
 		IMServerSession session = null;
 		S2SConnector s2s = null;
 
 		synchronized (hostnameAndS2SMap)
 		{
-			s2s = (S2SConnector) hostnameAndS2SMap.get (hostname);
+			s2s = (S2SConnector) hostnameAndS2SMap.get(hostname);
 
-			if (s2s != null && ! s2s.getSession ().isClosed ())
+			if (s2s != null && ! s2s.getSession().isClosed())
 			{
-				session = s2s.getSession ();
+				session = s2s.getSession();
 			}
 			else
 			{
-				s2s = getS2SConnector (hostname);
-				session = s2s.getSession ();
+				s2s = getS2SConnector(hostname);
+				session = s2s.getSession();
 			}
 		}
 
 		synchronized (session)
 		{
 			// wait for validation
-			if (! session.getDialbackValid ())
+			if (! session.getDialbackValid())
 			{
-				s2s.sendResult ();
-				defaultNeximLogger.info ("Wait validation for " + hostname + " for session " + session);
-				session.wait (timeout);
+				s2s.sendResult();
+				defaultNeximLogger.info("Wait validation for " + hostname + " for session " + session);
+				session.wait(timeout);
 			}
 		}
 
-		if (! session.getDialbackValid ())
+		if (! session.getDialbackValid())
 		{
-			throw new Exception ("Unable to get dialback validation for " + hostname + " after timeout " + timeout
+			throw new Exception("Unable to get dialback validation for " + hostname + " after timeout " + timeout
 							+ " ms");
 		}
 
-		defaultNeximLogger.info ("Validation granted from " + hostname + " for session " + session);
+		defaultNeximLogger.info("Validation granted from " + hostname + " for session " + session);
 
 		return session;
 	} // getremote session
 
 	//-------------------------------------------------------------------------
-	public void verifyRemoteHost (String hostname, String dialbackValue, String id, IMServerSession session)
+	public void verifyRemoteHost(String hostname, String dialbackValue, String id, IMServerSession session)
 		throws Exception
 	{
-		S2SConnector s2s = getS2SConnector (hostname);
+		S2SConnector s2s = getS2SConnector(hostname);
 
-		s2s.sendVerify (dialbackValue, id);
+		s2s.sendVerify(dialbackValue, id);
 
-		if (! s2s.getSession ().getDialbackValid ())
+		if (! s2s.getSession().getDialbackValid())
 		{
-			s2s.sendResult ();
+			s2s.sendResult();
 		}
 
-		session.setTwinSession (s2s.getSession ());
-		s2s.getSession ().setTwinSession (session);
+		session.setTwinSession(s2s.getSession());
+		s2s.getSession().setTwinSession(session);
 	}
 
 	//-------------------------------------------------------------------------
-	private S2SConnector getS2SConnector (String hostname) throws Exception
+	private S2SConnector getS2SConnector(String hostname) throws Exception
 	{
 		S2SConnector s2s = null;
 
 		synchronized (hostnameAndS2SMap)
 		{
-			s2s = hostnameAndS2SMap.get (hostname);
+			s2s = hostnameAndS2SMap.get(hostname);
 
-			if (s2s != null && ! s2s.isAlive ())
+			if (s2s != null && ! s2s.isAlive())
 			{
-				defaultNeximLogger.info ("Removing s2s for hostname (thread not alive) " + hostname);
-				hostnameAndS2SMap.remove (hostname);
+				defaultNeximLogger.info("Removing s2s for hostname (thread not alive) " + hostname);
+				hostnameAndS2SMap.remove(hostname);
 				s2s = null;
 			}
 
-			if (s2s == null || s2s.getSession ().isClosed ())
+			if (s2s == null || s2s.getSession().isClosed())
 			{
-				s2s = s2sConnectorFactory.createS2SConnector ();
-				s2s.setIMConnectionHandler (connectionHandler);
-				s2s.setRouter (router);
-				s2s.setSessionsManager (sessionsManager);
-				s2s.setToHostname (hostname);
-				new Thread (s2s).start ();
-				hostnameAndS2SMap.put (hostname, s2s);
+				s2s = s2sConnectorFactory.createS2SConnector();
+				s2s.setIMConnectionHandler(connectionHandler);
+				s2s.setRouter(router);
+				s2s.setSessionsManager(sessionsManager);
+				s2s.setToHostname(hostname);
+				new Thread(s2s).start();
+				hostnameAndS2SMap.put(hostname, s2s);
 			}
 		}
 

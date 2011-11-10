@@ -45,90 +45,90 @@ public class PresenceImpl extends DefaultSessionProcessor implements Presence
 
 	private RosterManager rosterManager;
 
-	public void setImPresenceHolder (IMPresenceHolder presenceHolder)
+	public void setImPresenceHolder(IMPresenceHolder presenceHolder)
 	{
 		this.presenceHolder = presenceHolder;
 	}
 
-	public void setSubscriptionManager (SubscriptionManager subscriptionManager)
+	public void setSubscriptionManager(SubscriptionManager subscriptionManager)
 	{
 		this.subscriptionManager = subscriptionManager;
 	}
 
-	public void setRosterManager (RosterManager rosterManager)
+	public void setRosterManager(RosterManager rosterManager)
 	{
 		this.rosterManager = rosterManager;
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
 		IMClientSession clientSession = (IMClientSession) session;
 
-		XmlPullParser xpp = session.getXmlPullParser ();
+		XmlPullParser xpp = session.getXmlPullParser();
 
-		String type = xpp.getAttributeValue ("", "type");
-		String to = xpp.getAttributeValue ("", "to");
+		String type = xpp.getAttributeValue("", "type");
+		String to = xpp.getAttributeValue("", "to");
 
 		//		System.out.println ("!!!!!!!!!!!!!!!!!!!" + xpp.getAttributeValue ("", "id"));
 
-		String from = xpp.getAttributeValue ("", "from");
+		String from = xpp.getAttributeValue("", "from");
 
-		if (from == null || from.length () == 0)
+		if (from == null || from.length() == 0)
 		{
-			from = clientSession.getUser ().getJIDAndRessource ();
+			from = clientSession.getUser().getJIDAndRessource();
 		}
 
-		final IMPresence presence = new IMPresenceImpl ();
+		final IMPresence presence = new IMPresenceImpl();
 
-		presence.setType (type);
-		presence.setFrom (from);
+		presence.setType(type);
+		presence.setFrom(from);
 
-		super.process (session, presence);
+		super.process(session, presence);
 
-		clientSession.setPresence (presence);
+		clientSession.setPresence(presence);
 
-		if (type == null || type.length () == 0 || IMPresence.TYPE_AVAILABLE.equals (type)
-						|| IMPresence.TYPE_UNAVAILABLE.equals (type))
+		if (type == null || type.length() == 0 || IMPresence.TYPE_AVAILABLE.equals(type)
+						|| IMPresence.TYPE_UNAVAILABLE.equals(type))
 		{
-			presenceHolder.setPresence (from, presence);
+			presenceHolder.setPresence(from, presence);
 		}
 
-		getLogger ().debug ("Got presence (to " + to + ") " + presence);
+		getLogger().debug("Got presence (to " + to + ") " + presence);
 
-		final IMRouter router = session.getRouter ();
+		final IMRouter router = session.getRouter();
 
-		if (to == null || to.length () == 0 || to.equals ("null"))
+		if (to == null || to.length() == 0 || to.equals("null"))
 		{
 			// emit presence associated to roster friends
-			rosterManager.processItems (clientSession.getUser ().getName (), new RosterItemProcessor ()
+			rosterManager.processItems(clientSession.getUser().getName(), new RosterItemProcessor()
 			{
-				public void process (IMRosterItem item) throws Exception
+				public void process(IMRosterItem item) throws Exception
 				{
-					IMPresence localPresence = (IMPresence) presence.clone ();
+					IMPresence localPresence = (IMPresence) presence.clone();
 
-					localPresence.setTo (item.getJID ());
-					router.route (session, localPresence);
+					localPresence.setTo(item.getJID());
+					router.route(session, localPresence);
 				}
 			});
 		}
 		else
 		{
-			IMPresence localPresence = (IMPresence) presence.clone ();
+			IMPresence localPresence = (IMPresence) presence.clone();
 
-			localPresence.setTo (to);
+			localPresence.setTo(to);
 
-			subscriptionManager.process (session, localPresence);
+			subscriptionManager.process(session, localPresence);
 		}
 	}
 
-	public String getFeatureDesription (Locale locale)
+	public String getFeatureDesription(Locale locale)
 	{
 		return null;
 	}
 
-	public String getFeatureTag ()
+	public String getFeatureTag()
 	{
 		return "<feature var='jabber:iq:presence'/>";
 	}

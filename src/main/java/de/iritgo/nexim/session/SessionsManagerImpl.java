@@ -38,87 +38,87 @@ public class SessionsManagerImpl implements SessionsManager
 	private DefaultNeximLogger defaultNeximLogger;
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
-	public void setSessionFactory (SessionFactory sessionFactory)
+	public void setSessionFactory(SessionFactory sessionFactory)
 	{
 		this.sessionFactory = sessionFactory;
 	}
 
 	//-------------------------------------------------------------------------
-	public IMServerSession getNewServerSession () throws Exception
+	public IMServerSession getNewServerSession() throws Exception
 	{
-		IMServerSession session = sessionFactory.createServerSession ();
+		IMServerSession session = sessionFactory.createServerSession();
 
 		// Are server session even unregistered?
 		return session;
 	}
 
 	//-------------------------------------------------------------------------
-	public IMClientSession getNewClientSession () throws Exception
+	public IMClientSession getNewClientSession() throws Exception
 	{
-		IMClientSession session = sessionFactory.createClientSession ();
+		IMClientSession session = sessionFactory.createClientSession();
 
 		synchronized (activeSessions)
 		{
-			activeSessions.put (new Long (session.getId ()), session);
+			activeSessions.put(new Long(session.getId()), session);
 		}
 
 		return session;
 	}
 
 	//-------------------------------------------------------------------------
-	public void initialize ()
+	public void initialize()
 	{
-		activeSessions = new HashMap<Long, IMSession> ();
+		activeSessions = new HashMap<Long, IMSession>();
 	}
 
 	//-------------------------------------------------------------------------
-	public void release (IMSession session)
+	public void release(IMSession session)
 	{
 		if (session != null)
 		{
 			try
 			{
-				if (! session.isClosed ())
+				if (! session.isClosed())
 				{
-					session.close ();
+					session.close();
 				}
 				else
 				{
-					defaultNeximLogger.warn ("Session " + session.getId () + " already diposed");
+					defaultNeximLogger.warn("Session " + session.getId() + " already diposed");
 				}
 			}
 			catch (Exception e)
 			{
-				defaultNeximLogger.warn ("Session " + session.getId () + " release failure " + e.getMessage (), e);
+				defaultNeximLogger.warn("Session " + session.getId() + " release failure " + e.getMessage(), e);
 			}
 
 			// Remove from sessionsMap
 			synchronized (activeSessions)
 			{
-				activeSessions.remove (new Long (session.getId ()));
+				activeSessions.remove(new Long(session.getId()));
 			}
 		} // if
 	}
 
 	//-------------------------------------------------------------------------
-	public void releaseSessions ()
+	public void releaseSessions()
 	{
-		defaultNeximLogger.debug ("Releasing sessions ");
+		defaultNeximLogger.debug("Releasing sessions ");
 
 		// Avoid concurrent mod
-		Map<Long, IMSession> clonedSessions = new HashMap<Long, IMSession> (activeSessions);
-		Iterator it = clonedSessions.values ().iterator ();
+		Map<Long, IMSession> clonedSessions = new HashMap<Long, IMSession>(activeSessions);
+		Iterator it = clonedSessions.values().iterator();
 
-		while (it.hasNext ())
+		while (it.hasNext())
 		{
-			IMSession sess = (IMSession) it.next ();
+			IMSession sess = (IMSession) it.next();
 
-			release (sess);
+			release(sess);
 		} // end of while ()
 	}
 }

@@ -33,27 +33,27 @@ import java.util.HashMap;
 
 public class Server2ServerHandler extends IoHandlerAdapter
 {
-	private HashMap<IoSession, IMSession> sessionMapping = new HashMap<IoSession, IMSession> ();
+	private HashMap<IoSession, IMSession> sessionMapping = new HashMap<IoSession, IMSession>();
 
 	private IMConnectionHandler imConnectionHandler;
 
-	public void setImConnectionHandler (IMConnectionHandler imConnectionHandler)
+	public void setImConnectionHandler(IMConnectionHandler imConnectionHandler)
 	{
 		this.imConnectionHandler = imConnectionHandler;
 	}
 
 	@Override
-	public void sessionOpened (IoSession session)
+	public void sessionOpened(IoSession session)
 	{
-		sessionMapping.put (session, imConnectionHandler.sessionOpened (session, false));
+		sessionMapping.put(session, imConnectionHandler.sessionOpened(session, false));
 
-		imConnectionHandler.sessionOpened (session, false);
+		imConnectionHandler.sessionOpened(session, false);
 	}
 
 	@Override
-	public void messageReceived (IoSession session, Object xmlMessage)
+	public void messageReceived(IoSession session, Object xmlMessage)
 	{
-		IMSession imSession = sessionMapping.get (session);
+		IMSession imSession = sessionMapping.get(session);
 
 		if (xmlMessage instanceof WelcomeMessage)
 		{
@@ -62,25 +62,25 @@ public class Server2ServerHandler extends IoHandlerAdapter
 
 			try
 			{
-				imConnectionHandler.handleEncodingHandshake (imSession);
+				imConnectionHandler.handleEncodingHandshake(imSession);
 			}
 			catch (ProtocolException e)
 			{
-				e.printStackTrace ();
+				e.printStackTrace();
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace ();
+				e.printStackTrace();
 			}
 
 			return;
 		}
 
-		imConnectionHandler.process ((String) xmlMessage, imSession);
+		imConnectionHandler.process((String) xmlMessage, imSession);
 	}
 
 	@Override
-	public void sessionIdle (IoSession session, IdleStatus status)
+	public void sessionIdle(IoSession session, IdleStatus status)
 	{
 		//        SessionLog.info(session, "Disconnecting the idle.");
 		//        session.close();
@@ -88,8 +88,8 @@ public class Server2ServerHandler extends IoHandlerAdapter
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public void exceptionCaught (IoSession session, Throwable cause)
+	public void exceptionCaught(IoSession session, Throwable cause)
 	{
-		session.close ();
+		session.close();
 	}
 }

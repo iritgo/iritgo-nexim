@@ -26,5 +26,5 @@ import de.iritgo.nexim.xmpp.Transitable;
 
 public interface MessageLogger
 {
-	public void log (Transitable message);
+	public void log(Transitable message);
 }

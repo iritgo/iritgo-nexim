@@ -28,18 +28,18 @@ public class DeferrableMessageManagerImpl implements DeferrableMessageManager
 {
 	private DeferrableMessageDAO deferrableMessageDAO;
 
-	public void setDeferrableMessageDAO (DeferrableMessageDAO deferrableMessageDAO)
+	public void setDeferrableMessageDAO(DeferrableMessageDAO deferrableMessageDAO)
 	{
 		this.deferrableMessageDAO = deferrableMessageDAO;
 	}
 
-	public List getDeferrableList (String username)
+	public List getDeferrableList(String username)
 	{
-		return deferrableMessageDAO.getDeferrableList (username);
+		return deferrableMessageDAO.getDeferrableList(username);
 	}
 
-	public void setDeferrableList (String username, List rosterList)
+	public void setDeferrableList(String username, List rosterList)
 	{
-		deferrableMessageDAO.setDeferrableList (username, rosterList);
+		deferrableMessageDAO.setDeferrableList(username, rosterList);
 	}
 }

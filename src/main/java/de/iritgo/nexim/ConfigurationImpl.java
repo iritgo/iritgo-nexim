@@ -29,7 +29,7 @@ public class ConfigurationImpl implements Configuration
 	/**
 	 * @see de.iritgo.nexim.Configuration#getSupportedAuthenticationTypes()
 	 */
-	public String[] getSupportedAuthenticationTypes ()
+	public String[] getSupportedAuthenticationTypes()
 	{
 		return supportedAuthenticationTypes;
 	}
@@ -37,7 +37,7 @@ public class ConfigurationImpl implements Configuration
 	/**
 	 * @see de.iritgo.nexim.Configuration#setSupportedAuthenticationTypes(java.lang.String[])
 	 */
-	public void setSupportedAuthenticationTypes (String[] supportedAuthenticationTypes)
+	public void setSupportedAuthenticationTypes(String[] supportedAuthenticationTypes)
 	{
 		this.supportedAuthenticationTypes = supportedAuthenticationTypes;
 	}

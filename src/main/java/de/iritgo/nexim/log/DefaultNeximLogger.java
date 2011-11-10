@@ -32,7 +32,7 @@ public interface DefaultNeximLogger
 	 *
 	 * @param message The message to log
 	 */
-	public void error (String message);
+	public void error(String message);
 
 	/**
 	 * Error message
@@ -40,14 +40,14 @@ public interface DefaultNeximLogger
 	 * @param message The message
 	 * @param e The exception
 	 */
-	public void error (String message, Exception e);
+	public void error(String message, Exception e);
 
 	/**
 	 * Debug message
 	 *
 	 * @param message The message to log
 	 */
-	public void debug (String message);
+	public void debug(String message);
 
 	/**
 	 * Debug message
@@ -55,14 +55,14 @@ public interface DefaultNeximLogger
 	 * @param message The message
 	 * @param e The exception
 	 */
-	public void debug (String message, Exception e);
+	public void debug(String message, Exception e);
 
 	/**
 	 * Warn message
 	 *
 	 * @param message The message
 	 */
-	public void warn (String message);
+	public void warn(String message);
 
 	/**
 	 * Warn message
@@ -70,14 +70,14 @@ public interface DefaultNeximLogger
 	 * @param message The message
 	 * @param e The exception
 	 */
-	public void warn (String message, Exception e);
+	public void warn(String message, Exception e);
 
 	/**
 	 * Info message
 	 *
 	 * @param message The message
 	 */
-	public void info (String message);
+	public void info(String message);
 
 	/**
 	 * Info message
@@ -85,12 +85,12 @@ public interface DefaultNeximLogger
 	 * @param message The message
 	 * @param e The exception
 	 */
-	public void info (String message, Exception e);
+	public void info(String message, Exception e);
 
 	/**
 	 * If info logging enabled
 	 *
 	 * @return True if enabeld
 	 */
-	public boolean isInfoEnabled ();
+	public boolean isInfoEnabled();
 }

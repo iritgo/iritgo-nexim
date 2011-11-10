@@ -32,22 +32,21 @@ public class MessageLoggerImpl implements MessageLogger
 	private DefaultNeximLogger defaultNeximLogger;
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
 	//-------------------------------------------------------------------------
-	public void log (Transitable message)
+	public void log(Transitable message)
 	{
-		if (defaultNeximLogger.isInfoEnabled ())
+		if (defaultNeximLogger.isInfoEnabled())
 		{
 			if (message instanceof IMMessage)
 			{
 				IMMessage m = (IMMessage) message;
 
-				defaultNeximLogger.info (new Date () + " " + m.getFrom () + " " + m.getTo () + " "
-								+ m.toString ().length ());
+				defaultNeximLogger.info(new Date() + " " + m.getFrom() + " " + m.getTo() + " " + m.toString().length());
 			}
 		}
 	}

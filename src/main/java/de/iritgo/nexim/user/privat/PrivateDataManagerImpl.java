@@ -25,18 +25,18 @@ public class PrivateDataManagerImpl implements PrivateDataManager
 {
 	private PrivateDataDAO privateDataDAO;
 
-	public void setPrivateDataDAO (PrivateDataDAO privateDataDAO)
+	public void setPrivateDataDAO(PrivateDataDAO privateDataDAO)
 	{
 		this.privateDataDAO = privateDataDAO;
 	}
 
-	public String getData (String username, String key)
+	public String getData(String username, String key)
 	{
-		return privateDataDAO.getData (username, key);
+		return privateDataDAO.getData(username, key);
 	}
 
-	public void setData (String username, String key, String data)
+	public void setData(String username, String key, String data)
 	{
-		privateDataDAO.setData (username, key, data);
+		privateDataDAO.setData(username, key, data);
 	}
 }

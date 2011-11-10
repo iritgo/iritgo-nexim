@@ -32,86 +32,85 @@ public class XMLToString
 
 	private StringBuffer m_innerBuffer;
 
-	public XMLToString (String elementName)
+	public XMLToString(String elementName)
 	{
-		m_buffer = new StringBuffer ();
-		m_buffer.append ('<').append (elementName);
+		m_buffer = new StringBuffer();
+		m_buffer.append('<').append(elementName);
 		m_elementName = elementName;
 	}
 
-	public void addAttribut (String name, String value)
+	public void addAttribut(String name, String value)
 	{
-		if (name != null && name.length () > 0 && value != null)
+		if (name != null && name.length() > 0 && value != null)
 		{
-			m_buffer.append (' ').append (name).append ("='").append (value).append ("'");
+			m_buffer.append(' ').append(name).append("='").append(value).append("'");
 		}
 	}
 
-	public void addFilledAttribut (String name, String value)
+	public void addFilledAttribut(String name, String value)
 	{
-		if (name != null && name.length () > 0 && value != null && value.length () > 0)
+		if (name != null && name.length() > 0 && value != null && value.length() > 0)
 		{
-			m_buffer.append (' ').append (name).append ("='").append (value).append ("'");
+			m_buffer.append(' ').append(name).append("='").append(value).append("'");
 		}
 	}
 
-	public void addTextNode (String text)
+	public void addTextNode(String text)
 	{
-		if (text != null && text.length () > 0)
+		if (text != null && text.length() > 0)
 		{
 			if (m_innerBuffer == null)
 			{
-				m_innerBuffer = new StringBuffer ();
+				m_innerBuffer = new StringBuffer();
 			}
 
-			m_innerBuffer.append (convert (text));
+			m_innerBuffer.append(convert(text));
 		}
 	}
 
-	public void addStringElement (String stringElement)
+	public void addStringElement(String stringElement)
 	{
 		if (stringElement != null)
 		{
 			if (m_innerBuffer == null)
 			{
-				m_innerBuffer = new StringBuffer ();
+				m_innerBuffer = new StringBuffer();
 			}
 
-			m_innerBuffer.append (stringElement);
+			m_innerBuffer.append(stringElement);
 		}
 	}
 
-	public void addElement (XMLToString xmlToString)
+	public void addElement(XMLToString xmlToString)
 	{
 		if (xmlToString != null)
 		{
 			if (m_innerBuffer == null)
 			{
-				m_innerBuffer = new StringBuffer ();
+				m_innerBuffer = new StringBuffer();
 			}
 
-			m_innerBuffer.append (xmlToString.toStringBuffer ());
+			m_innerBuffer.append(xmlToString.toStringBuffer());
 		}
 	}
 
 	@Override
-	public String toString ()
+	public String toString()
 	{
-		return toStringBuffer ().toString ();
+		return toStringBuffer().toString();
 	}
 
-	public StringBuffer toStringBuffer ()
+	public StringBuffer toStringBuffer()
 	{
-		StringBuffer buffer = new StringBuffer ();
+		StringBuffer buffer = new StringBuffer();
 
 		if (m_innerBuffer != null)
 		{
-			buffer.append (m_buffer).append ('>').append (m_innerBuffer).append ("</").append (m_elementName).append (
-							'>');
+			buffer.append(m_buffer).append('>').append(m_innerBuffer).append("</").append(m_elementName).append('>');
 		}
 		else
 		{
-			buffer.append (m_buffer).append ("/>");
+			buffer.append(m_buffer).append("/>");
 		}
 
 		return buffer;
@@ -119,11 +118,11 @@ public class XMLToString
 
 	// -----------------------------------------------------------------------
 	// should be optimized...
-	private static final String convert (String s)
+	private static final String convert(String s)
 	{
-		s = StringUtils.replace (s, "&", "&amp;");
-		s = StringUtils.replace (s, "<", "&lt;");
-		s = StringUtils.replace (s, ">", "&gt;");
+		s = StringUtils.replace(s, "&", "&amp;");
+		s = StringUtils.replace(s, "<", "&lt;");
+		s = StringUtils.replace(s, ">", "&gt;");
 
 		return s;
 	}

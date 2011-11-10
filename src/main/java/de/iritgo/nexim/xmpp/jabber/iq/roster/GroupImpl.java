@@ -29,8 +29,8 @@ import de.iritgo.nexim.user.roster.IMRosterItem;
 public class GroupImpl extends DefaultSessionProcessor implements Group
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		((IMRosterItem) context).setGroup (session.getXmlPullParser ().getText ().trim ());
+		((IMRosterItem) context).setGroup(session.getXmlPullParser().getText().trim());
 	}
 }

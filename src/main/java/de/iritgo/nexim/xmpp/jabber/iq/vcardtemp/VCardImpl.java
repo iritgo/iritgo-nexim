@@ -37,122 +37,122 @@ public class VCardImpl extends DefaultSessionProcessor implements VCard
 
 	private PrivateDataManager privateDataManager;
 
-	public void setServerParameters (ServerParameters serverParameters)
+	public void setServerParameters(ServerParameters serverParameters)
 	{
 		this.serverParameters = serverParameters;
 	}
 
-	public void setPrivateDataManager (PrivateDataManager privateDataManager)
+	public void setPrivateDataManager(PrivateDataManager privateDataManager)
 	{
 		this.privateDataManager = privateDataManager;
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
-		String type = ((IMIq) context).getType ();
+		String type = ((IMIq) context).getType();
 
 		// GET
-		if (IMIq.TYPE_GET.equals (type))
+		if (IMIq.TYPE_GET.equals(type))
 		{
-			get (session, context);
+			get(session, context);
 		}
-		else if (IMIq.TYPE_SET.equals (type))
+		else if (IMIq.TYPE_SET.equals(type))
 		{
-			set ((IMClientSession) session, context);
+			set((IMClientSession) session, context);
 		}
-		else if (IMIq.TYPE_RESULT.equals (type))
+		else if (IMIq.TYPE_RESULT.equals(type))
 		{
-			result (session, context);
+			result(session, context);
 		}
 	}
 
 	//-------------------------------------------------------------------------
-	private void get (final IMSession session, Object context) throws Exception
+	private void get(final IMSession session, Object context) throws Exception
 	{
-		final XmlPullParser xpp = session.getXmlPullParser ();
-		final String vcardname = xpp.getNamespace () + ':' + xpp.getName ();
+		final XmlPullParser xpp = session.getXmlPullParser();
+		final String vcardname = xpp.getNamespace() + ':' + xpp.getName();
 
-		String iqId = ((IMIq) context).getId ();
-		String to = ((IMIq) context).getTo ();
-		String from = ((IMIq) context).getFrom ();
+		String iqId = ((IMIq) context).getId();
+		String to = ((IMIq) context).getTo();
+		String from = ((IMIq) context).getFrom();
 
-		if (to == null || to.length () == 0)
+		if (to == null || to.length() == 0)
 		{
-			to = ((IMClientSession) session).getUser ().getJID ();
+			to = ((IMClientSession) session).getUser().getJID();
 		}
 
-		if (from == null || from.length () == 0)
+		if (from == null || from.length() == 0)
 		{
-			from = ((IMClientSession) session).getUser ().getJID ();
+			from = ((IMClientSession) session).getUser().getJID();
 		}
 
 		IMIq iq = null;
 
-		if (serverParameters.getHostNameList ().contains (JIDParser.getHostname (to)))
+		if (serverParameters.getHostNameList().contains(JIDParser.getHostname(to)))
 		{
-			String data = privateDataManager.getData (to, vcardname.toLowerCase ());
+			String data = privateDataManager.getData(to, vcardname.toLowerCase());
 
 			if (data == null)
 			{
 				data = "<vCard xmlns='vcard-temp'/>";
 			}
 
-			getLogger ().debug ("Get " + to + "/" + vcardname + " vcard: " + data);
+			getLogger().debug("Get " + to + "/" + vcardname + " vcard: " + data);
 
 			// local request
-			iq = new IMIq ();
-			iq.setFrom (to);
-			iq.setTo (from);
-			iq.setId (iqId);
-			iq.setType (IMIq.TYPE_RESULT);
-			iq.setStringData (data);
+			iq = new IMIq();
+			iq.setFrom(to);
+			iq.setTo(from);
+			iq.setId(iqId);
+			iq.setType(IMIq.TYPE_RESULT);
+			iq.setStringData(data);
 		}
 		else
 		{
-			iq = new IMIq ();
-			iq.setFrom (from);
-			iq.setTo (to);
-			iq.setId (iqId);
-			iq.setType (IMIq.TYPE_GET);
-			iq.setStringData ("<vCard xmlns='vcard-temp'/>");
+			iq = new IMIq();
+			iq.setFrom(from);
+			iq.setTo(to);
+			iq.setId(iqId);
+			iq.setType(IMIq.TYPE_GET);
+			iq.setStringData("<vCard xmlns='vcard-temp'/>");
 		}
 
-		session.getRouter ().route (session, iq);
+		session.getRouter().route(session, iq);
 
-		skip (xpp);
+		skip(xpp);
 	}
 
 	//-------------------------------------------------------------------------
-	private void set (final IMClientSession session, final Object context) throws Exception
+	private void set(final IMClientSession session, final Object context) throws Exception
 	{
-		final XmlPullParser xpp = session.getXmlPullParser ();
+		final XmlPullParser xpp = session.getXmlPullParser();
 
-		String vcardname = xpp.getNamespace () + ':' + xpp.getName ();
+		String vcardname = xpp.getNamespace() + ':' + xpp.getName();
 
-		String data = serialize (xpp).toString ();
+		String data = serialize(xpp).toString();
 
-		getLogger ().debug ("Set " + session.getUser ().getJID () + "/" + vcardname + " vcard: " + data);
+		getLogger().debug("Set " + session.getUser().getJID() + "/" + vcardname + " vcard: " + data);
 
 		if (data != null)
 		{
-			privateDataManager.setData (session.getUser ().getJID (), vcardname.toLowerCase (), data);
+			privateDataManager.setData(session.getUser().getJID(), vcardname.toLowerCase(), data);
 		}
 
 		IMIq iq = (IMIq) context;
-		String iqId = iq.getId ();
-		String to = iq.getTo ();
-		String from = iq.getFrom ();
+		String iqId = iq.getId();
+		String to = iq.getTo();
+		String from = iq.getFrom();
 
 		if (to == null)
 		{
-			to = session.getUser ().getJID ();
+			to = session.getUser().getJID();
 		}
 
 		if (from == null)
 		{
-			to = session.getUser ().getJID ();
+			to = session.getUser().getJID();
 		}
 
 		String s = "<iq type='result'";
@@ -161,37 +161,37 @@ public class VCardImpl extends DefaultSessionProcessor implements VCard
 		s += " to='" + from + "'";
 		s += " id='" + iqId + "'/>";
 
-		getLogger ().info ("-------->" + s);
-		session.writeOutputStream (s);
+		getLogger().info("-------->" + s);
+		session.writeOutputStream(s);
 	}
 
 	//-------------------------------------------------------------------------
-	private void result (final IMSession session, final Object context) throws Exception
+	private void result(final IMSession session, final Object context) throws Exception
 	{
-		final XmlPullParser xpp = session.getXmlPullParser ();
-		String to = ((IMIq) context).getTo ();
+		final XmlPullParser xpp = session.getXmlPullParser();
+		String to = ((IMIq) context).getTo();
 
-		if (serverParameters.getHostNameList ().contains (JIDParser.getHostname (to)))
+		if (serverParameters.getHostNameList().contains(JIDParser.getHostname(to)))
 		{
 			// local request
-			String iqId = ((IMIq) context).getId ();
-			String from = ((IMIq) context).getFrom ();
-			String data = serialize (xpp).toString ();
+			String iqId = ((IMIq) context).getId();
+			String from = ((IMIq) context).getFrom();
+			String data = serialize(xpp).toString();
 
-			IMIq iq = new IMIq ();
+			IMIq iq = new IMIq();
 
-			iq.setFrom (from);
-			iq.setTo (to);
-			iq.setId (iqId);
-			iq.setType (IMIq.TYPE_RESULT);
-			iq.setStringData (data);
-			session.getRouter ().route (session, iq);
+			iq.setFrom(from);
+			iq.setTo(to);
+			iq.setId(iqId);
+			iq.setType(IMIq.TYPE_RESULT);
+			iq.setStringData(data);
+			session.getRouter().route(session, iq);
 		}
 
 		else
 		{
-			getLogger ().warn ("Abnormal result for remote delivery?");
-			skip (xpp);
+			getLogger().warn("Abnormal result for remote delivery?");
+			skip(xpp);
 		}
 	}
 }

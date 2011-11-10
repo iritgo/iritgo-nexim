@@ -32,7 +32,7 @@ import java.io.OutputStreamWriter;
 
 public abstract class AbstractIMSession implements IMSession
 {
-	protected static Long lastSessionId = new Long (System.currentTimeMillis ());
+	protected static Long lastSessionId = new Long(System.currentTimeMillis());
 
 	protected String defaultEncoding;
 
@@ -59,38 +59,38 @@ public abstract class AbstractIMSession implements IMSession
 	protected DefaultNeximLogger defaultNeximLogger;
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
-	public void setDefaultEncoding (String defaultEncoding)
+	public void setDefaultEncoding(String defaultEncoding)
 	{
 		this.defaultEncoding = defaultEncoding;
 	}
 
-	public final IMRouter getRouter ()
+	public final IMRouter getRouter()
 	{
 		return router;
 	}
 
-	public final void setImRouter (IMRouter router)
+	public final void setImRouter(IMRouter router)
 	{
 		this.router = router;
 	}
 
-	public void setStreams (Streams streams)
+	public void setStreams(Streams streams)
 	{
 		this.streams = streams;
 	}
 
-	public Streams getStreams ()
+	public Streams getStreams()
 	{
 		return streams;
 	}
 
 	//-------------------------------------------------------------------------
-	public boolean isClosed ()
+	public boolean isClosed()
 	{
 		boolean value = false;
 
@@ -98,7 +98,7 @@ public abstract class AbstractIMSession implements IMSession
 		{
 			synchronized (disposed)
 			{
-				value = disposed.booleanValue ();
+				value = disposed.booleanValue();
 			}
 		}
 
@@ -106,14 +106,14 @@ public abstract class AbstractIMSession implements IMSession
 	}
 
 	//-------------------------------------------------------------------------
-	public void setup (final IoSession ioSession) throws Exception
+	public void setup(final IoSession ioSession) throws Exception
 	{
 		this.ioSession = ioSession;
 
-		XmlPullParserFactory factory = XmlPullParserFactory.newInstance ();
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 
-		factory.setNamespaceAware (true);
-		xpp = factory.newPullParser ();
+		factory.setNamespaceAware(true);
+		xpp = factory.newPullParser();
 
 		// to be checked -- getInputEncoding should detect encoding (if parser impl do so)
 		/*m_encoding = m_xpp.getInputEncoding();
@@ -140,71 +140,71 @@ public abstract class AbstractIMSession implements IMSession
 	}
 
 	//-------------------------------------------------------------------------
-	public final XmlPullParser getXmlPullParser ()
+	public final XmlPullParser getXmlPullParser()
 	{
 		return xpp;
 	}
 
 	//-------------------------------------------------------------------------
-	public final long getId ()
+	public final long getId()
 	{
 		return sessionId;
 	}
 
 	//-------------------------------------------------------------------------
-	public final String getEncoding ()
+	public final String getEncoding()
 	{
 		return defaultEncoding;
 	}
 
 	//-------------------------------------------------------------------------
-	public final void writeOutputStream (final String s) //throws IOException
+	public final void writeOutputStream(final String s) //throws IOException
 	{
-		defaultNeximLogger.debug ("Output (" + sessionId + "/" + getConnectionType () + "): " + s);
+		defaultNeximLogger.debug("Output (" + sessionId + "/" + getConnectionType() + "): " + s);
 
 		if (s != null && ioSession != null)
 		{
-			if (ioSession.isConnected ())
+			if (ioSession.isConnected())
 			{
 				try
 				{
 					synchronized (ioSession)
 					{
-						ioSession.write (s);
+						ioSession.write(s);
 					}
 				}
 				catch (Exception e)
 				{
-					defaultNeximLogger.warn ("Unable to send data: " + e.getMessage ());
+					defaultNeximLogger.warn("Unable to send data: " + e.getMessage());
 				}
 			}
 			else
 			{
-				defaultNeximLogger.warn ("Unable to send data: Output socket closed or not connected");
+				defaultNeximLogger.warn("Unable to send data: Output socket closed or not connected");
 			}
 		}
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public final String toString ()
+	public final String toString()
 	{
-		return "I: " + getId ();
+		return "I: " + getId();
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public final int hashCode ()
+	public final int hashCode()
 	{
-		Long sessionL = new Long (sessionId);
+		Long sessionL = new Long(sessionId);
 
-		return sessionL.hashCode ();
+		return sessionL.hashCode();
 	}
 
 	//-------------------------------------------------------------------------
 	// implementer to make PMD happy ,)
 	@Override
-	public boolean equals (final Object obj)
+	public boolean equals(final Object obj)
 	{
 		boolean result = false;
 
@@ -216,12 +216,12 @@ public abstract class AbstractIMSession implements IMSession
 		return result;
 	}
 
-	public void setNamespace (String namespace)
+	public void setNamespace(String namespace)
 	{
 		this.namespace = namespace;
 	}
 
-	public String getNamespace ()
+	public String getNamespace()
 	{
 		return namespace;
 	}

@@ -23,7 +23,7 @@ package de.iritgo.nexim;
 
 public class S2SConnectorFactoryImpl implements S2SConnectorFactory
 {
-	public S2SConnector createS2SConnector ()
+	public S2SConnector createS2SConnector()
 	{
 		return null;
 	}

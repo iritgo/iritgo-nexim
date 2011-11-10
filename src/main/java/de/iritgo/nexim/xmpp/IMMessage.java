@@ -47,123 +47,123 @@ public class IMMessage implements Transitable, Deferrable
 
 	private Integer errorCode;
 
-	public final void setTo (String to)
+	public final void setTo(String to)
 	{
 		this.to = to;
 	}
 
-	public final String getTo ()
+	public final String getTo()
 	{
 		return to;
 	}
 
-	public final void setFrom (String from)
+	public final void setFrom(String from)
 	{
 		this.from = from;
 	}
 
-	public final String getFrom ()
+	public final String getFrom()
 	{
 		return from;
 	}
 
-	public final void setType (String type)
+	public final void setType(String type)
 	{
 		this.type = type;
 	}
 
-	public final String getType ()
+	public final String getType()
 	{
 		return type;
 	}
 
-	public final void setSubject (String subject)
+	public final void setSubject(String subject)
 	{
 		this.subject = subject;
 	}
 
-	public final String getSubject ()
+	public final String getSubject()
 	{
 		return subject;
 	}
 
-	public final void setBody (String body)
+	public final void setBody(String body)
 	{
 		this.body = body;
 	}
 
-	public final String getBody ()
+	public final String getBody()
 	{
 		return body;
 	}
 
-	public final void setThread (String thread)
+	public final void setThread(String thread)
 	{
 		this.thread = thread;
 	}
 
-	public final String getThread ()
+	public final String getThread()
 	{
 		return thread;
 	}
 
-	public final void setError (String error)
+	public final void setError(String error)
 	{
 		this.error = error;
 	}
 
-	public void setErrorCode (int errorCode)
+	public void setErrorCode(int errorCode)
 	{
-		this.errorCode = new Integer (errorCode);
+		this.errorCode = new Integer(errorCode);
 	}
 
 	@Override
-	public String toString ()
+	public String toString()
 	{
-		XMLToString message = new XMLToString ("message");
+		XMLToString message = new XMLToString("message");
 
-		message.addFilledAttribut ("to", to);
-		message.addFilledAttribut ("from", from);
-		message.addFilledAttribut ("type", type);
+		message.addFilledAttribut("to", to);
+		message.addFilledAttribut("from", from);
+		message.addFilledAttribut("type", type);
 
 		if (subject != null)
 		{
-			XMLToString subject = new XMLToString ("subject");
+			XMLToString subject = new XMLToString("subject");
 
-			subject.addTextNode (this.subject);
-			message.addElement (subject);
+			subject.addTextNode(this.subject);
+			message.addElement(subject);
 		}
 
 		if (body != null)
 		{
-			XMLToString body = new XMLToString ("body");
+			XMLToString body = new XMLToString("body");
 
-			body.addTextNode (this.body);
-			message.addElement (body);
+			body.addTextNode(this.body);
+			message.addElement(body);
 		}
 
 		if (thread != null)
 		{
-			XMLToString thread = new XMLToString ("thread");
+			XMLToString thread = new XMLToString("thread");
 
-			thread.addTextNode (this.thread);
-			message.addElement (thread);
+			thread.addTextNode(this.thread);
+			message.addElement(thread);
 		}
 
 		if (error != null)
 		{
-			XMLToString error = new XMLToString ("error");
+			XMLToString error = new XMLToString("error");
 
-			error.addTextNode (this.error);
+			error.addTextNode(this.error);
 
 			if (errorCode != null)
 			{
-				error.addFilledAttribut ("code", errorCode.toString ());
+				error.addFilledAttribut("code", errorCode.toString());
 			}
 
-			message.addElement (error);
+			message.addElement(error);
 		}
 
-		return message.toString ();
+		return message.toString();
 	}
 }

@@ -29,8 +29,8 @@ import de.iritgo.nexim.session.IMSession;
 public class ShowImpl extends DefaultSessionProcessor implements Show
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		((IMPresence) context).setShow (session.getXmlPullParser ().getText ().trim ());
+		((IMPresence) context).setShow(session.getXmlPullParser().getText().trim());
 	}
 }

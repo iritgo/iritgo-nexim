@@ -23,6 +23,6 @@ package de.iritgo.nexim.router;
 
 public interface SimpleMessageRouter
 {
-	public void route (String from, String to, String type, String subject, String body, String threadId)
+	public void route(String from, String to, String type, String subject, String body, String threadId)
 		throws java.io.IOException;
 }

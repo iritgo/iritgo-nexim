@@ -41,7 +41,7 @@ public class User
 	/**
 	 * @return
 	 */
-	public final String getName ()
+	public final String getName()
 	{
 		return name;
 	}
@@ -49,7 +49,7 @@ public class User
 	/**
 	 * @param name
 	 */
-	public final void setName (final String name)
+	public final void setName(final String name)
 	{
 		this.name = name;
 	}
@@ -57,7 +57,7 @@ public class User
 	/**
 	 * @return
 	 */
-	public final String getHostname ()
+	public final String getHostname()
 	{
 		return hostname;
 	}
@@ -65,7 +65,7 @@ public class User
 	/**
 	 * @param hostname
 	 */
-	public final void setHostname (final String hostname)
+	public final void setHostname(final String hostname)
 	{
 		this.hostname = hostname;
 	}
@@ -73,7 +73,7 @@ public class User
 	/**
 	 * @param password
 	 */
-	public final void setPassword (final String password)
+	public final void setPassword(final String password)
 	{
 		this.password = password;
 	}
@@ -81,7 +81,7 @@ public class User
 	/**
 	 * @return
 	 */
-	public final String getPassword ()
+	public final String getPassword()
 	{
 		return password;
 	}
@@ -89,7 +89,7 @@ public class User
 	/**
 	 * @return
 	 */
-	public final String getResource ()
+	public final String getResource()
 	{
 		return resource;
 	}
@@ -97,7 +97,7 @@ public class User
 	/**
 	 * @return
 	 */
-	public final String getDigest ()
+	public final String getDigest()
 	{
 		return digest;
 	}
@@ -105,7 +105,7 @@ public class User
 	/**
 	 * @param digest
 	 */
-	public final void setDigest (final String digest)
+	public final void setDigest(final String digest)
 	{
 		this.digest = digest;
 	}
@@ -113,7 +113,7 @@ public class User
 	/**
 	 * @param resource
 	 */
-	public final void setResource (final String resource)
+	public final void setResource(final String resource)
 	{
 		this.resource = resource;
 	}
@@ -121,7 +121,7 @@ public class User
 	/**
 	 * @return
 	 */
-	public final String getJID ()
+	public final String getJID()
 	{
 		String s = name;
 
@@ -136,7 +136,7 @@ public class User
 	/**
 	 * @return
 	 */
-	public final String getNameAndRessource ()
+	public final String getNameAndRessource()
 	{
 		return name + "/" + resource;
 	}
@@ -144,17 +144,17 @@ public class User
 	/**
 	 * @return
 	 */
-	public final String getJIDAndRessource ()
+	public final String getJIDAndRessource()
 	{
-		return getJID () + "/" + resource;
+		return getJID() + "/" + resource;
 	}
 
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString ()
+	public String toString()
 	{
-		return getJIDAndRessource ();
+		return getJIDAndRessource();
 	}
 }

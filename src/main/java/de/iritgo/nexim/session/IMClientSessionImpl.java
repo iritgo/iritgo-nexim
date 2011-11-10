@@ -47,7 +47,7 @@ public class IMClientSessionImpl extends AbstractIMSession implements IMClientSe
 	// Requirements
 	private IMPresenceHolder presenceHolder;
 
-	public void setImPresenceHolder (IMPresenceHolder presenceHolder)
+	public void setImPresenceHolder(IMPresenceHolder presenceHolder)
 	{
 		this.presenceHolder = presenceHolder;
 	}
@@ -55,7 +55,7 @@ public class IMClientSessionImpl extends AbstractIMSession implements IMClientSe
 	/**
 	 * @param rosterManager the rosterManager to set
 	 */
-	public void setRosterManager (RosterManager rosterManager)
+	public void setRosterManager(RosterManager rosterManager)
 	{
 		this.rosterManager = rosterManager;
 	}
@@ -63,61 +63,61 @@ public class IMClientSessionImpl extends AbstractIMSession implements IMClientSe
 	/**
 	 * Set the user manager
 	 */
-	public void setUserManager (UserManager userManager)
+	public void setUserManager(UserManager userManager)
 	{
 		this.userManager = userManager;
 	}
 
 	//-------------------------------------------------------------------------
-	public void initialize ()
+	public void initialize()
 	{
-		disposed = new Boolean (false);
+		disposed = new Boolean(false);
 
 		synchronized (lastSessionId)
 		{
-			sessionId = lastSessionId.longValue ();
-			lastSessionId = new Long (sessionId + 1);
+			sessionId = lastSessionId.longValue();
+			lastSessionId = new Long(sessionId + 1);
 		}
 	}
 
 	//-------------------------------------------------------------------------
-	public void close ()
+	public void close()
 	{
-		defaultNeximLogger.debug ("Closing session id " + getId ());
+		defaultNeximLogger.debug("Closing session id " + getId());
 
 		synchronized (disposed)
 		{
 			try
 			{
 				// set disconnected to all roster friend
-				if (user != null && getConnectionType () == IMSession.C2S_CONNECTION)
+				if (user != null && getConnectionType() == IMSession.C2S_CONNECTION)
 				{
-					presenceHolder.removePresence (user.getJIDAndRessource ());
+					presenceHolder.removePresence(user.getJIDAndRessource());
 
-					defaultNeximLogger.debug ("Remove presence jid " + user.getJIDAndRessource ());
+					defaultNeximLogger.debug("Remove presence jid " + user.getJIDAndRessource());
 
 					// emit unavailaible to all user
-					final IMPresence presence = new IMPresenceImpl ();
+					final IMPresence presence = new IMPresenceImpl();
 
-					presence.setFrom (user.getJIDAndRessource ());
-					presence.setType (IMPresence.TYPE_UNAVAILABLE);
-					presence.setStatus ("Disconnected");
+					presence.setFrom(user.getJIDAndRessource());
+					presence.setType(IMPresence.TYPE_UNAVAILABLE);
+					presence.setStatus("Disconnected");
 
 					final IMClientSession clientSession = this;
 
-					rosterManager.processItems (user.getName (), new RosterItemProcessor ()
+					rosterManager.processItems(user.getName(), new RosterItemProcessor()
 					{
-						public void process (IMRosterItem item) throws Exception
+						public void process(IMRosterItem item) throws Exception
 						{
-							defaultNeximLogger.debug ("Item " + item);
+							defaultNeximLogger.debug("Item " + item);
 
-							IMPresence localPresence = (IMPresence) presence.clone ();
+							IMPresence localPresence = (IMPresence) presence.clone();
 
-							localPresence.setTo (item.getJID ());
+							localPresence.setTo(item.getJID());
 
 							if (router != null)
 							{
-								router.route (clientSession, localPresence);
+								router.route(clientSession, localPresence);
 							}
 						}
 					});
@@ -125,26 +125,26 @@ public class IMClientSessionImpl extends AbstractIMSession implements IMClientSe
 
 				if (router != null)
 				{
-					router.unregisterSession (this);
+					router.unregisterSession(this);
 				}
 			}
 			catch (Exception e)
 			{
-				defaultNeximLogger.warn ("Session dispose failed (stage1): " + e.getMessage (), e);
+				defaultNeximLogger.warn("Session dispose failed (stage1): " + e.getMessage(), e);
 			}
 
 			try
 			{
-				writeOutputStream ("</stream:stream>");
+				writeOutputStream("</stream:stream>");
 			}
 			catch (Exception e)
 			{
-				defaultNeximLogger.warn ("Session dispose failed (stage2): " + e.getMessage ());
+				defaultNeximLogger.warn("Session dispose failed (stage2): " + e.getMessage());
 			}
 
 			try
 			{
-				defaultNeximLogger.debug ("Session " + sessionId + " closed");
+				defaultNeximLogger.debug("Session " + sessionId + " closed");
 
 				/*
 				                                if (socket != null && ! socket.isClosed ())
@@ -156,44 +156,44 @@ public class IMClientSessionImpl extends AbstractIMSession implements IMClientSe
 			}
 			catch (Exception e)
 			{
-				defaultNeximLogger.warn ("Session dispose failed (stage3): " + e.getMessage (), e);
+				defaultNeximLogger.warn("Session dispose failed (stage3): " + e.getMessage(), e);
 			}
 
-			defaultNeximLogger.debug ("Session " + sessionId + " disposed ");
+			defaultNeximLogger.debug("Session " + sessionId + " disposed ");
 		}
 
-		disposed = new Boolean (true);
+		disposed = new Boolean(true);
 	}
 
 	//-------------------------------------------------------------------------
 	//-------------------------------------------------------------------------
 	//-------------------------------------------------------------------------
-	public final void setUser (final User user)
+	public final void setUser(final User user)
 	{
 		this.user = user;
 	}
 
 	//-------------------------------------------------------------------------
-	public final User getUser ()
+	public final User getUser()
 	{
 		return user;
 	}
 
 	//-------------------------------------------------------------------------
-	public IMPresence getPresence ()
+	public IMPresence getPresence()
 	{
 		return presence;
 	}
 
 	//-------------------------------------------------------------------------
-	public void setPresence (IMPresence presence)
+	public void setPresence(IMPresence presence)
 	{
 		this.presence = presence;
 	}
 
 	//-------------------------------------------------------------------------
 	//-------------------------------------------------------------------------
-	public int getConnectionType ()
+	public int getConnectionType()
 	{
 		return C2S_CONNECTION;
 	}

@@ -23,19 +23,19 @@ package de.iritgo.nexim.session;
 
 public interface IMServerSession extends IMSession
 {
-	public boolean getDialbackValid ();
+	public boolean getDialbackValid();
 
-	public void setDialbackValid (boolean value);
+	public void setDialbackValid(boolean value);
 
-	public String getDialbackValue ();
+	public String getDialbackValue();
 
-	public void setDialbackValue (String dialback);
+	public void setDialbackValue(String dialback);
 
-	public String getRemoteHostname ();
+	public String getRemoteHostname();
 
-	public void setRemoteHostname (String hostname);
+	public void setRemoteHostname(String hostname);
 
-	public IMServerSession getTwinSession ();
+	public IMServerSession getTwinSession();
 
-	public void setTwinSession (IMServerSession session);
+	public void setTwinSession(IMServerSession session);
 }

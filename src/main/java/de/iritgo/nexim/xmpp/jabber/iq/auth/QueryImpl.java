@@ -40,62 +40,62 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 
 	private UserDAO userDAO;
 
-	public void setServerParameters (ServerParameters serverParameters)
+	public void setServerParameters(ServerParameters serverParameters)
 	{
 		this.serverParameters = serverParameters;
 	}
 
-	public void setUserManager (UserManager userManager)
+	public void setUserManager(UserManager userManager)
 	{
 		this.userManager = userManager;
 	}
 
-	public void setUserDAO (UserDAO userDAO)
+	public void setUserDAO(UserDAO userDAO)
 	{
 		this.userDAO = userDAO;
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
 		IMClientSession clientSession = (IMClientSession) session;
 
-		String iqId = ((IMIq) context).getId ();
-		String type = ((IMIq) context).getType ();
+		String iqId = ((IMIq) context).getId();
+		String type = ((IMIq) context).getType();
 
-		User tmpAuthUser = userManager.createNewUser ();
+		User tmpAuthUser = userManager.createNewUser();
 
-		clientSession.setUser (tmpAuthUser);
-		tmpAuthUser.setHostname (serverParameters.getHostName ());
+		clientSession.setUser(tmpAuthUser);
+		tmpAuthUser.setHostname(serverParameters.getHostName());
 
 		// GET
-		if (IMIq.TYPE_GET.equals (type))
+		if (IMIq.TYPE_GET.equals(type))
 		{
-			super.process (session, context);
+			super.process(session, context);
 
 			String s = null;
 
-			User daoUser = userDAO.getUser (tmpAuthUser.getName ());
+			User daoUser = userDAO.getUser(tmpAuthUser.getName());
 
 			if (daoUser == null)
 			{ // user does not exists
 				s = "<iq type='" + IMIq.TYPE_ERROR + "' id='" + iqId + "'>"
-								+ "<query xmlns='jabber:iq:auth'><username>" + tmpAuthUser.getName ()
+								+ "<query xmlns='jabber:iq:auth'><username>" + tmpAuthUser.getName()
 								+ "</username></query>" + "<error code='401'>Unauthorized</error>" + "</iq>";
 			}
 			else
 			{ // user exists
-				s = "<iq type='" + IMIq.TYPE_RESULT + "' id='" + iqId + "' from='" + serverParameters.getHostName ()
-								+ "'>" + "<query xmlns='jabber:iq:auth'>" + "<username>" + tmpAuthUser.getName ()
+				s = "<iq type='" + IMIq.TYPE_RESULT + "' id='" + iqId + "' from='" + serverParameters.getHostName()
+								+ "'>" + "<query xmlns='jabber:iq:auth'>" + "<username>" + tmpAuthUser.getName()
 								+ "</username>";
 
-				if (userManager.isAuthenticationTypeSupported (UserManager.AuthenticationType.PLAIN))
+				if (userManager.isAuthenticationTypeSupported(UserManager.AuthenticationType.PLAIN))
 				{
 					s += "<password/>";
 				}
 
-				if (userManager.isAuthenticationTypeSupported (UserManager.AuthenticationType.DIGEST))
+				if (userManager.isAuthenticationTypeSupported(UserManager.AuthenticationType.DIGEST))
 				{
 					s += "<digest/>";
 				}
@@ -103,44 +103,44 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 				s += "<resource/></query></iq>";
 			}
 
-			session.writeOutputStream (s);
+			session.writeOutputStream(s);
 		}
 
 		// SET
-		else if (IMIq.TYPE_SET.equals (type))
+		else if (IMIq.TYPE_SET.equals(type))
 		{
-			super.process (session, context);
+			super.process(session, context);
 
-			User daoUser = userDAO.getUser (tmpAuthUser.getName ());
+			User daoUser = userDAO.getUser(tmpAuthUser.getName());
 
 			try
 			{
-				if (tmpAuthUser.getPassword () != null)
+				if (tmpAuthUser.getPassword() != null)
 				{
-					userManager.authenticate (daoUser, UserManager.AuthenticationType.PLAIN,
-									tmpAuthUser.getPassword (), Long.toString (session.getId ()));
+					userManager.authenticate(daoUser, UserManager.AuthenticationType.PLAIN, tmpAuthUser.getPassword(),
+									Long.toString(session.getId()));
 				}
 				else
 				{
-					userManager.authenticate (daoUser, UserManager.AuthenticationType.DIGEST, tmpAuthUser.getDigest (),
-									Long.toString (session.getId ()));
+					userManager.authenticate(daoUser, UserManager.AuthenticationType.DIGEST, tmpAuthUser.getDigest(),
+									Long.toString(session.getId()));
 				}
 
-				IMRouter router = session.getRouter ();
+				IMRouter router = session.getRouter();
 
-				router.registerSession (clientSession);
+				router.registerSession(clientSession);
 
 				String s = "<iq type='" + IMIq.TYPE_RESULT + "' id='" + iqId + "' />";
 
-				session.writeOutputStream (s);
+				session.writeOutputStream(s);
 			}
 			catch (Exception e)
 			{
-				getLogger ().debug (e.getMessage (), e);
+				getLogger().debug(e.getMessage(), e);
 
 				String s = "<iq type='" + IMIq.TYPE_ERROR + "' id='" + iqId + "' />";
 
-				session.writeOutputStream (s);
+				session.writeOutputStream(s);
 			}
 		}
 	}

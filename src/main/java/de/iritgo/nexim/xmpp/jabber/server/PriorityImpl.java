@@ -29,8 +29,8 @@ import de.iritgo.nexim.session.IMSession;
 public class PriorityImpl extends DefaultSessionProcessor implements Priority
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		((IMPresence) context).setPriority (session.getXmlPullParser ().getText ().trim ());
+		((IMPresence) context).setPriority(session.getXmlPullParser().getText().trim());
 	}
 }

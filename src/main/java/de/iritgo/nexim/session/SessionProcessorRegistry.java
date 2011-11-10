@@ -27,9 +27,9 @@ import java.util.Map;
 
 public interface SessionProcessorRegistry
 {
-	public void setSessionProcessors (Map<String, SessionProcessor> sessionProcessors);
+	public void setSessionProcessors(Map<String, SessionProcessor> sessionProcessors);
 
-	public SessionProcessor getProcessor (String key);
+	public SessionProcessor getProcessor(String key);
 
-	public Collection<SessionProcessor> getProcessors ();
+	public Collection<SessionProcessor> getProcessors();
 }

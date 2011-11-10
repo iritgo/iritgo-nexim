@@ -35,7 +35,7 @@ public interface UserManager
 	 * @param type The type
 	 * @return True if supported
 	 */
-	public boolean isAuthenticationTypeSupported (AuthenticationType type);
+	public boolean isAuthenticationTypeSupported(AuthenticationType type);
 
 	/**
 	 * Throws a exception if the user has provide a wrong password or digest
@@ -46,35 +46,35 @@ public interface UserManager
 	 * @param sessionId The session id
 	 * @throws Exception
 	 */
-	public void authenticate (User user, AuthenticationType type, String value, String sessionId) throws Exception;
+	public void authenticate(User user, AuthenticationType type, String value, String sessionId) throws Exception;
 
 	/**
 	 * Register a new user by the xmpp jid string
 	 *
 	 * @param xmppAddUserString The jid
 	 */
-	public void addUser (String jid) throws RegistrationNotAllowedException;
+	public void addUser(String jid) throws RegistrationNotAllowedException;
 
 	/**
 	 * Register a new user
 	 *
 	 * @param user The user
 	 */
-	public void addUser (User user) throws RegistrationNotAllowedException;
+	public void addUser(User user) throws RegistrationNotAllowedException;
 
 	/**
 	 * Register a remove user by the xmpp jid string
 	 *
 	 * @param xmppAddUserString The jid
 	 */
-	public void removeUser (String jid) throws UnRegistrationNotAllowedException;
+	public void removeUser(String jid) throws UnRegistrationNotAllowedException;
 
 	/**
 	 * Remove a user
 	 *
 	 * @param user The user
 	 */
-	public void removeUser (User user) throws UnRegistrationNotAllowedException;
+	public void removeUser(User user) throws UnRegistrationNotAllowedException;
 
 	/**
 	 * Create a new user obect.
@@ -82,5 +82,5 @@ public interface UserManager
 	 * @return The new user
 	 * @throws Exception
 	 */
-	public User createNewUser () throws Exception;
+	public User createNewUser() throws Exception;
 }

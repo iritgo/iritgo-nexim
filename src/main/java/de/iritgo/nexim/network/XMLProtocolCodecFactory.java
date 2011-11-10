@@ -26,10 +26,10 @@ import org.apache.mina.filter.codec.demux.DemuxingProtocolCodecFactory;
 
 public class XMLProtocolCodecFactory extends DemuxingProtocolCodecFactory
 {
-	public XMLProtocolCodecFactory ()
+	public XMLProtocolCodecFactory()
 	{
-		super.addMessageDecoder (XMLRequestDecoder.class);
+		super.addMessageDecoder(XMLRequestDecoder.class);
 
-		super.addMessageEncoder (XMLResponseEncoder.TYPES, XMLResponseEncoder.class);
+		super.addMessageEncoder(XMLResponseEncoder.TYPES, XMLResponseEncoder.class);
 	}
 }

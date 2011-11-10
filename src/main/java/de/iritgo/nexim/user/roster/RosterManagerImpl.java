@@ -32,7 +32,7 @@ public class RosterManagerImpl implements RosterManager
 
 	private UserPermissionService userPermissionService;
 
-	public void setRosterDAO (RosterDAO rosterDAO)
+	public void setRosterDAO(RosterDAO rosterDAO)
 	{
 		this.rosterDAO = rosterDAO;
 	}
@@ -40,60 +40,60 @@ public class RosterManagerImpl implements RosterManager
 	/**
 	 * @param userPermissionService the userPermissionService to set
 	 */
-	public void setUserPermissionService (UserPermissionService userPermissionService)
+	public void setUserPermissionService(UserPermissionService userPermissionService)
 	{
 		this.userPermissionService = userPermissionService;
 	}
 
-	public void addItem (String username, IMRosterItem rosterItem) throws AddRosterItemNotAllowedException
+	public void addItem(String username, IMRosterItem rosterItem) throws AddRosterItemNotAllowedException
 	{
-		if (userPermissionService.allowAddRosterItem (username, rosterItem))
+		if (userPermissionService.allowAddRosterItem(username, rosterItem))
 		{
-			rosterDAO.addItem (username, rosterItem);
+			rosterDAO.addItem(username, rosterItem);
 		}
 		else
 		{
-			throw new AddRosterItemNotAllowedException ();
+			throw new AddRosterItemNotAllowedException();
 		}
 	}
 
 	/**
 	 * @see de.iritgo.nexim.user.roster.RosterManager#removeItem(java.lang.String, java.lang.String)
 	 */
-	public void removeItem (String username, IMRosterItem rosterItem) throws RemoveRosterItemNotAllowedException
+	public void removeItem(String username, IMRosterItem rosterItem) throws RemoveRosterItemNotAllowedException
 	{
-		if (userPermissionService.allowAddRosterItem (username, rosterItem))
+		if (userPermissionService.allowAddRosterItem(username, rosterItem))
 		{
-			rosterDAO.removeItem (username, rosterItem);
+			rosterDAO.removeItem(username, rosterItem);
 		}
 		else
 		{
-			throw new RemoveRosterItemNotAllowedException ();
+			throw new RemoveRosterItemNotAllowedException();
 		}
 	}
 
 	/**
 	 * @see de.iritgo.nexim.user.roster.RosterManager#getItem(java.lang.String, java.lang.String)
 	 */
-	public IMRosterItem getItem (String username, String itemJID)
+	public IMRosterItem getItem(String username, String itemJID)
 	{
-		return rosterDAO.getItem (username, itemJID);
+		return rosterDAO.getItem(username, itemJID);
 	}
 
 	/**
 	 * @see de.iritgo.nexim.user.roster.RosterManager#removeItem(java.lang.String, java.lang.String)
 	 */
-	public void removeItem (String username, String itemJID) throws RemoveRosterItemNotAllowedException
+	public void removeItem(String username, String itemJID) throws RemoveRosterItemNotAllowedException
 	{
-		List<IMRosterItem> items = rosterDAO.getRosterItems (username);
+		List<IMRosterItem> items = rosterDAO.getRosterItems(username);
 
 		synchronized (items)
 		{
 			for (IMRosterItem item : items)
 			{
-				if (item.getJID ().equals (itemJID))
+				if (item.getJID().equals(itemJID))
 				{
-					removeItem (username, item);
+					removeItem(username, item);
 
 					return;
 				}
@@ -105,19 +105,19 @@ public class RosterManagerImpl implements RosterManager
 	 * @throws Exception
 	 * @see de.iritgo.nexim.user.roster.RosterManager#processItem(de.iritgo.nexim.user.roster.RosterItemProcessor)
 	 */
-	public void processItems (String username, RosterItemProcessor itemProcessor) throws Exception
+	public void processItems(String username, RosterItemProcessor itemProcessor) throws Exception
 	{
-		List<IMRosterItem> itemsTmp = rosterDAO.getRosterItems (username);
+		List<IMRosterItem> itemsTmp = rosterDAO.getRosterItems(username);
 		List<IMRosterItem> items = null;
 
 		synchronized (itemsTmp)
 		{
-			items = new LinkedList<IMRosterItem> (itemsTmp);
+			items = new LinkedList<IMRosterItem>(itemsTmp);
 		}
 
 		for (IMRosterItem item : items)
 		{
-			itemProcessor.process (item);
+			itemProcessor.process(item);
 		}
 	}
 }

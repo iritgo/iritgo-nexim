@@ -32,7 +32,7 @@ public interface RosterDAO
 	 * @param username The user name
 	 * @return The roster list
 	 */
-	public List<IMRosterItem> getRosterItems (String username);
+	public List<IMRosterItem> getRosterItems(String username);
 
 	/**
 	 * Set a new roster list for the given user name
@@ -40,7 +40,7 @@ public interface RosterDAO
 	 * @param username The username
 	 * @param roster The roster list
 	 */
-	public void addItem (String username, IMRosterItem item);
+	public void addItem(String username, IMRosterItem item);
 
 	/**
 	 * Remove a item from the list
@@ -48,7 +48,7 @@ public interface RosterDAO
 	 * @param username
 	 * @param itemJID
 	 */
-	public void removeItem (String username, IMRosterItem item);
+	public void removeItem(String username, IMRosterItem item);
 
 	/**
 	 * Get roster item from a given username
@@ -57,5 +57,5 @@ public interface RosterDAO
 	 * @param itemJID The item jid
 	 * @return The item
 	 */
-	public IMRosterItem getItem (String username, String itemJID);
+	public IMRosterItem getItem(String username, String itemJID);
 }

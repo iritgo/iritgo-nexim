@@ -53,80 +53,80 @@ public class IMRosterItem implements java.io.Serializable
 
 	private String ask;
 
-	public final void setName (String name)
+	public final void setName(String name)
 	{
 		this.name = name;
 	}
 
-	public final String getName ()
+	public final String getName()
 	{
 		return name;
 	}
 
-	public final void setJID (String jid)
+	public final void setJID(String jid)
 	{
 		if (jid != null)
 		{
-			this.jid = JIDParser.getJID (jid);
+			this.jid = JIDParser.getJID(jid);
 		}
 	}
 
-	public final String getJID ()
+	public final String getJID()
 	{
 		return jid;
 	}
 
-	public final void setGroup (String group)
+	public final void setGroup(String group)
 	{
 		this.group = group;
 	}
 
-	public final String getGroup ()
+	public final String getGroup()
 	{
 		return group;
 	}
 
-	public final void setSubscription (String subscription)
+	public final void setSubscription(String subscription)
 	{
 		this.subscription = subscription;
 	}
 
-	public final String getSubscription ()
+	public final String getSubscription()
 	{
 		return subscription;
 	}
 
-	public final void setAsk (String ask)
+	public final void setAsk(String ask)
 	{
 		this.ask = ask;
 	}
 
-	public final String getAsk ()
+	public final String getAsk()
 	{
 		return ask;
 	}
 
 	@Override
-	public boolean equals (Object obj)
+	public boolean equals(Object obj)
 	{
-		return jid.equals (((IMRosterItem) obj).jid);
+		return jid.equals(((IMRosterItem) obj).jid);
 	}
 
 	@Override
-	public String toString ()
+	public String toString()
 	{
-		XMLToString item = new XMLToString ("item");
+		XMLToString item = new XMLToString("item");
 
-		item.addFilledAttribut ("name", name);
-		item.addFilledAttribut ("jid", jid);
-		item.addFilledAttribut ("subscription", subscription);
-		item.addFilledAttribut ("ask", ask);
+		item.addFilledAttribut("name", name);
+		item.addFilledAttribut("jid", jid);
+		item.addFilledAttribut("subscription", subscription);
+		item.addFilledAttribut("ask", ask);
 
-		XMLToString group = new XMLToString ("group");
+		XMLToString group = new XMLToString("group");
 
-		group.addTextNode (this.group);
-		item.addElement (group);
+		group.addTextNode(this.group);
+		item.addElement(group);
 
-		return item.toString ();
+		return item.toString();
 	}
 }

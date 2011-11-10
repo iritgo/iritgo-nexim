@@ -28,11 +28,11 @@ import de.iritgo.nexim.user.User;
 public interface IMClientSession extends IMSession
 {
 	// C2S session  (will split)
-	public User getUser ();
+	public User getUser();
 
-	public void setUser (User user);
+	public void setUser(User user);
 
-	public IMPresence getPresence ();
+	public IMPresence getPresence();
 
-	public void setPresence (IMPresence presence);
+	public void setPresence(IMPresence presence);
 }

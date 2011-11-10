@@ -48,86 +48,86 @@ public class IMIq implements Transitable
 
 	private Integer m_errorCode;
 
-	public final void setType (String type)
+	public final void setType(String type)
 	{
 		m_type = type;
 	}
 
-	public final String getType ()
+	public final String getType()
 	{
 		return m_type;
 	}
 
-	public final void setTo (String to)
+	public final void setTo(String to)
 	{
 		m_to = to;
 	}
 
-	public final String getTo ()
+	public final String getTo()
 	{
 		return m_to;
 	}
 
-	public final void setFrom (String from)
+	public final void setFrom(String from)
 	{
 		m_from = from;
 	}
 
-	public final String getFrom ()
+	public final String getFrom()
 	{
 		return m_from;
 	}
 
-	public final void setId (String id)
+	public final void setId(String id)
 	{
 		m_id = id;
 	}
 
-	public final String getId ()
+	public final String getId()
 	{
 		return m_id;
 	}
 
-	public final void setStringData (String data)
+	public final void setStringData(String data)
 	{
 		m_data = data;
 	}
 
-	public final void setError (String error)
+	public final void setError(String error)
 	{
 		m_error = error;
 	}
 
-	public void setErrorCode (int errorCode)
+	public void setErrorCode(int errorCode)
 	{
-		m_errorCode = new Integer (errorCode);
+		m_errorCode = new Integer(errorCode);
 	}
 
-	public String toString ()
+	public String toString()
 	{
-		XMLToString iq = new XMLToString ("iq");
+		XMLToString iq = new XMLToString("iq");
 
-		iq.addFilledAttribut ("to", m_to);
-		iq.addFilledAttribut ("from", m_from);
-		iq.addFilledAttribut ("type", m_type);
-		iq.addFilledAttribut ("id", m_id);
+		iq.addFilledAttribut("to", m_to);
+		iq.addFilledAttribut("from", m_from);
+		iq.addFilledAttribut("type", m_type);
+		iq.addFilledAttribut("id", m_id);
 
 		if (m_error != null)
 		{
-			XMLToString error = new XMLToString ("error");
+			XMLToString error = new XMLToString("error");
 
-			error.addTextNode (m_error);
+			error.addTextNode(m_error);
 
 			if (m_errorCode != null)
 			{
-				error.addFilledAttribut ("code", m_errorCode.toString ());
+				error.addFilledAttribut("code", m_errorCode.toString());
 			}
 
-			iq.addElement (error);
+			iq.addElement(error);
 		}
 
-		iq.addStringElement (m_data);
+		iq.addStringElement(m_data);
 
-		return iq.toString ();
+		return iq.toString();
 	}
 }

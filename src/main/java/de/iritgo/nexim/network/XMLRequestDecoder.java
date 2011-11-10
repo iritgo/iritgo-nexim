@@ -35,56 +35,56 @@ import java.util.regex.Pattern;
 
 public class XMLRequestDecoder extends MessageDecoderAdapter
 {
-	private static Pattern noBodyTagPattern = Pattern.compile ("\\A\\s*(<\\w+[^<]*?/>)");
+	private static Pattern noBodyTagPattern = Pattern.compile("\\A\\s*(<\\w+[^<]*?/>)");
 
-	private static Pattern startTagPattern = Pattern.compile ("\\A\\s*<(\\w+)[^>]*>");
+	private static Pattern startTagPattern = Pattern.compile("\\A\\s*<(\\w+)[^>]*>");
 
 	private int contentLength;
 
-	private CharsetDecoder decoder = Charset.forName ("UTF-8").newDecoder ();
+	private CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
 
-	public XMLRequestDecoder ()
+	public XMLRequestDecoder()
 	{
 	}
 
-	public MessageDecoderResult decodable (IoSession session, IoBuffer in)
+	public MessageDecoderResult decodable(IoSession session, IoBuffer in)
 	{
 		try
 		{
-			String inc = in.getString (in.remaining (), decoder);
+			String inc = in.getString(in.remaining(), decoder);
 
-			if (inc.indexOf ("stream:stream") >= 0)
+			if (inc.indexOf("stream:stream") >= 0)
 			{
-				contentLength = inc.length ();
+				contentLength = inc.length();
 
 				return MessageDecoderResult.OK;
 			}
 
-			Matcher matcher = noBodyTagPattern.matcher (inc);
+			Matcher matcher = noBodyTagPattern.matcher(inc);
 
-			if (matcher.find ())
+			if (matcher.find())
 			{
-				int end = matcher.end ();
+				int end = matcher.end();
 
-				contentLength = inc.substring (0, end).getBytes ().length;
+				contentLength = inc.substring(0, end).getBytes().length;
 
 				return MessageDecoderResult.OK;
 			}
 
-			matcher = startTagPattern.matcher (inc);
+			matcher = startTagPattern.matcher(inc);
 
-			if (matcher.find ())
+			if (matcher.find())
 			{
-				String tag = matcher.group (1);
-				Pattern stopTagPattern = Pattern.compile ("</" + tag + ">");
+				String tag = matcher.group(1);
+				Pattern stopTagPattern = Pattern.compile("</" + tag + ">");
 
-				matcher = stopTagPattern.matcher (inc);
+				matcher = stopTagPattern.matcher(inc);
 
-				if (matcher.find ())
+				if (matcher.find())
 				{
-					int end = matcher.end ();
+					int end = matcher.end();
 
-					contentLength = inc.substring (0, end).getBytes ().length;
+					contentLength = inc.substring(0, end).getBytes().length;
 
 					return MessageDecoderResult.OK;
 				}
@@ -99,32 +99,32 @@ public class XMLRequestDecoder extends MessageDecoderAdapter
 		return MessageDecoderResult.NEED_DATA;
 	}
 
-	public MessageDecoderResult decode (IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception
+	public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception
 	{
 		try
 		{
-			String inc = in.getString (contentLength, decoder);
+			String inc = in.getString(contentLength, decoder);
 
-			if (inc.indexOf ("stream:stream") >= 0)
+			if (inc.indexOf("stream:stream") >= 0)
 			{
-				WelcomeMessage welcomeMessage = new WelcomeMessage ();
+				WelcomeMessage welcomeMessage = new WelcomeMessage();
 
 				welcomeMessage.message = inc;
-				out.write (welcomeMessage);
+				out.write(welcomeMessage);
 			}
 			else
 			{
 				//				System.out.println ("--------------Start------------------");
 				//				System.out.println (inc);
 				//				System.out.println ("--------------End------------------");
-				out.write (inc);
+				out.write(inc);
 			}
 
 			return MessageDecoderResult.OK;
 		}
 		catch (CharacterCodingException e)
 		{
-			e.printStackTrace ();
+			e.printStackTrace();
 		}
 
 		return MessageDecoderResult.NOT_OK;

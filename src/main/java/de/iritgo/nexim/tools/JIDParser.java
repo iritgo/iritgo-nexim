@@ -24,51 +24,51 @@ package de.iritgo.nexim.tools;
 public class JIDParser
 {
 	//-------------------------------------------------------------------------
-	public static final String getJID (final String jidAndRes)
+	public static final String getJID(final String jidAndRes)
 	{
-		return getName (jidAndRes) + '@' + getHostname (jidAndRes);
+		return getName(jidAndRes) + '@' + getHostname(jidAndRes);
 	}
 
 	//-------------------------------------------------------------------------
-	public static final String getHostname (final String jidAndRes)
+	public static final String getHostname(final String jidAndRes)
 	{
 		String hostname = null;
 
-		int index = jidAndRes.indexOf ('@');
+		int index = jidAndRes.indexOf('@');
 
 		if (index > 0)
 		{
-			hostname = jidAndRes.substring (index + 1);
-			index = hostname.indexOf ('/');
+			hostname = jidAndRes.substring(index + 1);
+			index = hostname.indexOf('/');
 
 			if (index > 0)
 			{
-				hostname = hostname.substring (0, index);
+				hostname = hostname.substring(0, index);
 			}
 
-			hostname = hostname.toLowerCase ();
+			hostname = hostname.toLowerCase();
 		}
 
 		return hostname;
 	}
 
 	//-------------------------------------------------------------------------
-	public static final String getNameAndRessource (final String jidAndRes)
+	public static final String getNameAndRessource(final String jidAndRes)
 	{
 		String nameAndRes = null;
 
 		if (jidAndRes != null)
 		{
-			int index = jidAndRes.indexOf ('@');
+			int index = jidAndRes.indexOf('@');
 
 			if (index > 0)
 			{
-				nameAndRes = jidAndRes.substring (0, index).toLowerCase ();
-				index = jidAndRes.lastIndexOf ('/');
+				nameAndRes = jidAndRes.substring(0, index).toLowerCase();
+				index = jidAndRes.lastIndexOf('/');
 
 				if (index > 0)
 				{
-					nameAndRes += jidAndRes.substring (index);
+					nameAndRes += jidAndRes.substring(index);
 				}
 			}
 		}
@@ -77,29 +77,29 @@ public class JIDParser
 	}
 
 	//-------------------------------------------------------------------------
-	public static final String getName (final String jidAndRes)
+	public static final String getName(final String jidAndRes)
 	{
 		String name = jidAndRes;
 
 		if (jidAndRes != null)
 		{
-			int index = jidAndRes.lastIndexOf ('/');
+			int index = jidAndRes.lastIndexOf('/');
 
 			if (index > 0)
 			{
-				name = jidAndRes.substring (0, index);
+				name = jidAndRes.substring(0, index);
 			}
 
-			index = name.indexOf ('@');
+			index = name.indexOf('@');
 
 			if (index > 0)
 			{
-				name = name.substring (0, index);
+				name = name.substring(0, index);
 			}
 
 			if (name != null)
 			{
-				name = name.toLowerCase ();
+				name = name.toLowerCase();
 			}
 		}
 

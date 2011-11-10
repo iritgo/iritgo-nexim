@@ -29,25 +29,25 @@ public interface UserDAO
 	/**
 	 * @param newUser
 	 */
-	public void addUser (User newUser);
+	public void addUser(User newUser);
 
 	/**
 	 * @param username
 	 * @return
 	 */
-	public User getUser (String username);
+	public User getUser(String username);
 
 	/**
 	 * @param searchPattern
 	 * @return
 	 */
-	public List<User> getUsers (String searchPattern);
+	public List<User> getUsers(String searchPattern);
 
 	/**
 	 * @param username
 	 * @return
 	 */
-	public User removeUser (String username);
+	public User removeUser(String username);
 
 	/**
 	 * @param user
@@ -56,5 +56,5 @@ public interface UserDAO
 	 * @param sessionId
 	 * @return
 	 */
-	public boolean isValidPassword (User user, UserManager.AuthenticationType type, String password, String sessionId);
+	public boolean isValidPassword(User user, UserManager.AuthenticationType type, String password, String sessionId);
 }

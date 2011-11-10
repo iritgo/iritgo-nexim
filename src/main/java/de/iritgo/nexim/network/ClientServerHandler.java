@@ -38,52 +38,52 @@ import java.util.HashMap;
  */
 public class ClientServerHandler extends IoHandlerAdapter
 {
-	private HashMap<IoSession, IMSession> sessionMapping = new HashMap<IoSession, IMSession> ();
+	private HashMap<IoSession, IMSession> sessionMapping = new HashMap<IoSession, IMSession>();
 
 	private IMConnectionHandler imConnectionHandler;
 
-	public void setImConnectionHandler (IMConnectionHandler imConnectionHandler)
+	public void setImConnectionHandler(IMConnectionHandler imConnectionHandler)
 	{
 		this.imConnectionHandler = imConnectionHandler;
 	}
 
 	@Override
-	public void sessionOpened (IoSession session)
+	public void sessionOpened(IoSession session)
 	{
-		sessionMapping.put (session, imConnectionHandler.sessionOpened (session, true));
+		sessionMapping.put(session, imConnectionHandler.sessionOpened(session, true));
 	}
 
 	@Override
-	public void messageReceived (IoSession ioSession, Object xmlMessage)
+	public void messageReceived(IoSession ioSession, Object xmlMessage)
 	{
-		IMSession session = sessionMapping.get (ioSession);
+		IMSession session = sessionMapping.get(ioSession);
 
 		if (xmlMessage instanceof WelcomeMessage)
 		{
 			try
 			{
-				imConnectionHandler.handleEncodingHandshake (session);
+				imConnectionHandler.handleEncodingHandshake(session);
 			}
 			catch (ProtocolException e)
 			{
-				e.printStackTrace ();
+				e.printStackTrace();
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace ();
+				e.printStackTrace();
 			}
 
 			return;
 		}
 
-		imConnectionHandler.process ((String) xmlMessage, session);
+		imConnectionHandler.process((String) xmlMessage, session);
 	}
 
 	@Override
-	public void sessionIdle (IoSession session, IdleStatus status)
+	public void sessionIdle(IoSession session, IdleStatus status)
 	{
 		//TODO: What can we do?
-		System.out.println ("Idle!");
+		System.out.println("Idle!");
 
 		//        SessionLog.info(session, "Disconnecting the idle.");
 		//        session.close();
@@ -91,19 +91,19 @@ public class ClientServerHandler extends IoHandlerAdapter
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void exceptionCaught (IoSession session, Throwable cause)
+	public void exceptionCaught(IoSession session, Throwable cause)
 	{
-		session.close ();
+		session.close();
 	}
 
 	@Override
-	public void sessionClosed (IoSession ioSession) throws Exception
+	public void sessionClosed(IoSession ioSession) throws Exception
 	{
-		super.sessionClosed (ioSession);
+		super.sessionClosed(ioSession);
 
-		IMSession session = sessionMapping.get (ioSession);
+		IMSession session = sessionMapping.get(ioSession);
 
-		session.getRouter ().unregisterSession ((IMClientSession) session);
-		sessionMapping.remove (session);
+		session.getRouter().unregisterSession((IMClientSession) session);
+		sessionMapping.remove(session);
 	}
 }

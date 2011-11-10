@@ -31,14 +31,14 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 {
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
-		String data = serialize (session.getXmlPullParser ()).toString ();
+		String data = serialize(session.getXmlPullParser()).toString();
 
 		IMIq iq = ((IMIq) context);
 
-		iq.setFrom (((IMClientSession) session).getUser ().getJIDAndRessource ());
-		iq.setStringData (data);
-		session.getRouter ().route (session, iq);
+		iq.setFrom(((IMClientSession) session).getUser().getJIDAndRessource());
+		iq.setStringData(data);
+		session.getRouter().route(session, iq);
 	}
 }

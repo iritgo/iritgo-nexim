@@ -30,18 +30,18 @@ import java.util.List;
 
 public interface IMRouter
 {
-	public void setS2SConnectorManager (S2SConnectorManager s2sConnectorManager);
+	public void setS2SConnectorManager(S2SConnectorManager s2sConnectorManager);
 
-	public S2SConnectorManager getS2SConnectorManager ();
+	public S2SConnectorManager getS2SConnectorManager();
 
 	// client session related
-	public void registerSession (IMClientSession session);
+	public void registerSession(IMClientSession session);
 
-	public void unregisterSession (IMClientSession session);
+	public void unregisterSession(IMClientSession session);
 
-	public List<IMSession> getAllRegisteredSession (String username);
+	public List<IMSession> getAllRegisteredSession(String username);
 
-	public void releaseSessions ();
+	public void releaseSessions();
 
-	public void route (IMSession session, Transitable message) throws java.io.IOException;
+	public void route(IMSession session, Transitable message) throws java.io.IOException;
 }

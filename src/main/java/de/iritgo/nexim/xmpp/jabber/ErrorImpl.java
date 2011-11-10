@@ -28,11 +28,11 @@ import de.iritgo.nexim.session.IMSession;
 public class ErrorImpl extends DefaultSessionProcessor implements Error
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		String msg = session.getXmlPullParser ().getText ().trim ();
+		String msg = session.getXmlPullParser().getText().trim();
 
-		getLogger ().warn (session.getId () + " / " + msg);
-		throw new java.io.EOFException (msg);
+		getLogger().warn(session.getId() + " / " + msg);
+		throw new java.io.EOFException(msg);
 	}
 }

@@ -34,46 +34,46 @@ public class DefaultSessionProcessor implements SessionProcessor
 	private SessionProcessorRegistry sessionProcessorRegistry;
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
-	public void setSessionProcessorRegistry (SessionProcessorRegistry sessionProcessorRegistry)
+	public void setSessionProcessorRegistry(SessionProcessorRegistry sessionProcessorRegistry)
 	{
 		this.sessionProcessorRegistry = sessionProcessorRegistry;
 	}
 
-	protected DefaultNeximLogger getLogger ()
+	protected DefaultNeximLogger getLogger()
 	{
 		return defaultNeximLogger;
 	}
 
-	public void process (final IMSession session) throws Exception
+	public void process(final IMSession session) throws Exception
 	{
-		process (session, null);
+		process(session, null);
 	}
 
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
-		final XmlPullParser xpp = session.getXmlPullParser ();
-		final String currentEventName = getEventName (session, xpp.getNamespace (), xpp.getName ());
+		final XmlPullParser xpp = session.getXmlPullParser();
+		final String currentEventName = getEventName(session, xpp.getNamespace(), xpp.getName());
 
-		for (int eventType = xpp.next (); eventType != XmlPullParser.END_DOCUMENT; eventType = xpp.next ())
+		for (int eventType = xpp.next(); eventType != XmlPullParser.END_DOCUMENT; eventType = xpp.next())
 		{
 			if (eventType == XmlPullParser.START_TAG)
 			{
-				processStartTag (session, context);
+				processStartTag(session, context);
 			}
 			else if (eventType == XmlPullParser.TEXT)
 			{
-				processText (session, context);
+				processText(session, context);
 			}
 			else if (eventType == XmlPullParser.END_TAG)
 			{
-				if (currentEventName.equals (getEventName (session, xpp.getNamespace (), xpp.getName ())))
+				if (currentEventName.equals(getEventName(session, xpp.getNamespace(), xpp.getName())))
 				{
-					processEndTag (session, context);
+					processEndTag(session, context);
 
 					break;
 				}
@@ -83,22 +83,22 @@ public class DefaultSessionProcessor implements SessionProcessor
 	}
 
 	//-------------------------------------------------------------------------
-	public void processStartTag (final IMSession session, final Object context) throws Exception
+	public void processStartTag(final IMSession session, final Object context) throws Exception
 	{
-		final XmlPullParser xpp = session.getXmlPullParser ();
-		final String eventName = getEventName (session, xpp.getNamespace (), xpp.getName ());
+		final XmlPullParser xpp = session.getXmlPullParser();
+		final String eventName = getEventName(session, xpp.getNamespace(), xpp.getName());
 
-		getLogger ().debug ("[" + session.getId () + "] <" + eventName + ">");
+		getLogger().debug("[" + session.getId() + "] <" + eventName + ">");
 
 		SessionProcessor processor = null;
 
 		try
 		{
-			processor = (SessionProcessor) sessionProcessorRegistry.getProcessor (eventName);
+			processor = (SessionProcessor) sessionProcessorRegistry.getProcessor(eventName);
 		}
 		catch (Exception e)
 		{
-			getLogger ().debug (e.getMessage (), e);
+			getLogger().debug(e.getMessage(), e);
 		}
 
 		if (processor != null)
@@ -106,7 +106,7 @@ public class DefaultSessionProcessor implements SessionProcessor
 			//getLogger().debug( "Got processor "+processor+" for " +roleName);
 			try
 			{
-				processor.process (session, context);
+				processor.process(session, context);
 			}
 			finally
 			{
@@ -115,7 +115,7 @@ public class DefaultSessionProcessor implements SessionProcessor
 		}
 		else
 		{
-			getLogger ().warn ("No processor for event: " + eventName + " in " + getClass ().getName ());
+			getLogger().warn("No processor for event: " + eventName + " in " + getClass().getName());
 			/*
 			 * TODO: Service unavailable
 			                        <iq from='capulet.lit' to='juliet@capulet.lit/balcony' id='c2s1' type='error'>
@@ -125,7 +125,7 @@ public class DefaultSessionProcessor implements SessionProcessor
 			                          </error>
 			                        </iq>
 			 */
-			skip (xpp);
+			skip(xpp);
 		}
 	}
 
@@ -134,136 +134,136 @@ public class DefaultSessionProcessor implements SessionProcessor
 	 */
 
 	//-------------------------------------------------------------------------
-	public void processEndTag (final IMSession session, final Object context) throws Exception
+	public void processEndTag(final IMSession session, final Object context) throws Exception
 	{
-		final XmlPullParser xpp = session.getXmlPullParser ();
-		final String eventName = getEventName (session, xpp.getNamespace (), xpp.getName ());
+		final XmlPullParser xpp = session.getXmlPullParser();
+		final String eventName = getEventName(session, xpp.getNamespace(), xpp.getName());
 
-		getLogger ().debug ("[" + session.getId () + "] </" + eventName + ">");
+		getLogger().debug("[" + session.getId() + "] </" + eventName + ">");
 	}
 
 	//-------------------------------------------------------------------------
 	/**
 	 * @param context
 	 */
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		final String text = session.getXmlPullParser ().getText ().trim ();
+		final String text = session.getXmlPullParser().getText().trim();
 
-		if (text.length () > 0)
+		if (text.length() > 0)
 		{
-			getLogger ().debug ("[ " + text + " ]");
+			getLogger().debug("[ " + text + " ]");
 		}
 	}
 
 	//-------------------------------------------------------------------------
-	protected void skip (final XmlPullParser xpp) throws XmlPullParserException, java.io.IOException
+	protected void skip(final XmlPullParser xpp) throws XmlPullParserException, java.io.IOException
 	{
-		int eventType = xpp.getEventType ();
+		int eventType = xpp.getEventType();
 
 		if (eventType == XmlPullParser.START_TAG)
 		{
 			while (eventType != XmlPullParser.END_TAG)
 			{
-				eventType = xpp.next ();
+				eventType = xpp.next();
 
 				if (eventType == XmlPullParser.START_TAG)
 				{
-					skip (xpp);
+					skip(xpp);
 				}
 			}
 		}
 	}
 
 	//-------------------------------------------------------------------------
-	protected StringBuffer serialize (final XmlPullParser xpp) throws XmlPullParserException, java.io.IOException
+	protected StringBuffer serialize(final XmlPullParser xpp) throws XmlPullParserException, java.io.IOException
 	{
 		StringBuffer sb = null;
 
-		int eventType = xpp.getEventType ();
+		int eventType = xpp.getEventType();
 
 		if (eventType == XmlPullParser.START_TAG)
 		{
-			sb = getStartElementAsStringBuffer (xpp);
+			sb = getStartElementAsStringBuffer(xpp);
 
-			String elementName = xpp.getName ();
+			String elementName = xpp.getName();
 
 			while (eventType != XmlPullParser.END_TAG)
 			{
-				eventType = xpp.next ();
+				eventType = xpp.next();
 
 				if (eventType == XmlPullParser.START_TAG)
 				{
-					sb.append (serialize (xpp));
+					sb.append(serialize(xpp));
 				}
 				else if (eventType == XmlPullParser.TEXT)
 				{
-					sb.append (xpp.getText ());
+					sb.append(xpp.getText());
 				}
 			} // while
 
-			sb.append ("</").append (elementName).append (">");
+			sb.append("</").append(elementName).append(">");
 		}
 
 		return sb;
 	}
 
 	//-------------------------------------------------------------------------
-	protected String asString (final XmlPullParser xpp) throws XmlPullParserException
+	protected String asString(final XmlPullParser xpp) throws XmlPullParserException
 	{
 		String s = null;
-		int eventType = xpp.getEventType ();
+		int eventType = xpp.getEventType();
 
 		if (eventType == XmlPullParser.START_TAG)
 		{
-			s = getStartElementAsStringBuffer (xpp).toString ();
+			s = getStartElementAsStringBuffer(xpp).toString();
 		}
 
 		if (eventType == XmlPullParser.TEXT)
 		{
-			s = xpp.getText ();
+			s = xpp.getText();
 		}
 
 		if (eventType == XmlPullParser.END_TAG)
 		{
-			s = "</" + xpp.getName () + ">";
+			s = "</" + xpp.getName() + ">";
 		}
 
 		return s;
 	}
 
 	//-------------------------------------------------------------------------
-	private StringBuffer getStartElementAsStringBuffer (final XmlPullParser xpp)
+	private StringBuffer getStartElementAsStringBuffer(final XmlPullParser xpp)
 	{
-		StringBuffer sb = new StringBuffer ();
+		StringBuffer sb = new StringBuffer();
 
-		String elementName = xpp.getName ();
-		String elementNamespace = xpp.getNamespace ();
+		String elementName = xpp.getName();
+		String elementNamespace = xpp.getNamespace();
 
 		// no access to stream and its default namespce
-		sb.append ("<").append (elementName);
+		sb.append("<").append(elementName);
 
-		if (elementNamespace != null && elementNamespace.length () > 0)
+		if (elementNamespace != null && elementNamespace.length() > 0)
 		{
-			sb.append (" xmlns='").append (elementNamespace).append ("'");
+			sb.append(" xmlns='").append(elementNamespace).append("'");
 		}
 
-		for (int i = 0, l = xpp.getAttributeCount (); i < l; i++)
+		for (int i = 0, l = xpp.getAttributeCount(); i < l; i++)
 		{
-			String value = xpp.getAttributeValue (i);
-			String name = xpp.getAttributeName (i);
+			String value = xpp.getAttributeValue(i);
+			String name = xpp.getAttributeName(i);
 
-			sb.append (" ").append (name).append ("='").append (value).append ("'");
+			sb.append(" ").append(name).append("='").append(value).append("'");
 		}
 
-		sb.append (">");
+		sb.append(">");
 
 		return sb;
 	}
 
-	protected String getEventName (final IMSession session, final String currentNamespace, final String name)
+	protected String getEventName(final IMSession session, final String currentNamespace, final String name)
 	{
-		String ns = getNamespace (session, currentNamespace);
+		String ns = getNamespace(session, currentNamespace);
 
 		ns = ns != null ? ns : "";
 
@@ -273,14 +273,14 @@ public class DefaultSessionProcessor implements SessionProcessor
 	/**
 	 * Get namespace, using the Streams namespace if current is null or empty string.
 	 */
-	protected String getNamespace (final IMSession session, String current)
+	protected String getNamespace(final IMSession session, String current)
 	{
 		String ns = current;
 
-		if (current == null || current.length () == 0)
+		if (current == null || current.length() == 0)
 		{
 			// try get the streams namespace
-			ns = session.getNamespace ();
+			ns = session.getNamespace();
 		} // end of if ()
 
 		return ns;

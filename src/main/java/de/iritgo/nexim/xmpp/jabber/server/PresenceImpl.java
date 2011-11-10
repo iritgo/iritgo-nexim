@@ -39,82 +39,82 @@ public class PresenceImpl extends DefaultSessionProcessor implements Presence
 
 	private SubscriptionManager subscriptionManager;
 
-	public void setImPresenceHolder (IMPresenceHolder presenceHolder)
+	public void setImPresenceHolder(IMPresenceHolder presenceHolder)
 	{
 		this.presenceHolder = presenceHolder;
 	}
 
-	public void setSubscriptionManager (SubscriptionManager subscriptionManager)
+	public void setSubscriptionManager(SubscriptionManager subscriptionManager)
 	{
 		this.subscriptionManager = subscriptionManager;
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
-		XmlPullParser xpp = session.getXmlPullParser ();
-		String type = xpp.getAttributeValue ("", "type");
-		String to = xpp.getAttributeValue ("", "to");
-		String from = xpp.getAttributeValue ("", "from");
+		XmlPullParser xpp = session.getXmlPullParser();
+		String type = xpp.getAttributeValue("", "type");
+		String to = xpp.getAttributeValue("", "to");
+		String from = xpp.getAttributeValue("", "from");
 
-		IMPresence presence = new IMPresenceImpl ();
+		IMPresence presence = new IMPresenceImpl();
 
-		presence.setType (type);
-		presence.setTo (to);
-		presence.setFrom (from);
+		presence.setType(type);
+		presence.setTo(to);
+		presence.setFrom(from);
 
-		super.process (session, presence);
+		super.process(session, presence);
 
-		getLogger ().debug ("Got presence (to " + to + "): " + presence);
+		getLogger().debug("Got presence (to " + to + "): " + presence);
 
-		if (to == null || to.length () == 0)
+		if (to == null || to.length() == 0)
 		{
 			// emit presence associated to roster friends?
-			getLogger ().debug ("To is not specified, what should we do?");
+			getLogger().debug("To is not specified, what should we do?");
 		}
 		else
 		{
-			String presenceType = presence.getType ();
+			String presenceType = presence.getType();
 
-			if (IMPresence.TYPE_PROBE.equals (presenceType))
+			if (IMPresence.TYPE_PROBE.equals(presenceType))
 			{
-				getLogger ().info ("Probed from " + from + " to " + to);
+				getLogger().info("Probed from " + from + " to " + to);
 
 				// check availability
-				Collection col = presenceHolder.getPresence (to);
+				Collection col = presenceHolder.getPresence(to);
 
-				if (col != null && ! col.isEmpty ())
+				if (col != null && ! col.isEmpty())
 				{
-					Iterator iter = col.iterator ();
+					Iterator iter = col.iterator();
 
-					while (iter.hasNext ())
+					while (iter.hasNext())
 					{
-						IMPresence localPresence = (IMPresence) iter.next ();
+						IMPresence localPresence = (IMPresence) iter.next();
 
-						localPresence = (IMPresence) localPresence.clone ();
-						localPresence.setTo (from);
-						session.getRouter ().route (session, localPresence);
+						localPresence = (IMPresence) localPresence.clone();
+						localPresence.setTo(from);
+						session.getRouter().route(session, localPresence);
 					}
 				}
 
 				// unavailable
 				else
 				{
-					IMPresence localPresence = new IMPresenceImpl ();
+					IMPresence localPresence = new IMPresenceImpl();
 
-					localPresence.setType (IMPresence.TYPE_UNAVAILABLE);
-					localPresence.setFrom (to);
-					localPresence.setTo (from);
-					session.getRouter ().route (session, localPresence);
+					localPresence.setType(IMPresence.TYPE_UNAVAILABLE);
+					localPresence.setFrom(to);
+					localPresence.setTo(from);
+					session.getRouter().route(session, localPresence);
 				}
 			}
 
 			else
 			{
-				IMPresence localPresence = (IMPresence) presence.clone ();
+				IMPresence localPresence = (IMPresence) presence.clone();
 
-				subscriptionManager.process (session, localPresence);
+				subscriptionManager.process(session, localPresence);
 			}
 		} // if to null
 	}

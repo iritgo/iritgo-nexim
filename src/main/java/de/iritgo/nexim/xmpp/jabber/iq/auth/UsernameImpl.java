@@ -29,8 +29,8 @@ import de.iritgo.nexim.session.IMSession;
 public class UsernameImpl extends DefaultSessionProcessor implements Username
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		((IMClientSession) session).getUser ().setName (session.getXmlPullParser ().getText ().trim ().toLowerCase ());
+		((IMClientSession) session).getUser().setName(session.getXmlPullParser().getText().trim().toLowerCase());
 	}
 }

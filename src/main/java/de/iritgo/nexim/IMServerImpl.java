@@ -50,77 +50,77 @@ public class IMServerImpl implements IMServer
 	private String bindAddress;
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
-	public void setClientNioSocketAcceptor (NioSocketAcceptor nioSocketAcceptor)
+	public void setClientNioSocketAcceptor(NioSocketAcceptor nioSocketAcceptor)
 	{
 		this.clientNioSocketAcceptor = nioSocketAcceptor;
 	}
 
-	public void setServerNioSocketAcceptor (NioSocketAcceptor nioSocketAcceptor)
+	public void setServerNioSocketAcceptor(NioSocketAcceptor nioSocketAcceptor)
 	{
 		this.serverNioSocketAcceptor = nioSocketAcceptor;
 	}
 
-	public void setServerParameters (ServerParameters serverParameters)
+	public void setServerParameters(ServerParameters serverParameters)
 	{
 		this.serverParameters = serverParameters;
 	}
 
-	public void setListenBacklog (int listenBacklog)
+	public void setListenBacklog(int listenBacklog)
 	{
 		this.listenBacklog = listenBacklog;
 	}
 
-	public void setBindAddress (String bindAddress)
+	public void setBindAddress(String bindAddress)
 	{
 		this.bindAddress = bindAddress;
 	}
 
 	// -------------------------------------------------------------------------
-	public void initialize ()
+	public void initialize()
 	{
 		try
 		{
 			@SuppressWarnings("unused")
 			InetAddress bindTo = null;
 
-			if (bindAddress != null && bindAddress.length () > 0)
+			if (bindAddress != null && bindAddress.length() > 0)
 			{
-				bindTo = InetAddress.getByName ("localhost");
+				bindTo = InetAddress.getByName("localhost");
 			}
-			SocketSessionConfig config = clientNioSocketAcceptor.getSessionConfig ();
+			SocketSessionConfig config = clientNioSocketAcceptor.getSessionConfig();
 
-			clientNioSocketAcceptor.getFilterChain ().addLast ("protocolFilter",
-							new ProtocolCodecFilter (new XMLProtocolCodecFactory ()));
-			clientNioSocketAcceptor.getFilterChain ().addLast ("logger", new LoggingFilter ());
+			clientNioSocketAcceptor.getFilterChain().addLast("protocolFilter",
+							new ProtocolCodecFilter(new XMLProtocolCodecFactory()));
+			clientNioSocketAcceptor.getFilterChain().addLast("logger", new LoggingFilter());
 
-			clientNioSocketAcceptor.bind (new InetSocketAddress (serverParameters.getLocalClientPort ()));
+			clientNioSocketAcceptor.bind(new InetSocketAddress(serverParameters.getLocalClientPort()));
 
-			serverNioSocketAcceptor.getFilterChain ().addLast ("protocolFilter",
-							new ProtocolCodecFilter (new XMLProtocolCodecFactory ()));
-			serverNioSocketAcceptor.getFilterChain ().addLast ("logger", new LoggingFilter ());
+			serverNioSocketAcceptor.getFilterChain().addLast("protocolFilter",
+							new ProtocolCodecFilter(new XMLProtocolCodecFactory()));
+			serverNioSocketAcceptor.getFilterChain().addLast("logger", new LoggingFilter());
 
-			serverNioSocketAcceptor.setCloseOnDeactivation (true);
-			serverNioSocketAcceptor.bind (new InetSocketAddress (serverParameters.getLocalServerPort ()));
+			serverNioSocketAcceptor.setCloseOnDeactivation(true);
+			serverNioSocketAcceptor.bind(new InetSocketAddress(serverParameters.getLocalServerPort()));
 		}
 		catch (Exception e)
 		{
-			defaultNeximLogger.error (e.getMessage (), e);
+			defaultNeximLogger.error(e.getMessage(), e);
 		}
 	}
 
 	// -------------------------------------------------------------------------
-	public void dispose ()
+	public void dispose()
 	{
-		defaultNeximLogger.debug ("Disposing Server");
+		defaultNeximLogger.debug("Disposing Server");
 	}
 
-	public void shutdown ()
+	public void shutdown()
 	{
-		serverNioSocketAcceptor.unbind ();
+		serverNioSocketAcceptor.unbind();
 	}
 }

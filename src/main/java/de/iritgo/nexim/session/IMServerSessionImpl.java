@@ -36,29 +36,29 @@ public class IMServerSessionImpl extends AbstractIMSession implements IMServerSe
 
 	private IMServerSession twinSession;
 
-	public void setServerParameters (ServerParameters serverParameters)
+	public void setServerParameters(ServerParameters serverParameters)
 	{
 		this.serverParameters = serverParameters;
 	}
 
 	//-------------------------------------------------------------------------
-	public void initialize ()
+	public void initialize()
 	{
 		dialbackValid = false;
-		disposed = new Boolean (false);
+		disposed = new Boolean(false);
 
 		synchronized (lastSessionId)
 		{
-			sessionId = lastSessionId.longValue ();
-			lastSessionId = new Long (sessionId + 1);
+			sessionId = lastSessionId.longValue();
+			lastSessionId = new Long(sessionId + 1);
 		}
 	}
 
 	//-------------------------------------------------------------------------
 	@SuppressWarnings("deprecation")
-	public void close ()
+	public void close()
 	{
-		defaultNeximLogger.debug ("Closing session id " + getId ());
+		defaultNeximLogger.debug("Closing session id " + getId());
 
 		synchronized (disposed)
 		{
@@ -69,56 +69,56 @@ public class IMServerSessionImpl extends AbstractIMSession implements IMServerSe
 			{
 				if (twinSession != null)
 				{
-					twinSession.setTwinSession (null);
+					twinSession.setTwinSession(null);
 				}
 			}
 			catch (Exception e)
 			{
-				defaultNeximLogger.warn ("Session dispose failed (stage1): " + e.getMessage (), e);
+				defaultNeximLogger.warn("Session dispose failed (stage1): " + e.getMessage(), e);
 			}
 
 			try
 			{
-				writeOutputStream ("</stream:stream>");
+				writeOutputStream("</stream:stream>");
 			}
 			catch (Exception e)
 			{
-				defaultNeximLogger.warn ("Session dispose failed (stage2): " + e.getMessage ());
+				defaultNeximLogger.warn("Session dispose failed (stage2): " + e.getMessage());
 			}
 
 			try
 			{
-				defaultNeximLogger.debug ("Session " + sessionId + " closed");
+				defaultNeximLogger.debug("Session " + sessionId + " closed");
 
-				if (ioSession != null && ioSession.isConnected ())
+				if (ioSession != null && ioSession.isConnected())
 				{
-					ioSession.close ();
+					ioSession.close();
 
 					//TODO: Delete: outputStreamWriter.close ();
 				}
 			}
 			catch (Exception e)
 			{
-				defaultNeximLogger.warn ("Session dispose failed (stage3): " + e.getMessage (), e);
+				defaultNeximLogger.warn("Session dispose failed (stage3): " + e.getMessage(), e);
 			}
 
-			defaultNeximLogger.debug ("Session " + sessionId + " disposed ");
+			defaultNeximLogger.debug("Session " + sessionId + " disposed ");
 		} // synchro
 
-		disposed = new Boolean (true);
+		disposed = new Boolean(true);
 	}
 
 	//-------------------------------------------------------------------------
 	//-------------------------------------------------------------------------
-	public boolean getDialbackValid ()
+	public boolean getDialbackValid()
 	{
 		return dialbackValid;
 	}
 
 	//-------------------------------------------------------------------------
-	public void setDialbackValid (boolean value)
+	public void setDialbackValid(boolean value)
 	{
-		int ctype = getConnectionType ();
+		int ctype = getConnectionType();
 
 		if (ctype == S2S_R2L_CONNECTION || ctype == S2S_L2R_CONNECTION)
 		{
@@ -127,56 +127,56 @@ public class IMServerSessionImpl extends AbstractIMSession implements IMServerSe
 	}
 
 	//-------------------------------------------------------------------------
-	public String getDialbackValue ()
+	public String getDialbackValue()
 	{
 		return dialbackValue;
 	}
 
 	//-------------------------------------------------------------------------
-	public void setDialbackValue (String dialback)
+	public void setDialbackValue(String dialback)
 	{
 		dialbackValue = dialback;
 	}
 
 	//-------------------------------------------------------------------------
-	public IMServerSession getTwinSession ()
+	public IMServerSession getTwinSession()
 	{
 		return twinSession;
 	}
 
 	//-------------------------------------------------------------------------
-	public void setTwinSession (IMServerSession session)
+	public void setTwinSession(IMServerSession session)
 	{
 		twinSession = session;
 	}
 
 	//-------------------------------------------------------------------------
 	//-------------------------------------------------------------------------
-	public final String getRemoteHostname ()
+	public final String getRemoteHostname()
 	{
 		return remoteHostname;
 	}
 
 	//-------------------------------------------------------------------------
-	public final void setRemoteHostname (final String remoteHostname)
+	public final void setRemoteHostname(final String remoteHostname)
 	{
 		this.remoteHostname = remoteHostname;
 	}
 
 	//-------------------------------------------------------------------------
-	public int getConnectionType ()
+	public int getConnectionType()
 	{
 		@SuppressWarnings("unused")
 		int type = UNKNOWN_CONNECTION;
 
 		if (ioSession != null)
 		{
-			if (ioSession.getLocalAddress ().equals (serverParameters.getLocalServerPort ())
-							|| ioSession.getLocalAddress ().equals (serverParameters.getLocalSSLServerPort ()))
+			if (ioSession.getLocalAddress().equals(serverParameters.getLocalServerPort())
+							|| ioSession.getLocalAddress().equals(serverParameters.getLocalSSLServerPort()))
 			{
 				type = S2S_R2L_CONNECTION;
 			}
-			else if (ioSession.getLocalAddress ().equals (serverParameters.getRemoteServerPort ()))
+			else if (ioSession.getLocalAddress().equals(serverParameters.getRemoteServerPort()))
 			{
 				type = S2S_L2R_CONNECTION;
 			}

@@ -39,7 +39,7 @@ public class InputStreamDebugger extends InputStream
 	@SuppressWarnings("unused")
 	private DefaultNeximLogger defaultNeximLogger;
 
-	public InputStreamDebugger (InputStream is, DefaultNeximLogger logger, long id)
+	public InputStreamDebugger(InputStream is, DefaultNeximLogger logger, long id)
 	{
 		this.is = is;
 		this.logger = logger;
@@ -47,80 +47,80 @@ public class InputStreamDebugger extends InputStream
 	}
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
 	@Override
-	public int available () throws IOException
+	public int available() throws IOException
 	{
-		return is.available ();
+		return is.available();
 	}
 
 	@Override
-	public void close () throws IOException
+	public void close() throws IOException
 	{
-		is.close ();
+		is.close();
 	}
 
 	@Override
-	public void mark (int readlimit)
+	public void mark(int readlimit)
 	{
-		is.mark (readlimit);
+		is.mark(readlimit);
 	}
 
 	@Override
-	public boolean markSupported ()
+	public boolean markSupported()
 	{
-		return is.markSupported ();
+		return is.markSupported();
 	}
 
 	@Override
-	public int read () throws IOException
+	public int read() throws IOException
 	{
-		int b = is.read ();
+		int b = is.read();
 
-		logger.info ("Input (" + id + "): " + new Character ((char) b));
+		logger.info("Input (" + id + "): " + new Character((char) b));
 
 		return b;
 	}
 
 	@Override
-	public int read (byte[] b) throws IOException
+	public int read(byte[] b) throws IOException
 	{
-		int i = is.read (b);
+		int i = is.read(b);
 
 		if (i != - 1)
 		{
-			logger.info ("Input (" + id + "): " + new String (b, 0, i));
+			logger.info("Input (" + id + "): " + new String(b, 0, i));
 		}
 
 		return i;
 	}
 
 	@Override
-	public int read (byte[] b, int off, int len) throws IOException
+	public int read(byte[] b, int off, int len) throws IOException
 	{
-		int i = is.read (b, off, len);
+		int i = is.read(b, off, len);
 
 		if (i != - 1)
 		{
-			logger.info ("Input (" + id + "): " + new String (b, off, i));
+			logger.info("Input (" + id + "): " + new String(b, off, i));
 		}
 
 		return i;
 	}
 
 	@Override
-	public void reset () throws IOException
+	public void reset() throws IOException
 	{
-		is.reset ();
+		is.reset();
 	}
 
 	@Override
-	public long skip (long n) throws IOException
+	public long skip(long n) throws IOException
 	{
-		return is.skip (n);
+		return is.skip(n);
 	}
 }

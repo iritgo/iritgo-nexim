@@ -66,121 +66,121 @@ public class S2SConnectorImpl implements S2SConnector, Runnable
 	private volatile String verifyId;
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
-	public void setServerParameters (ServerParameters serverParameters)
+	public void setServerParameters(ServerParameters serverParameters)
 	{
 		this.serverParameters = serverParameters;
 	}
 
-	public void setDeliveryConnectionTimeout (int deliveryConnectionTimeout)
+	public void setDeliveryConnectionTimeout(int deliveryConnectionTimeout)
 	{
 		this.deliveryConnectionTimeout = deliveryConnectionTimeout;
 	}
 
 	//-------------------------------------------------------------------------
-	public void setToHostname (String toHostname)
+	public void setToHostname(String toHostname)
 	{
 		this.toHostName = toHostname;
 	}
 
 	//-------------------------------------------------------------------------
-	public void setRouter (IMRouter router)
+	public void setRouter(IMRouter router)
 	{
 		this.router = router;
 	}
 
 	//-------------------------------------------------------------------------
-	public void setIMConnectionHandler (IMConnectionHandler connectionHandler)
+	public void setIMConnectionHandler(IMConnectionHandler connectionHandler)
 	{
 		this.connectionHandler = connectionHandler;
 	}
 
 	//-------------------------------------------------------------------------
-	public void setSessionsManager (SessionsManager sessionsManager)
+	public void setSessionsManager(SessionsManager sessionsManager)
 	{
 		this.sessionsManager = sessionsManager;
 	}
 
 	//----------------------------------------------------------------------
-	public IMServerSession getSession () throws Exception
+	public IMServerSession getSession() throws Exception
 	{
 		if (session == null)
 		{
-			session = sessionsManager.getNewServerSession ();
-			session.setImRouter (router);
-			session.setRemoteHostname (toHostName);
+			session = sessionsManager.getNewServerSession();
+			session.setImRouter(router);
+			session.setRemoteHostname(toHostName);
 		}
 
 		return session;
 	}
 
 	//----------------------------------------------------------------------
-	public boolean isAlive ()
+	public boolean isAlive()
 	{
 		return isAlive;
 	}
 
 	//----------------------------------------------------------------------
-	public void run ()
+	public void run()
 	{
 		isAlive = true;
 
 		try
 		{
 			//Socket socket = new Socket( toHostname, m_serverParameters.getRemoteServerPort() );
-			Socket socket = new Socket ();
-			InetSocketAddress insa = new InetSocketAddress (toHostName, serverParameters.getRemoteServerPort ());
+			Socket socket = new Socket();
+			InetSocketAddress insa = new InetSocketAddress(toHostName, serverParameters.getRemoteServerPort());
 
-			defaultNeximLogger.debug ("Trying to connect (timeout " + deliveryConnectionTimeout + " ms) to "
-							+ toHostName + ":" + serverParameters.getRemoteServerPort ());
-			socket.connect (insa, deliveryConnectionTimeout);
-			defaultNeximLogger.info ("Connection to " + toHostName + ":" + serverParameters.getRemoteServerPort ()
+			defaultNeximLogger.debug("Trying to connect (timeout " + deliveryConnectionTimeout + " ms) to "
+							+ toHostName + ":" + serverParameters.getRemoteServerPort());
+			socket.connect(insa, deliveryConnectionTimeout);
+			defaultNeximLogger.info("Connection to " + toHostName + ":" + serverParameters.getRemoteServerPort()
 							+ " successfull");
 
 			//socket.setKeepAlive( true );
-			IMServerSession session = getSession ();
+			IMServerSession session = getSession();
 
 			//TODO:!!
 			//			session.setup (socket);
-			final XmlPullParser xpp = session.getXmlPullParser ();
+			final XmlPullParser xpp = session.getXmlPullParser();
 
-			int eventType = xpp.getEventType ();
+			int eventType = xpp.getEventType();
 
 			while (eventType != XmlPullParser.START_DOCUMENT)
 			{
-				eventType = xpp.getEventType ();
+				eventType = xpp.getEventType();
 			}
 
 			// initial connection string
-			String s = "<?xml version='1.0' encoding='" + session.getEncoding () + "' ?>";
+			String s = "<?xml version='1.0' encoding='" + session.getEncoding() + "' ?>";
 
 			s += "<stream:stream xmlns:stream='http://etherx.jabber.org/streams' " + "xmlns='jabber:server' " + "to='"
-							+ toHostName + "' " + "from='" + serverParameters.getHostName () + "' " + "id='"
-							+ session.getId () + "' " + "xmlns:db='jabber:server:dialback'>";
+							+ toHostName + "' " + "from='" + serverParameters.getHostName() + "' " + "id='"
+							+ session.getId() + "' " + "xmlns:db='jabber:server:dialback'>";
 
-			session.writeOutputStream (s);
+			session.writeOutputStream(s);
 
 			ready = true;
 
 			if (sendVerify)
 			{
-				sendVerify (verifyDialbackValue, verifyId);
+				sendVerify(verifyDialbackValue, verifyId);
 			}
 
 			if (sendResult)
 			{
-				sendResult ();
+				sendResult();
 			}
 
-			connectionHandler.process (session);
+			connectionHandler.process(session);
 		}
 		catch (Exception e)
 		{
-			defaultNeximLogger.error ("L2R " + toHostName + " session exception: " + e.getMessage (), e);
+			defaultNeximLogger.error("L2R " + toHostName + " session exception: " + e.getMessage(), e);
 		}
 		finally
 		{
@@ -192,22 +192,22 @@ public class S2SConnectorImpl implements S2SConnector, Runnable
 				return;
 			}
 
-			if (! session.isClosed ())
+			if (! session.isClosed())
 			{
-				defaultNeximLogger.info ("Release session " + session.getId ());
-				sessionsManager.release (session);
+				defaultNeximLogger.info("Release session " + session.getId());
+				sessionsManager.release(session);
 			}
 
 			// unlock all thread
 			synchronized (session)
 			{
-				session.notifyAll ();
+				session.notifyAll();
 			}
 		}
 	}
 
 	//----------------------------------------------------------------------
-	public void sendResult () throws IOException
+	public void sendResult() throws IOException
 	{
 		if (! ready)
 		{
@@ -215,25 +215,25 @@ public class S2SConnectorImpl implements S2SConnector, Runnable
 		}
 		else
 		{
-			if (session.getDialbackValue () == null)
+			if (session.getDialbackValue() == null)
 			{
-				String dialbackValue = Long.toString (session.getId ());
+				String dialbackValue = Long.toString(session.getId());
 
-				session.setDialbackValue (dialbackValue);
+				session.setDialbackValue(dialbackValue);
 
-				String s = "<db:result from='" + serverParameters.getHostName () + "' to='" + toHostName + "'>";
+				String s = "<db:result from='" + serverParameters.getHostName() + "' to='" + toHostName + "'>";
 
 				s += dialbackValue;
 				s += "</db:result>";
-				defaultNeximLogger.info ("Started dialback validation for host " + toHostName + " id "
-								+ session.getId ());
-				session.writeOutputStream (s);
+				defaultNeximLogger
+								.info("Started dialback validation for host " + toHostName + " id " + session.getId());
+				session.writeOutputStream(s);
 			}
 		}
 	}
 
 	//----------------------------------------------------------------------
-	public void sendVerify (String dialbackValue, String id) throws IOException
+	public void sendVerify(String dialbackValue, String id) throws IOException
 	{
 		if (! ready)
 		{
@@ -243,12 +243,12 @@ public class S2SConnectorImpl implements S2SConnector, Runnable
 		}
 		else
 		{
-			String s = "<db:verify from='" + serverParameters.getHostName () + "' to='" + toHostName + "' id='" + id
+			String s = "<db:verify from='" + serverParameters.getHostName() + "' to='" + toHostName + "' id='" + id
 							+ "'>";
 
 			s += dialbackValue;
 			s += "</db:verify>";
-			session.writeOutputStream (s);
+			session.writeOutputStream(s);
 		}
 	}
 } // class

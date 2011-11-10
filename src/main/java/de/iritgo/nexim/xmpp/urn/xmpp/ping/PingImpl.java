@@ -35,50 +35,50 @@ public class PingImpl extends DefaultSessionProcessor implements Ping
 {
 	private ServerParameters serverParameters;
 
-	public void setServerParameters (ServerParameters serverParameters)
+	public void setServerParameters(ServerParameters serverParameters)
 	{
 		this.serverParameters = serverParameters;
 	}
 
 	@Override
-	public void process (IMSession session, Object context) throws Exception
+	public void process(IMSession session, Object context) throws Exception
 	{
 		IMIq imIq = (IMIq) context;
-		String type = imIq.getType ();
+		String type = imIq.getType();
 
 		// GET
-		if (IMIq.TYPE_GET.equals (type))
+		if (IMIq.TYPE_GET.equals(type))
 		{
-			get (session, imIq);
+			get(session, imIq);
 		}
 	}
 
-	private void get (IMSession session, IMIq imIq) throws IOException, XmlPullParserException
+	private void get(IMSession session, IMIq imIq) throws IOException, XmlPullParserException
 	{
-		final XmlPullParser xpp = session.getXmlPullParser ();
-		final String eventName = xpp.getNamespace () + ':' + xpp.getName ();
+		final XmlPullParser xpp = session.getXmlPullParser();
+		final String eventName = xpp.getNamespace() + ':' + xpp.getName();
 
-		String iqId = imIq.getId ();
+		String iqId = imIq.getId();
 
-		String from = serverParameters.getHostName ();
-		String to = ((IMClientSession) session).getUser ().getJID ();
+		String from = serverParameters.getHostName();
+		String to = ((IMClientSession) session).getUser().getJID();
 
 		IMIq iq = null;
 
 		String data = "<ping xmlns='urn:xmpp:ping'/>";
 
-		getLogger ().debug ("Get " + to + "/" + eventName + " send: " + data);
+		getLogger().debug("Get " + to + "/" + eventName + " send: " + data);
 
 		// local request
-		iq = new IMIq ();
-		iq.setFrom (from);
-		iq.setTo (to);
-		iq.setId (iqId);
-		iq.setType (IMIq.TYPE_RESULT);
-		iq.setStringData (data);
+		iq = new IMIq();
+		iq.setFrom(from);
+		iq.setTo(to);
+		iq.setId(iqId);
+		iq.setType(IMIq.TYPE_RESULT);
+		iq.setStringData(data);
 
-		session.getRouter ().route (session, iq);
+		session.getRouter().route(session, iq);
 
-		skip (xpp);
+		skip(xpp);
 	}
 }

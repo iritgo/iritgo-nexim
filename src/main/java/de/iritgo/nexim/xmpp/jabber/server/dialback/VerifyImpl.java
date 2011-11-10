@@ -33,37 +33,37 @@ public class VerifyImpl extends DefaultSessionProcessor implements Verify
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
 		IMServerSession serverSession = (IMServerSession) session;
 
-		XmlPullParser xpp = session.getXmlPullParser ();
-		String type = xpp.getAttributeValue ("", "type");
-		String from = xpp.getAttributeValue ("", "from");
-		String to = xpp.getAttributeValue ("", "to");
-		String id = xpp.getAttributeValue ("", "id");
+		XmlPullParser xpp = session.getXmlPullParser();
+		String type = xpp.getAttributeValue("", "type");
+		String from = xpp.getAttributeValue("", "from");
+		String to = xpp.getAttributeValue("", "to");
+		String id = xpp.getAttributeValue("", "id");
 
-		super.process (session, context);
+		super.process(session, context);
 
-		getLogger ().debug ("Got m_dialbackValue " + dialbackValue);
+		getLogger().debug("Got m_dialbackValue " + dialbackValue);
 
-		if ("valid".equals (type))
+		if ("valid".equals(type))
 		{
 			String s = "<db:result to='" + from + "' from='" + to + "' type='valid' id='" + id + "'/>";
 
-			getLogger ().debug ("Verfication valid " + s);
-			serverSession.getTwinSession ().writeOutputStream (s);
+			getLogger().debug("Verfication valid " + s);
+			serverSession.getTwinSession().writeOutputStream(s);
 
 			//session.getRouter().validateRemoteHost( session, from, m_dialbackValue );
 		}
 		else if (dialbackValue != null)
 		{
-			IMServerSession local2remoteSession = session.getRouter ().getS2SConnectorManager ()
-							.getCurrentRemoteSession (from);
+			IMServerSession local2remoteSession = session.getRouter().getS2SConnectorManager().getCurrentRemoteSession(
+							from);
 
-			if (local2remoteSession != null && dialbackValue.equals (local2remoteSession.getDialbackValue ()))
+			if (local2remoteSession != null && dialbackValue.equals(local2remoteSession.getDialbackValue()))
 			{
-				getLogger ().debug (
+				getLogger().debug(
 								"Verification valid from " + from + " to " + to + " id " + id + " dialbackId "
 												+ dialbackValue);
 
@@ -71,28 +71,28 @@ public class VerifyImpl extends DefaultSessionProcessor implements Verify
 				String s = "<db:verify from='" + to + "' " + "to='" + from + "' " + "id='" + id + "' "
 								+ "type='valid'/>";
 
-				session.writeOutputStream (s);
+				session.writeOutputStream(s);
 			}
 			else
 			{
 				// should send unvalid?
 				if (local2remoteSession == null)
 				{
-					getLogger ().warn ("Abnormal: local2remoteSession null");
+					getLogger().warn("Abnormal: local2remoteSession null");
 				}
 				else
 				{
-					getLogger ().warn (
+					getLogger().warn(
 									"Unvalid Dialback " + dialbackValue + " expected "
-													+ local2remoteSession.getDialbackValue ());
+													+ local2remoteSession.getDialbackValue());
 				}
 			}
 		}
 	}
 
 	//-------------------------------------------------------------------------
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		dialbackValue = session.getXmlPullParser ().getText ().trim ();
+		dialbackValue = session.getXmlPullParser().getText().trim();
 	}
 }

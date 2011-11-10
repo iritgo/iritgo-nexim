@@ -27,14 +27,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class App
 {
-	public void launch () throws Exception
+	public void launch() throws Exception
 	{
 	}
 
-	public static void main (String[] args)
+	public static void main(String[] args)
 	{
-		ApplicationContext appContext = new ClassPathXmlApplicationContext ("nexim.spring.xml");
+		ApplicationContext appContext = new ClassPathXmlApplicationContext("nexim.spring.xml");
 		@SuppressWarnings("unused")
-		IMServer imServer = (IMServer) appContext.getBean ("de.iritgo.nexim.IMServer");
+		IMServer imServer = (IMServer) appContext.getBean("de.iritgo.nexim.IMServer");
 	}
 }

@@ -28,11 +28,11 @@ import org.apache.mina.core.session.IoSession;
 
 public interface IMConnectionHandler extends SessionProcessor
 {
-	public void handleEncodingHandshake (IMSession session) throws java.io.IOException, java.net.ProtocolException;
+	public void handleEncodingHandshake(IMSession session) throws java.io.IOException, java.net.ProtocolException;
 
-	public IMSession sessionOpened (IoSession ioSession, boolean clientConnectionMode);
+	public IMSession sessionOpened(IoSession ioSession, boolean clientConnectionMode);
 
-	public void process (String xmlMessage, IMSession session);
+	public void process(String xmlMessage, IMSession session);
 
-	public void setup (IoSession ioSession, IMSession session);
+	public void setup(IoSession ioSession, IMSession session);
 }

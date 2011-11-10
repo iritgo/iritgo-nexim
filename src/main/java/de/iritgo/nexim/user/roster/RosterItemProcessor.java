@@ -23,5 +23,5 @@ package de.iritgo.nexim.user.roster;
 
 public interface RosterItemProcessor
 {
-	public void process (IMRosterItem item) throws Exception;
+	public void process(IMRosterItem item) throws Exception;
 }

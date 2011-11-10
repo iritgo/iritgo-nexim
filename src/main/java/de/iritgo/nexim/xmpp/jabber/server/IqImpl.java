@@ -30,24 +30,24 @@ import org.xmlpull.v1.XmlPullParser;
 public class IqImpl extends DefaultSessionProcessor implements Iq
 {
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
-		XmlPullParser xpp = session.getXmlPullParser ();
+		XmlPullParser xpp = session.getXmlPullParser();
 
-		for (int i = 0, l = xpp.getAttributeCount (); i < l; i++)
+		for (int i = 0, l = xpp.getAttributeCount(); i < l; i++)
 		{
-			getLogger ().debug (
-							"Attribut ns: " + xpp.getAttributeNamespace (i) + " name: " + xpp.getAttributeName (i)
-											+ " value: " + xpp.getAttributeValue (i));
+			getLogger().debug(
+							"Attribut ns: " + xpp.getAttributeNamespace(i) + " name: " + xpp.getAttributeName(i)
+											+ " value: " + xpp.getAttributeValue(i));
 		}
 
-		IMIq iq = new IMIq ();
+		IMIq iq = new IMIq();
 
-		iq.setId (xpp.getAttributeValue ("", "id"));
-		iq.setType (xpp.getAttributeValue ("", "type"));
-		iq.setTo (xpp.getAttributeValue ("", "to"));
-		iq.setFrom (xpp.getAttributeValue ("", "from"));
-		getLogger ().debug ("Got IQ " + iq);
-		super.process (session, iq);
+		iq.setId(xpp.getAttributeValue("", "id"));
+		iq.setType(xpp.getAttributeValue("", "type"));
+		iq.setTo(xpp.getAttributeValue("", "to"));
+		iq.setFrom(xpp.getAttributeValue("", "from"));
+		getLogger().debug("Got IQ " + iq);
+		super.process(session, iq);
 	}
 }

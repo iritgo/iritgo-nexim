@@ -42,45 +42,45 @@ public class RosterDAOImpl implements RosterDAO
 	private DefaultNeximLogger defaultNeximLogger;
 
 	/** Set the default nexim logger implementation */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
-	public void setFilename (String filename)
+	public void setFilename(String filename)
 	{
 		this.filename = filename;
 	}
 
-	public void setEncoding (String encoding)
+	public void setEncoding(String encoding)
 	{
 		this.encoding = encoding;
 	}
 
 	// -------------------------------------------------------------------------
-	public void initialize ()
+	public void initialize()
 	{
-		File storeFile = new File (filename);
+		File storeFile = new File(filename);
 
-		if (! storeFile.exists ())
+		if (! storeFile.exists())
 		{
-			storeFile.getParentFile ().mkdirs ();
+			storeFile.getParentFile().mkdirs();
 		}
 
 		// TODO: StreamStore as service
-		repository = new XStreamStore (storeFile, defaultNeximLogger, encoding);
-		repository.substitute ("de.iritgo.nexim.user.roster.IMRosterItem", "item");
+		repository = new XStreamStore(storeFile, defaultNeximLogger, encoding);
+		repository.substitute("de.iritgo.nexim.user.roster.IMRosterItem", "item");
 		// repository.load ();
 	}
 
 	// --------------------------------------------------------------------------
-	public List<IMRosterItem> getRosterItems (String username)
+	public List<IMRosterItem> getRosterItems(String username)
 	{
 		if (repository == null)
 		{
 			try
 			{
-				initialize ();
+				initialize();
 			}
 			catch (Exception x)
 			{
@@ -91,25 +91,25 @@ public class RosterDAOImpl implements RosterDAO
 
 		try
 		{
-			list = (List) repository.get (username);
+			list = (List) repository.get(username);
 
 			if (list == null)
 			{
-				list = new LinkedList<IMRosterItem> ();
-				setRosterList (username, list);
+				list = new LinkedList<IMRosterItem>();
+				setRosterList(username, list);
 			}
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace ();
+			e.printStackTrace();
 
-			list = new LinkedList ();
-			setRosterList (username, list);
+			list = new LinkedList();
+			setRosterList(username, list);
 		}
 
 		synchronized (list)
 		{
-			return new LinkedList<IMRosterItem> (list);
+			return new LinkedList<IMRosterItem>(list);
 		}
 	}
 
@@ -117,13 +117,13 @@ public class RosterDAOImpl implements RosterDAO
 	 * @see de.iritgo.nexim.user.roster.RosterDAO#addRosterItem(java.lang.String,
 	 *      de.iritgo.nexim.user.roster.IMRosterItem)
 	 */
-	public void addItem (String username, IMRosterItem rosterItem)
+	public void addItem(String username, IMRosterItem rosterItem)
 	{
 		if (repository == null)
 		{
 			try
 			{
-				initialize ();
+				initialize();
 			}
 			catch (Exception x)
 			{
@@ -132,30 +132,30 @@ public class RosterDAOImpl implements RosterDAO
 
 		if (username != null)
 		{
-			List<IMRosterItem> rosterList = (List<IMRosterItem>) repository.get (username);
+			List<IMRosterItem> rosterList = (List<IMRosterItem>) repository.get(username);
 
 			synchronized (rosterList)
 			{
 
 				if (rosterList == null)
 				{
-					rosterList = new LinkedList<IMRosterItem> ();
-					repository.put (username, rosterList);
+					rosterList = new LinkedList<IMRosterItem>();
+					repository.put(username, rosterList);
 				}
 
-				rosterList.add (rosterItem);
+				rosterList.add(rosterItem);
 			}
 			// repository.save ();
 		}
 	}
 
-	public void setRosterList (String username, List<IMRosterItem> rosterList)
+	public void setRosterList(String username, List<IMRosterItem> rosterList)
 	{
 		if (repository == null)
 		{
 			try
 			{
-				initialize ();
+				initialize();
 			}
 			catch (Exception x)
 			{
@@ -164,7 +164,7 @@ public class RosterDAOImpl implements RosterDAO
 
 		if (username != null && rosterList != null)
 		{
-			repository.put (username, rosterList);
+			repository.put(username, rosterList);
 		}
 	}
 
@@ -172,14 +172,14 @@ public class RosterDAOImpl implements RosterDAO
 	 * @see de.iritgo.nexim.user.roster.RosterDAO#removeItem(java.lang.String,
 	 *      java.lang.String)
 	 */
-	public void removeItem (String username, IMRosterItem item)
+	public void removeItem(String username, IMRosterItem item)
 	{
-		defaultNeximLogger.debug ("Removing roster item " + item.getJID ());
+		defaultNeximLogger.debug("Removing roster item " + item.getJID());
 
-		List<IMRosterItem> rosterList = (List<IMRosterItem>) repository.get (username);
+		List<IMRosterItem> rosterList = (List<IMRosterItem>) repository.get(username);
 		synchronized (rosterList)
 		{
-			rosterList.remove (item);
+			rosterList.remove(item);
 		}
 		// repository.save ();
 	}
@@ -188,15 +188,15 @@ public class RosterDAOImpl implements RosterDAO
 	 * @see de.iritgo.nexim.user.roster.RosterDAO#getItem(java.lang.String,
 	 *      java.lang.String)
 	 */
-	public IMRosterItem getItem (String username, String itemJID)
+	public IMRosterItem getItem(String username, String itemJID)
 	{
-		List<IMRosterItem> items = getRosterItems (username);
+		List<IMRosterItem> items = getRosterItems(username);
 
 		synchronized (items)
 		{
 			for (IMRosterItem item : items)
 			{
-				if (item.getJID ().equals (itemJID))
+				if (item.getJID().equals(itemJID))
 				{
 					return item;
 				}

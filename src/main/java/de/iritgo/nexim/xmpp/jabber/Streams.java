@@ -29,5 +29,5 @@ public interface Streams extends SessionProcessor
 	/**
 	 * Get the namespace of the stream.
 	 */
-	public String getNamespace ();
+	public String getNamespace();
 }

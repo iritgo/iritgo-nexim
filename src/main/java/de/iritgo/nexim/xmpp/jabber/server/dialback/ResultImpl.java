@@ -33,50 +33,50 @@ public class ResultImpl extends DefaultSessionProcessor implements Result
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
 		IMServerSession serverSession = (IMServerSession) session;
 
-		XmlPullParser xpp = session.getXmlPullParser ();
+		XmlPullParser xpp = session.getXmlPullParser();
 
 		//String to = xpp.getAttributeValue( "", "to" );
-		String from = xpp.getAttributeValue ("", "from");
-		String type = xpp.getAttributeValue ("", "type");
+		String from = xpp.getAttributeValue("", "from");
+		String type = xpp.getAttributeValue("", "type");
 
-		if (from != null && from.length () > 0)
+		if (from != null && from.length() > 0)
 		{
-			serverSession.setRemoteHostname (from);
+			serverSession.setRemoteHostname(from);
 		}
 
-		super.process (session, context);
+		super.process(session, context);
 
 		//String id = xpp.getAttributeValue( "", "id" );
-		if ("valid".equals (type))
+		if ("valid".equals(type))
 		{
-			getLogger ().debug ("Result valid from " + from);
-			serverSession.setDialbackValid (true);
+			getLogger().debug("Result valid from " + from);
+			serverSession.setDialbackValid(true);
 
 			synchronized (session)
 			{
-				session.notifyAll ();
+				session.notifyAll();
 			}
 		}
 		else if (dialbackValue != null)
 		{
-			getLogger ().debug ("Verify " + from + " dialback " + dialbackValue);
+			getLogger().debug("Verify " + from + " dialback " + dialbackValue);
 
-			if (serverSession.getTwinSession () == null)
+			if (serverSession.getTwinSession() == null)
 			{
-				session.getRouter ().getS2SConnectorManager ().verifyRemoteHost (from, dialbackValue,
-								Long.toString (session.getId ()), serverSession);
+				session.getRouter().getS2SConnectorManager().verifyRemoteHost(from, dialbackValue,
+								Long.toString(session.getId()), serverSession);
 			}
 		}
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		dialbackValue = session.getXmlPullParser ().getText ().trim ();
+		dialbackValue = session.getXmlPullParser().getText().trim();
 	}
 }

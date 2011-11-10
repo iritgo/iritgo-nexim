@@ -39,43 +39,43 @@ public class PrivateDataDAOImpl implements PrivateDataDAO
 	private DefaultNeximLogger defaultNeximLogger;
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
-	public void setFilename (String filename)
+	public void setFilename(String filename)
 	{
 		this.filename = filename;
 	}
 
-	public void setEncoding (String encoding)
+	public void setEncoding(String encoding)
 	{
 		this.encoding = encoding;
 	}
 
-	public void initialize ()
+	public void initialize()
 	{
-		File storeFile = new File (filename);
+		File storeFile = new File(filename);
 
-		if (! storeFile.exists ())
+		if (! storeFile.exists())
 		{
-			storeFile.getParentFile ().mkdirs ();
+			storeFile.getParentFile().mkdirs();
 		}
 
 		//TODO: XStreamStore as Service!!!!
-		repository = new XStreamStore (storeFile, defaultNeximLogger, encoding);
-		repository.load ();
+		repository = new XStreamStore(storeFile, defaultNeximLogger, encoding);
+		repository.load();
 	}
 
 	//--------------------------------------------------------------------------
-	public String getData (String username, String key)
+	public String getData(String username, String key)
 	{
 		if (repository == null)
 		{
 			try
 			{
-				initialize ();
+				initialize();
 			}
 			catch (Exception x)
 			{
@@ -88,24 +88,24 @@ public class PrivateDataDAOImpl implements PrivateDataDAO
 		{
 			String repKey = username + "::" + key;
 
-			data = (String) repository.get (repKey);
-			System.out.println ("Get key: " + repKey + " => " + data);
+			data = (String) repository.get(repKey);
+			System.out.println("Get key: " + repKey + " => " + data);
 		}
 		catch (Exception e)
 		{
-			System.out.println ("Username " + username + " dont have private for element " + key);
+			System.out.println("Username " + username + " dont have private for element " + key);
 		}
 
 		return data;
 	}
 
-	public void setData (String username, String key, String data)
+	public void setData(String username, String key, String data)
 	{
 		if (repository == null)
 		{
 			try
 			{
-				initialize ();
+				initialize();
 			}
 			catch (Exception x)
 			{
@@ -114,7 +114,7 @@ public class PrivateDataDAOImpl implements PrivateDataDAO
 
 		String repKey = username + "::" + key;
 
-		System.out.println ("Put key: " + repKey + " => " + data);
-		repository.put (repKey, data);
+		System.out.println("Put key: " + repKey + " => " + data);
+		repository.put(repKey, data);
 	}
 }

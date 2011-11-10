@@ -46,95 +46,95 @@ public class DeferrableIMPresenceImpl implements IMPresence, Deferrable, java.io
 
 	private Integer errorCode;
 
-	public DeferrableIMPresenceImpl ()
+	public DeferrableIMPresenceImpl()
 	{
 	}
 
-	public DeferrableIMPresenceImpl (IMPresence presence)
+	public DeferrableIMPresenceImpl(IMPresence presence)
 	{
-		this.to = presence.getTo ();
-		this.from = presence.getFrom ();
+		this.to = presence.getTo();
+		this.from = presence.getFrom();
 
-		this.type = presence.getType ();
-		this.show = presence.getShow ();
-		this.priority = presence.getPriority ();
-		this.status = presence.getStatus ();
+		this.type = presence.getType();
+		this.show = presence.getShow();
+		this.priority = presence.getPriority();
+		this.status = presence.getStatus();
 	}
 
-	public final void setTo (String to)
+	public final void setTo(String to)
 	{
 		this.to = to;
 	}
 
-	public final String getTo ()
+	public final String getTo()
 	{
 		return to;
 	}
 
-	public final void setFrom (String from)
+	public final void setFrom(String from)
 	{
 		this.from = from;
 	}
 
-	public final String getFrom ()
+	public final String getFrom()
 	{
 		return from;
 	}
 
-	public final void setType (String type)
+	public final void setType(String type)
 	{
 		this.type = type;
 	}
 
-	public final String getType ()
+	public final String getType()
 	{
 		return type;
 	}
 
-	public final void setShow (String show)
+	public final void setShow(String show)
 	{
 		this.show = show;
 	}
 
-	public final String getShow ()
+	public final String getShow()
 	{
 		return show;
 	}
 
-	public final void setPriority (String priority)
+	public final void setPriority(String priority)
 	{
 		this.priority = priority;
 	}
 
-	public final String getPriority ()
+	public final String getPriority()
 	{
 		return priority;
 	}
 
-	public final void setStatus (String status)
+	public final void setStatus(String status)
 	{
 		this.status = status;
 	}
 
-	public final String getStatus ()
+	public final String getStatus()
 	{
 		return status;
 	}
 
-	public final void setError (String error)
+	public final void setError(String error)
 	{
 		this.error = error;
 	}
 
-	public void setErrorCode (int errorCode)
+	public void setErrorCode(int errorCode)
 	{
-		this.errorCode = new Integer (errorCode);
+		this.errorCode = new Integer(errorCode);
 	}
 
 	@Override
-	public Object clone ()
+	public Object clone()
 	{
-		DeferrableIMPresenceImpl clone = new DeferrableIMPresenceImpl ();
+		DeferrableIMPresenceImpl clone = new DeferrableIMPresenceImpl();
 
 		clone.to = to;
 		clone.from = from;
@@ -149,52 +149,52 @@ public class DeferrableIMPresenceImpl implements IMPresence, Deferrable, java.io
 	}
 
 	@Override
-	public String toString ()
+	public String toString()
 	{
-		XMLToString presence = new XMLToString ("presence");
+		XMLToString presence = new XMLToString("presence");
 
-		presence.addFilledAttribut ("to", to);
-		presence.addFilledAttribut ("from", from);
-		presence.addFilledAttribut ("type", type);
+		presence.addFilledAttribut("to", to);
+		presence.addFilledAttribut("from", from);
+		presence.addFilledAttribut("type", type);
 
 		if (priority != null)
 		{
-			XMLToString priority = new XMLToString ("priority");
+			XMLToString priority = new XMLToString("priority");
 
-			priority.addTextNode (this.priority);
-			presence.addElement (priority);
+			priority.addTextNode(this.priority);
+			presence.addElement(priority);
 		}
 
 		if (show != null)
 		{
-			XMLToString show = new XMLToString ("show");
+			XMLToString show = new XMLToString("show");
 
-			show.addTextNode (this.show);
-			presence.addElement (show);
+			show.addTextNode(this.show);
+			presence.addElement(show);
 		}
 
 		if (status != null)
 		{
-			XMLToString status = new XMLToString ("status");
+			XMLToString status = new XMLToString("status");
 
-			status.addTextNode (this.status);
-			presence.addElement (status);
+			status.addTextNode(this.status);
+			presence.addElement(status);
 		}
 
 		if (error != null)
 		{
-			XMLToString error = new XMLToString ("error");
+			XMLToString error = new XMLToString("error");
 
-			error.addTextNode (this.error);
+			error.addTextNode(this.error);
 
 			if (errorCode != null)
 			{
-				error.addFilledAttribut ("code", errorCode.toString ());
+				error.addFilledAttribut("code", errorCode.toString());
 			}
 
-			presence.addElement (error);
+			presence.addElement(error);
 		}
 
-		return presence.toString ();
+		return presence.toString();
 	}
 }

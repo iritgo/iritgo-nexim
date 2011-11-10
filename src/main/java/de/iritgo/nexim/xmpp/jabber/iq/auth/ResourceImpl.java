@@ -29,8 +29,8 @@ import de.iritgo.nexim.session.IMSession;
 public class ResourceImpl extends DefaultSessionProcessor implements Resource
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		((IMClientSession) session).getUser ().setResource (session.getXmlPullParser ().getText ().trim ());
+		((IMClientSession) session).getUser().setResource(session.getXmlPullParser().getText().trim());
 	}
 }

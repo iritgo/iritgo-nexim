@@ -29,8 +29,8 @@ import de.iritgo.nexim.xmpp.IMMessage;
 public class BodyImpl extends DefaultSessionProcessor implements Body
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		((IMMessage) context).setBody (session.getXmlPullParser ().getText ().trim ());
+		((IMMessage) context).setBody(session.getXmlPullParser().getText().trim());
 	}
 }

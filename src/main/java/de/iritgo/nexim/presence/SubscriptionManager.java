@@ -26,5 +26,5 @@ import de.iritgo.nexim.session.*;
 
 public interface SubscriptionManager
 {
-	public void process (IMSession session, IMPresence presence) throws Exception;
+	public void process(IMSession session, IMPresence presence) throws Exception;
 }

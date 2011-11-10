@@ -34,65 +34,65 @@ public class IMPresenceHolderImpl implements IMPresenceHolder
 	@SuppressWarnings("unused")
 	private DefaultNeximLogger defaultNeximLogger;
 
-	Map<String, Map<String, IMPresence>> presenceMap = new HashMap<String, Map<String, IMPresence>> ();
+	Map<String, Map<String, IMPresence>> presenceMap = new HashMap<String, Map<String, IMPresence>>();
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
-	public void setPresence (String jid, IMPresence presence)
+	public void setPresence(String jid, IMPresence presence)
 	{
 		synchronized (presenceMap)
 		{
-			String name = JIDParser.getName (jid);
-			Map<String, IMPresence> map = presenceMap.get (name);
+			String name = JIDParser.getName(jid);
+			Map<String, IMPresence> map = presenceMap.get(name);
 
 			if (map == null)
 			{
-				map = new HashMap<String, IMPresence> ();
+				map = new HashMap<String, IMPresence>();
 			}
 
-			map.put (jid, presence);
-			presenceMap.put (name, map);
+			map.put(jid, presence);
+			presenceMap.put(name, map);
 		}
 	}
 
-	public Collection<IMPresence> getPresence (String jid)
+	public Collection<IMPresence> getPresence(String jid)
 	{
 		Collection<IMPresence> col = null;
 
 		synchronized (presenceMap)
 		{
-			String name = JIDParser.getName (jid);
-			Map<String, IMPresence> map = presenceMap.get (name);
+			String name = JIDParser.getName(jid);
+			Map<String, IMPresence> map = presenceMap.get(name);
 
 			if (map != null)
 			{
-				col = map.values ();
+				col = map.values();
 			}
 		}
 
 		return col;
 	}
 
-	public IMPresence removePresence (String jid)
+	public IMPresence removePresence(String jid)
 	{
 		IMPresence presence = null;
 
 		synchronized (presenceMap)
 		{
-			String name = JIDParser.getName (jid);
-			Map<String, IMPresence> map = presenceMap.get (name);
+			String name = JIDParser.getName(jid);
+			Map<String, IMPresence> map = presenceMap.get(name);
 
 			if (map != null)
 			{
-				presence = map.remove (jid);
+				presence = map.remove(jid);
 
-				if (map.isEmpty ())
+				if (map.isEmpty())
 				{
-					presenceMap.remove (map);
+					presenceMap.remove(map);
 				}
 			}
 		}

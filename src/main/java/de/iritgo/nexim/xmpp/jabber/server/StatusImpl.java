@@ -29,8 +29,8 @@ import de.iritgo.nexim.session.IMSession;
 public class StatusImpl extends DefaultSessionProcessor implements Status
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		((IMPresence) context).setStatus (session.getXmlPullParser ().getText ().trim ());
+		((IMPresence) context).setStatus(session.getXmlPullParser().getText().trim());
 	}
 }

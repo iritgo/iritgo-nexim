@@ -26,7 +26,7 @@ import java.util.Locale;
 
 public interface XMPPFeatureDescriptor
 {
-	public String getFeatureDesription (Locale locale);
+	public String getFeatureDesription(Locale locale);
 
-	public String getFeatureTag ();
+	public String getFeatureTag();
 }

@@ -33,62 +33,62 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 {
 	private PrivateDataManager privateDataManager;
 
-	public void setPrivateDataManager (PrivateDataManager privateDataManager)
+	public void setPrivateDataManager(PrivateDataManager privateDataManager)
 	{
 		this.privateDataManager = privateDataManager;
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
 		IMClientSession clientSession = (IMClientSession) session;
-		String type = ((IMIq) context).getType ();
+		String type = ((IMIq) context).getType();
 
 		// GET
-		if (IMIq.TYPE_GET.equals (type))
+		if (IMIq.TYPE_GET.equals(type))
 		{
-			get (clientSession, context);
+			get(clientSession, context);
 		}
-		else if (IMIq.TYPE_SET.equals (type))
+		else if (IMIq.TYPE_SET.equals(type))
 		{
-			set (clientSession, context);
+			set(clientSession, context);
 		}
 	}
 
 	//-------------------------------------------------------------------------
-	private void get (final IMClientSession session, Object context) throws Exception
+	private void get(final IMClientSession session, Object context) throws Exception
 	{
-		final XmlPullParser xpp = session.getXmlPullParser ();
+		final XmlPullParser xpp = session.getXmlPullParser();
 
 		//final String privateName = xpp.getNamespace()+':'+xpp.getName();
-		String iqId = ((IMIq) context).getId ();
+		String iqId = ((IMIq) context).getId();
 
-		xpp.next ();
+		xpp.next();
 
-		String privateKey = xpp.getNamespace () + ':' + xpp.getName ();
-		String data = privateDataManager.getData (session.getUser ().getName (), privateKey);
+		String privateKey = xpp.getNamespace() + ':' + xpp.getName();
+		String data = privateDataManager.getData(session.getUser().getName(), privateKey);
 
 		if (data == null)
 		{
-			data = "<" + xpp.getName () + " xmlns='" + xpp.getNamespace () + "'/>";
+			data = "<" + xpp.getName() + " xmlns='" + xpp.getNamespace() + "'/>";
 		}
 
-		getLogger ().debug ("Got data (" + privateKey + "): " + data);
+		getLogger().debug("Got data (" + privateKey + "): " + data);
 
 		String s = "<iq type='result'";
 
-		s += " from='" + session.getUser ().getJIDAndRessource () + "'";
-		s += " to='" + session.getUser ().getJIDAndRessource () + "'";
+		s += " from='" + session.getUser().getJIDAndRessource() + "'";
+		s += " to='" + session.getUser().getJIDAndRessource() + "'";
 		s += " id='" + iqId + "'>";
 		s += "<query xmlns='jabber:iq:private'>";
 		s += data;
 		s += "</query>";
 		s += "</iq>";
 
-		session.writeOutputStream (s);
+		session.writeOutputStream(s);
 
-		skip (xpp);
+		skip(xpp);
 
 		/*
 		 while( !( eventType == XmlPullParser.END_TAG
@@ -99,28 +99,28 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 	}
 
 	//-------------------------------------------------------------------------
-	private void set (final IMClientSession session, final Object context) throws Exception
+	private void set(final IMClientSession session, final Object context) throws Exception
 	{
-		final XmlPullParser xpp = session.getXmlPullParser ();
+		final XmlPullParser xpp = session.getXmlPullParser();
 
 		//int eventType = xpp.next();
-		String privateKey = xpp.getNamespace () + ':' + xpp.getName ();
+		String privateKey = xpp.getNamespace() + ':' + xpp.getName();
 
-		String data = serialize (xpp).toString ();
+		String data = serialize(xpp).toString();
 
-		getLogger ().debug ("Got private key " + privateKey + " => data: " + data);
+		getLogger().debug("Got private key " + privateKey + " => data: " + data);
 
-		if (data != null && data.length () > 0)
+		if (data != null && data.length() > 0)
 		{
-			privateDataManager.setData (session.getUser ().getName (), privateKey, data);
+			privateDataManager.setData(session.getUser().getName(), privateKey, data);
 		}
 
-		String iqId = ((IMIq) context).getId ();
+		String iqId = ((IMIq) context).getId();
 
 		String s = "<iq type='result'";
 
-		s += " from='" + session.getUser ().getJIDAndRessource () + "'";
-		s += " to='" + session.getUser ().getJIDAndRessource () + "'";
+		s += " from='" + session.getUser().getJIDAndRessource() + "'";
+		s += " to='" + session.getUser().getJIDAndRessource() + "'";
 		s += " id='" + iqId + "'/>";
 	}
 }

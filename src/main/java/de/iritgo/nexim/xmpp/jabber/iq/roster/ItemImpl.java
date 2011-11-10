@@ -30,15 +30,15 @@ import org.xmlpull.v1.XmlPullParser;
 public class ItemImpl extends DefaultSessionProcessor implements Item
 {
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
-		XmlPullParser xpp = session.getXmlPullParser ();
+		XmlPullParser xpp = session.getXmlPullParser();
 		IMRosterItem rosterItem = (IMRosterItem) context;
 
-		rosterItem.setName (xpp.getAttributeValue ("", "name"));
-		rosterItem.setJID (xpp.getAttributeValue ("", "jid"));
-		rosterItem.setSubscription (xpp.getAttributeValue ("", "subscription"));
-		rosterItem.setAsk (xpp.getAttributeValue ("", "ask"));
-		super.process (session, context);
+		rosterItem.setName(xpp.getAttributeValue("", "name"));
+		rosterItem.setJID(xpp.getAttributeValue("", "jid"));
+		rosterItem.setSubscription(xpp.getAttributeValue("", "subscription"));
+		rosterItem.setAsk(xpp.getAttributeValue("", "ask"));
+		super.process(session, context);
 	}
 }

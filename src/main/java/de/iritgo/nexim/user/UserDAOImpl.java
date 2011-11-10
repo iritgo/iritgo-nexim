@@ -65,7 +65,7 @@ public class UserDAOImpl implements UserDAO
 	 *
 	 * @param defaultNeximLogger The logger to set
 	 */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
@@ -73,7 +73,7 @@ public class UserDAOImpl implements UserDAO
 	/**
 	 * @param filename
 	 */
-	public void setFilename (String filename)
+	public void setFilename(String filename)
 	{
 		this.filename = filename;
 	}
@@ -81,7 +81,7 @@ public class UserDAOImpl implements UserDAO
 	/**
 	 * @param regexpSearch
 	 */
-	public void setRegexpSearch (boolean regexpSearch)
+	public void setRegexpSearch(boolean regexpSearch)
 	{
 		this.regexpSearch = regexpSearch;
 	}
@@ -89,35 +89,35 @@ public class UserDAOImpl implements UserDAO
 	/**
 	 *
 	 */
-	public void initialize ()
+	public void initialize()
 	{
-		storeFile = new File (filename);
-		defaultNeximLogger.info ("Using user database file: " + storeFile);
+		storeFile = new File(filename);
+		defaultNeximLogger.info("Using user database file: " + storeFile);
 
-		if (! storeFile.exists ())
+		if (! storeFile.exists())
 		{
-			storeFile.getParentFile ().mkdirs ();
+			storeFile.getParentFile().mkdirs();
 		}
 
-		xstream = new XStream (new DomDriver ());
-		xstream.alias ("user", User.class);
-		users = loadMap (storeFile);
+		xstream = new XStream(new DomDriver());
+		xstream.alias("user", User.class);
+		users = loadMap(storeFile);
 	}
 
 	/**
 	 * @see de.iritgo.nexim.user.UserDAO#getUser(java.lang.String)
 	 */
-	public User getUser (String username)
+	public User getUser(String username)
 	{
 		if (users == null)
 		{
 			try
 			{
-				initialize ();
+				initialize();
 			}
 			catch (Exception x)
 			{
-				x.printStackTrace ();
+				x.printStackTrace();
 			}
 		}
 
@@ -125,26 +125,26 @@ public class UserDAOImpl implements UserDAO
 
 		try
 		{
-			if (username != null && username.length () > 0)
+			if (username != null && username.length() > 0)
 			{
 				synchronized (users)
 				{
-					if (users.containsKey (username))
+					if (users.containsKey(username))
 					{
-						user = (User) users.get (username);
+						user = (User) users.get(username);
 					}
 				}
 			}
 		}
 		catch (Exception x)
 		{
-			defaultNeximLogger.error (x.getMessage (), x);
+			defaultNeximLogger.error(x.getMessage(), x);
 			user = null;
 		}
 
 		if (user == null)
 		{
-			defaultNeximLogger.warn ("User " + username + " not found");
+			defaultNeximLogger.warn("User " + username + " not found");
 		}
 
 		return user;
@@ -153,37 +153,37 @@ public class UserDAOImpl implements UserDAO
 	/**
 	 * @see de.iritgo.nexim.user.UserDAO#getUsers(java.lang.String)
 	 */
-	public List<User> getUsers (String searchPattern)
+	public List<User> getUsers(String searchPattern)
 	{
-		List<User> list = new ArrayList<User> ();
+		List<User> list = new ArrayList<User>();
 
 		if (! regexpSearch)
 		{
-			searchPattern = searchPattern.replaceAll ("\\*", ".*");
+			searchPattern = searchPattern.replaceAll("\\*", ".*");
 		}
 
 		try
 		{
 			synchronized (users)
 			{
-				Iterator<User> iter = users.values ().iterator ();
+				Iterator<User> iter = users.values().iterator();
 
-				while (iter.hasNext ())
+				while (iter.hasNext())
 				{
-					String name = iter.next ().toString ();
+					String name = iter.next().toString();
 
-					if (name.matches (searchPattern))
+					if (name.matches(searchPattern))
 					{
-						User user = (User) users.get (name);
+						User user = (User) users.get(name);
 
-						list.add (user);
+						list.add(user);
 					}
 				}
 			}
 		}
 		catch (Exception x)
 		{
-			defaultNeximLogger.error (x.getMessage (), x);
+			defaultNeximLogger.error(x.getMessage(), x);
 		}
 
 		return list;
@@ -192,21 +192,21 @@ public class UserDAOImpl implements UserDAO
 	/**
 	 * @see de.iritgo.nexim.user.UserDAO#removeUser(java.lang.String)
 	 */
-	public User removeUser (String username)
+	public User removeUser(String username)
 	{
 		User user = null;
 
 		synchronized (users)
 		{
-			user = (User) users.remove (username);
+			user = (User) users.remove(username);
 
 			if (user != null)
 			{
-				saveMap (storeFile, users);
+				saveMap(storeFile, users);
 			}
 			else
 			{
-				defaultNeximLogger.warn ("User " + username + " not found");
+				defaultNeximLogger.warn("User " + username + " not found");
 			}
 		}
 
@@ -216,40 +216,40 @@ public class UserDAOImpl implements UserDAO
 	/**
 	 * @see de.iritgo.nexim.user.UserDAO#addUser(de.iritgo.nexim.user.User)
 	 */
-	public void addUser (User newUser)
+	public void addUser(User newUser)
 	{
-		User user = new User ();
+		User user = new User();
 
 		// TODO: The lowercase things!
-		user.setName (newUser.getName ().toLowerCase ());
-		user.setPassword (newUser.getPassword ());
+		user.setName(newUser.getName().toLowerCase());
+		user.setPassword(newUser.getPassword());
 
-		defaultNeximLogger.info ("Setting account in repository " + user);
+		defaultNeximLogger.info("Setting account in repository " + user);
 
 		synchronized (users)
 		{
-			users.put (user.getName (), user);
-			saveMap (storeFile, users);
+			users.put(user.getName(), user);
+			saveMap(storeFile, users);
 		}
 	}
 
 	/**
 	 * @return
 	 */
-	public List<User> getUsers ()
+	public List<User> getUsers()
 	{
-		List<User> list = new ArrayList<User> ();
+		List<User> list = new ArrayList<User>();
 
 		synchronized (users)
 		{
-			Iterator<User> iter = users.values ().iterator ();
+			Iterator<User> iter = users.values().iterator();
 
-			while (iter.hasNext ())
+			while (iter.hasNext())
 			{
-				User o = (User) iter.next ();
+				User o = (User) iter.next();
 
-				defaultNeximLogger.debug ("Item " + o + " account " + getUser (o.toString ()));
-				list.add (o);
+				defaultNeximLogger.debug("Item " + o + " account " + getUser(o.toString()));
+				list.add(o);
 			}
 		}
 
@@ -260,19 +260,19 @@ public class UserDAOImpl implements UserDAO
 	 * @param file
 	 * @param map
 	 */
-	private void saveMap (File file, Map<String, User> map)
+	private void saveMap(File file, Map<String, User> map)
 	{
-		String xstreamData = xstream.toXML (map);
+		String xstreamData = xstream.toXML(map);
 		FileOutputStream fos = null;
 
 		try
 		{
-			fos = new FileOutputStream (file);
-			fos.write (xstreamData.getBytes ());
+			fos = new FileOutputStream(file);
+			fos.write(xstreamData.getBytes());
 		}
 		catch (IOException e)
 		{
-			defaultNeximLogger.error (e.getMessage (), e);
+			defaultNeximLogger.error(e.getMessage(), e);
 		}
 		finally
 		{
@@ -280,11 +280,11 @@ public class UserDAOImpl implements UserDAO
 			{
 				try
 				{
-					fos.close ();
+					fos.close();
 				}
 				catch (IOException e)
 				{
-					defaultNeximLogger.error (e.getMessage ());
+					defaultNeximLogger.error(e.getMessage());
 				}
 			}
 		}
@@ -294,28 +294,28 @@ public class UserDAOImpl implements UserDAO
 	 * @param file
 	 * @return
 	 */
-	private Map<String, User> loadMap (File file)
+	private Map<String, User> loadMap(File file)
 	{
 		Map<String, User> map = null;
 
-		if (file.exists ())
+		if (file.exists())
 		{
 			try
 			{
-				FileInputStream fis = new FileInputStream (file);
-				String xmlData = IOUtils.toString (fis);
+				FileInputStream fis = new FileInputStream(file);
+				String xmlData = IOUtils.toString(fis);
 
-				fis.close ();
-				map = (Map<String, User>) xstream.fromXML (xmlData);
+				fis.close();
+				map = (Map<String, User>) xstream.fromXML(xmlData);
 			}
 			catch (Exception e)
 			{
-				defaultNeximLogger.error (e.getMessage (), e);
+				defaultNeximLogger.error(e.getMessage(), e);
 			}
 		}
 		else
 		{
-			map = new HashMap<String, User> ();
+			map = new HashMap<String, User>();
 		}
 
 		return map;
@@ -324,7 +324,7 @@ public class UserDAOImpl implements UserDAO
 	/**
 	 * @see de.iritgo.nexim.user.UserDAO#isValidPassword(de.iritgo.nexim.user.User, de.iritgo.nexim.user.UserManager.AuthenticationType, java.lang.String, java.lang.String)
 	 */
-	public boolean isValidPassword (User user, UserManager.AuthenticationType type, String password, String sessionId)
+	public boolean isValidPassword(User user, UserManager.AuthenticationType type, String password, String sessionId)
 	{
 		// All passwords are correct!
 		return true;

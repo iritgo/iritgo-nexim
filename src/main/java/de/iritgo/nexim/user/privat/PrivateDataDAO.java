@@ -23,7 +23,7 @@ package de.iritgo.nexim.user.privat;
 
 public interface PrivateDataDAO
 {
-	public void setData (String username, String key, String data);
+	public void setData(String username, String key, String data);
 
-	public String getData (String username, String key);
+	public String getData(String username, String key);
 }

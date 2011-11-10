@@ -29,10 +29,10 @@ import de.iritgo.nexim.xmpp.IMMessage;
 public class SubjectImpl extends DefaultSessionProcessor implements Subject
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
 		//Why trim?
 		//((IMMessage)context).setSubject( session.getXmlPullParser().getText().trim() );
-		((IMMessage) context).setSubject (session.getXmlPullParser ().getText ());
+		((IMMessage) context).setSubject(session.getXmlPullParser().getText());
 	}
 }

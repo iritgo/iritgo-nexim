@@ -39,10 +39,10 @@ public class XMLResponseEncoder implements MessageEncoder
 
 	static
 	{
-		Set types = new HashSet ();
+		Set types = new HashSet();
 
-		types.add (String.class);
-		TYPES = Collections.unmodifiableSet (types);
+		types.add(String.class);
+		TYPES = Collections.unmodifiableSet(types);
 	}
 
 	private static final byte[] CRLF = new byte[]
@@ -50,35 +50,35 @@ public class XMLResponseEncoder implements MessageEncoder
 					0x0D, 0x0A
 	};
 
-	public XMLResponseEncoder ()
+	public XMLResponseEncoder()
 	{
 	}
 
-	public void encode (IoSession session, Object message, ProtocolEncoderOutput out) throws Exception
+	public void encode(IoSession session, Object message, ProtocolEncoderOutput out) throws Exception
 	{
 		String msg = (String) message;
 		//		System.out.println ("S:" + msg);
-		IoBuffer buf = IoBuffer.allocate (256);
+		IoBuffer buf = IoBuffer.allocate(256);
 
-		buf.setAutoExpand (true);
+		buf.setAutoExpand(true);
 
 		try
 		{
-			CharsetEncoder encoder = Charset.forName ("UTF-8").newEncoder ();
+			CharsetEncoder encoder = Charset.forName("UTF-8").newEncoder();
 
-			buf.putString (msg, encoder);
-			buf.put (CRLF);
+			buf.putString(msg, encoder);
+			buf.put(CRLF);
 		}
 		catch (CharacterCodingException ex)
 		{
-			ex.printStackTrace ();
+			ex.printStackTrace();
 		}
 
-		buf.flip ();
-		out.write (buf);
+		buf.flip();
+		out.write(buf);
 	}
 
-	public Set getMessageTypes ()
+	public Set getMessageTypes()
 	{
 		return TYPES;
 	}

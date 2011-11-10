@@ -26,12 +26,12 @@ import de.iritgo.nexim.session.IMServerSession;
 
 public interface S2SConnectorManager
 {
-	public void setConnectionHandler (IMConnectionHandler connectionHandler);
+	public void setConnectionHandler(IMConnectionHandler connectionHandler);
 
-	public IMServerSession getCurrentRemoteSession (String hostname) throws Exception;
+	public IMServerSession getCurrentRemoteSession(String hostname) throws Exception;
 
-	public IMServerSession getRemoteSessionWaitForValidation (String hostname, long timeout) throws Exception;
+	public IMServerSession getRemoteSessionWaitForValidation(String hostname, long timeout) throws Exception;
 
-	public void verifyRemoteHost (String hostname, String dialbackValue, String id, IMServerSession session)
+	public void verifyRemoteHost(String hostname, String dialbackValue, String id, IMServerSession session)
 		throws Exception;
 }

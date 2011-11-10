@@ -29,36 +29,36 @@ public interface UserPermissionService
 	/**
 	 * @return
 	 */
-	public boolean allowNewUserRegistration ();
+	public boolean allowNewUserRegistration();
 
 	/**
 	 * @param username
 	 * @return
 	 */
-	public boolean allowNewUserRegistration (String username);
+	public boolean allowNewUserRegistration(String username);
 
 	/**
 	 * @return
 	 */
-	public boolean allowRemoveUserRegistration ();
-
-	/**
-	 * @param username
-	 * @return
-	 */
-	public boolean allowRemoveUserRegistration (String username);
+	public boolean allowRemoveUserRegistration();
 
 	/**
 	 * @param username
-	 * @param item
 	 * @return
 	 */
-	public boolean allowAddRosterItem (String username, IMRosterItem item);
+	public boolean allowRemoveUserRegistration(String username);
 
 	/**
 	 * @param username
 	 * @param item
 	 * @return
 	 */
-	public boolean allowRemoveRosterItem (String username, IMRosterItem item);
+	public boolean allowAddRosterItem(String username, IMRosterItem item);
+
+	/**
+	 * @param username
+	 * @param item
+	 * @return
+	 */
+	public boolean allowRemoveRosterItem(String username, IMRosterItem item);
 }

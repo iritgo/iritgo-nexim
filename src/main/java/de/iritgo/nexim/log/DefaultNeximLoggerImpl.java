@@ -35,9 +35,9 @@ public class DefaultNeximLoggerImpl implements DefaultNeximLogger
 	 * @param prefix
 	 *            The new log prefix
 	 */
-	public void setPrefix (String prefix)
+	public void setPrefix(String prefix)
 	{
-		if (prefix != null && ! prefix.isEmpty ())
+		if (prefix != null && ! prefix.isEmpty())
 		{
 			this.prefix = prefix + " ";
 		}
@@ -50,24 +50,24 @@ public class DefaultNeximLoggerImpl implements DefaultNeximLogger
 	/**
 	 * @see de.iritgo.nexim.log.DefaultNeximLogger#error(java.lang.String)
 	 */
-	public void error (String message)
+	public void error(String message)
 	{
-		System.out.println (prefix + "ERROR: " + message);
+		System.out.println(prefix + "ERROR: " + message);
 	}
 
 	/**
 	 * @see de.iritgo.nexim.log.DefaultNeximLogger#error(java.lang.String,
 	 *      java.lang.Exception)
 	 */
-	public void error (String message, Exception e)
+	public void error(String message, Exception e)
 	{
-		System.out.println (prefix + "ERROR: " + message + " : " + e);
+		System.out.println(prefix + "ERROR: " + message + " : " + e);
 	}
 
 	/**
 	 * @see de.iritgo.nexim.log.DefaultNeximLogger#debug(java.lang.String)
 	 */
-	public void debug (String message)
+	public void debug(String message)
 	{
 		//		System.outqq.println (prefix + "DEBUG: " + message);
 	}
@@ -76,7 +76,7 @@ public class DefaultNeximLoggerImpl implements DefaultNeximLogger
 	 * @see de.iritgo.nexim.log.DefaultNeximLogger#debug(java.lang.String,
 	 *      java.lang.Exception)
 	 */
-	public void debug (String message, Exception e)
+	public void debug(String message, Exception e)
 	{
 		//		System.out.println (prefix + "DEBUG: " + message + " : " + e);
 	}
@@ -84,41 +84,41 @@ public class DefaultNeximLoggerImpl implements DefaultNeximLogger
 	/**
 	 * @see de.iritgo.nexim.log.DefaultNeximLogger#warn(java.lang.String)
 	 */
-	public void warn (String message)
+	public void warn(String message)
 	{
-		System.out.println (prefix + "WARN: " + message);
+		System.out.println(prefix + "WARN: " + message);
 	}
 
 	/**
 	 * @see de.iritgo.nexim.log.DefaultNeximLogger#debug(java.lang.String,
 	 *      java.lang.Exception)
 	 */
-	public void warn (String message, Exception e)
+	public void warn(String message, Exception e)
 	{
-		System.out.println (prefix + "WARN: " + message + " : " + e);
+		System.out.println(prefix + "WARN: " + message + " : " + e);
 	}
 
 	/**
 	 * @see de.iritgo.nexim.log.DefaultNeximLogger#info(java.lang.String)
 	 */
-	public void info (String message)
+	public void info(String message)
 	{
-		System.out.println (prefix + "INFO: " + message);
+		System.out.println(prefix + "INFO: " + message);
 	}
 
 	/**
 	 * @see de.iritgo.nexim.log.DefaultNeximLogger#debug(java.lang.String,
 	 *      java.lang.Exception)
 	 */
-	public void info (String message, Exception e)
+	public void info(String message, Exception e)
 	{
-		System.out.println (prefix + "INFO: " + message + " : " + e);
+		System.out.println(prefix + "INFO: " + message + " : " + e);
 	}
 
 	/**
 	 * @see de.iritgo.nexim.log.DefaultNeximLogger#isInfoEnabled()
 	 */
-	public boolean isInfoEnabled ()
+	public boolean isInfoEnabled()
 	{
 		return true;
 	}

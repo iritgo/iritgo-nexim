@@ -38,43 +38,43 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 
 	private UserDAO userDAO;
 
-	public void setServerParameters (ServerParameters serverParameters)
+	public void setServerParameters(ServerParameters serverParameters)
 	{
 		this.serverParameters = serverParameters;
 	}
 
-	public void setUserDAO (UserDAO userDAO)
+	public void setUserDAO(UserDAO userDAO)
 	{
 		this.userDAO = userDAO;
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
 		IMClientSession clientSession = (IMClientSession) session;
-		String type = ((IMIq) context).getType ();
+		String type = ((IMIq) context).getType();
 
 		// GET
-		if (IMIq.TYPE_GET.equals (type))
+		if (IMIq.TYPE_GET.equals(type))
 		{
-			get (clientSession, context);
+			get(clientSession, context);
 		}
-		else if (IMIq.TYPE_SET.equals (type))
+		else if (IMIq.TYPE_SET.equals(type))
 		{
-			set (clientSession, context);
+			set(clientSession, context);
 		}
 	}
 
 	//-------------------------------------------------------------------------
-	private void get (final IMClientSession session, Object context) throws Exception
+	private void get(final IMClientSession session, Object context) throws Exception
 	{
-		String iqId = ((IMIq) context).getId ();
+		String iqId = ((IMIq) context).getId();
 
 		String s = "<iq type='result'";
 
-		s += " from='" + serverParameters.getHostName () + "'";
-		s += " to='" + session.getUser ().getJIDAndRessource () + "'";
+		s += " from='" + serverParameters.getHostName() + "'";
+		s += " to='" + session.getUser().getJIDAndRessource() + "'";
 		s += " id='" + iqId + "'";
 		s += ">";
 		s += "<query xmlns='jabber:iq:search'>";
@@ -88,46 +88,46 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 		s += "<instructions>Fill in one or more fields to search for any matching Jabber users.</instructions>";
 		s += "</query></iq>";
 
-		session.writeOutputStream (s);
+		session.writeOutputStream(s);
 	}
 
 	//-------------------------------------------------------------------------
-	private void set (final IMClientSession session, final Object context) throws Exception
+	private void set(final IMClientSession session, final Object context) throws Exception
 	{
-		final XmlPullParser xpp = session.getXmlPullParser ();
-		String iqId = ((IMIq) context).getId ();
+		final XmlPullParser xpp = session.getXmlPullParser();
+		String iqId = ((IMIq) context).getId();
 
-		xpp.nextTag (); // <nick>
+		xpp.nextTag(); // <nick>
 
-		String searchText = xpp.nextText ();
+		String searchText = xpp.nextText();
 
-		xpp.nextTag (); // </nick>
+		xpp.nextTag(); // </nick>
 
-		getLogger ().debug ("Search for account name " + searchText);
+		getLogger().debug("Search for account name " + searchText);
 
 		// maybe we should proceed to a search via the vcard...
-		List<User> users = userDAO.getUsers (searchText);
+		List<User> users = userDAO.getUsers(searchText);
 
 		String s = "<iq type='result'";
 
-		s += " from='" + serverParameters.getHostName () + "'";
-		s += " to='" + session.getUser ().getJIDAndRessource () + "'";
+		s += " from='" + serverParameters.getHostName() + "'";
+		s += " to='" + session.getUser().getJIDAndRessource() + "'";
 		s += " id='" + iqId + "'";
 		s += ">";
 
-		if (users.size () > 0L)
+		if (users.size() > 0L)
 		{
 			s += "<query xmlns='jabber:iq:search'>";
 
-			for (int i = 0, l = users.size (); i < l; i++)
+			for (int i = 0, l = users.size(); i < l; i++)
 			{
-				User user = users.get (i);
+				User user = users.get(i);
 
-				s += "<item jid='" + user.getName () + '@' + serverParameters.getHostName () + "'>";
-				s += "<first>" + user.getName () + "</first>";
-				s += "<last>" + user.getName () + "</last>";
-				s += "<nick>" + user.getName () + "</nick>";
-				s += "<email>" + user.getName () + '@' + serverParameters.getHostName () + "</email>";
+				s += "<item jid='" + user.getName() + '@' + serverParameters.getHostName() + "'>";
+				s += "<first>" + user.getName() + "</first>";
+				s += "<last>" + user.getName() + "</last>";
+				s += "<nick>" + user.getName() + "</nick>";
+				s += "<email>" + user.getName() + '@' + serverParameters.getHostName() + "</email>";
 				s += "</item>";
 			}
 
@@ -140,6 +140,6 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 
 		s += "</iq>";
 
-		session.writeOutputStream (s);
+		session.writeOutputStream(s);
 	}
 }

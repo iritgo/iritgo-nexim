@@ -38,33 +38,33 @@ public interface IMSession
 
 	public static final int S2S_R2L_CONNECTION = 3;
 
-	public void setup (IoSession ioSession) throws Exception;
+	public void setup(IoSession ioSession) throws Exception;
 
-	public void setDefaultEncoding (String defaultEncoding);
+	public void setDefaultEncoding(String defaultEncoding);
 
-	public boolean isClosed ();
+	public boolean isClosed();
 
-	public void close ();
+	public void close();
 
-	public long getId ();
+	public long getId();
 
-	public XmlPullParser getXmlPullParser ();
+	public XmlPullParser getXmlPullParser();
 
-	public int getConnectionType ();
+	public int getConnectionType();
 
-	public void writeOutputStream (String s) throws IOException;
+	public void writeOutputStream(String s) throws IOException;
 
-	public String getEncoding ();
+	public String getEncoding();
 
-	public void setImRouter (IMRouter router);
+	public void setImRouter(IMRouter router);
 
-	public IMRouter getRouter ();
+	public IMRouter getRouter();
 
-	public void setStreams (Streams streams);
+	public void setStreams(Streams streams);
 
-	public Streams getStreams ();
+	public Streams getStreams();
 
-	public void setNamespace (String namespace);
+	public void setNamespace(String namespace);
 
-	public String getNamespace ();
+	public String getNamespace();
 }

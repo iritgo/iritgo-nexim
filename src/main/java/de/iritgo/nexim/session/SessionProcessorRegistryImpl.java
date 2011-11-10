@@ -29,18 +29,18 @@ public class SessionProcessorRegistryImpl implements SessionProcessorRegistry
 {
 	private Map<String, SessionProcessor> sessionProcessors;
 
-	public SessionProcessor getProcessor (String key)
+	public SessionProcessor getProcessor(String key)
 	{
-		return sessionProcessors.get (key);
+		return sessionProcessors.get(key);
 	}
 
-	public void setSessionProcessors (Map<String, SessionProcessor> sessionProcessors)
+	public void setSessionProcessors(Map<String, SessionProcessor> sessionProcessors)
 	{
 		this.sessionProcessors = sessionProcessors;
 	}
 
-	public Collection<SessionProcessor> getProcessors ()
+	public Collection<SessionProcessor> getProcessors()
 	{
-		return sessionProcessors.values ();
+		return sessionProcessors.values();
 	}
 }

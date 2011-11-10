@@ -29,8 +29,8 @@ import de.iritgo.nexim.xmpp.IMMessage;
 public class ThreadImpl extends DefaultSessionProcessor implements Thread
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		((IMMessage) context).setThread (session.getXmlPullParser ().getText ().trim ());
+		((IMMessage) context).setThread(session.getXmlPullParser().getText().trim());
 	}
 }

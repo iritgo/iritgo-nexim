@@ -31,15 +31,15 @@ public class MessageRecorderImpl implements MessageRecorder
 	private DefaultNeximLogger defaultNeximLogger;
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
 	//-------------------------------------------------------------------------
-	public void record (Transitable message)
+	public void record(Transitable message)
 	{
-		if (defaultNeximLogger.isInfoEnabled ())
+		if (defaultNeximLogger.isInfoEnabled())
 		{
 			if (message instanceof IMMessage)
 			{

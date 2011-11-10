@@ -48,13 +48,13 @@ public class ServerParametersImpl implements ServerParameters
 	private int remoteServerPort;
 
 	//-------------------------------------------------------------------------
-	public void initialize ()
+	public void initialize()
 	{
-		if (hostnames.size () == 0)
+		if (hostnames.size() == 0)
 		{
 			try
 			{
-				hostnames.add (InetAddress.getLocalHost ().getHostName ());
+				hostnames.add(InetAddress.getLocalHost().getHostName());
 			}
 			catch (java.net.UnknownHostException e)
 			{
@@ -62,118 +62,118 @@ public class ServerParametersImpl implements ServerParameters
 		}
 	}
 
-	public void setHostnames (List<String> hostnames)
+	public void setHostnames(List<String> hostnames)
 	{
 		this.hostnames = hostnames;
 	}
 
-	public void setLocalClientPort (int localClientPort)
+	public void setLocalClientPort(int localClientPort)
 	{
 		this.localClientPort = localClientPort;
 	}
 
-	public void setLocalClientThreadPool (int localClientThreadPool)
+	public void setLocalClientThreadPool(int localClientThreadPool)
 	{
 		this.localClientThreadPool = localClientThreadPool;
 	}
 
-	public void setLocalSSLClientPort (int localSSLClientPort)
+	public void setLocalSSLClientPort(int localSSLClientPort)
 	{
 		this.localSSLClientPort = localSSLClientPort;
 	}
 
-	public void setLocalSSLClientThreadPool (int localSSLClientThreadPool)
+	public void setLocalSSLClientThreadPool(int localSSLClientThreadPool)
 	{
 		this.localSSLClientThreadPool = localSSLClientThreadPool;
 	}
 
-	public void setLocalServerPort (int localServerPort)
+	public void setLocalServerPort(int localServerPort)
 	{
 		this.localServerPort = localServerPort;
 	}
 
-	public void setLocalServerThreadPool (int localServerThreadPool)
+	public void setLocalServerThreadPool(int localServerThreadPool)
 	{
 		this.localServerThreadPool = localServerThreadPool;
 	}
 
-	public void setLocalSSLServerPort (int localSSLServerPort)
+	public void setLocalSSLServerPort(int localSSLServerPort)
 	{
 		this.localSSLServerPort = localSSLServerPort;
 	}
 
-	public void setLocalSSLServerThreadPool (int localSSLServerThreadPool)
+	public void setLocalSSLServerThreadPool(int localSSLServerThreadPool)
 	{
 		this.localSSLServerThreadPool = localSSLServerThreadPool;
 	}
 
-	public void setRemoteServerPort (int remoteServerPort)
+	public void setRemoteServerPort(int remoteServerPort)
 	{
 		this.remoteServerPort = remoteServerPort;
 	}
 
 	//-------------------------------------------------------------------------
-	public final int getLocalClientPort ()
+	public final int getLocalClientPort()
 	{
 		return localClientPort;
 	}
 
 	//-------------------------------------------------------------------------
-	public final int getLocalSSLClientPort ()
+	public final int getLocalSSLClientPort()
 	{
 		return localSSLClientPort;
 	}
 
 	//-------------------------------------------------------------------------
-	public final int getLocalServerPort ()
+	public final int getLocalServerPort()
 	{
 		return localServerPort;
 	}
 
 	//-------------------------------------------------------------------------
-	public final int getLocalSSLServerPort ()
+	public final int getLocalSSLServerPort()
 	{
 		return localSSLServerPort;
 	}
 
 	//-------------------------------------------------------------------------
-	public final List getHostNameList ()
+	public final List getHostNameList()
 	{
 		return hostnames;
 	}
 
 	//-------------------------------------------------------------------------
-	public final String getHostName ()
+	public final String getHostName()
 	{
-		return (String) hostnames.get (0);
+		return (String) hostnames.get(0);
 	}
 
 	//-------------------------------------------------------------------------
-	public final int getRemoteServerPort ()
+	public final int getRemoteServerPort()
 	{
 		return remoteServerPort;
 	}
 
 	//-------------------------------------------------------------------------
-	public int getLocalClientThreadPool ()
+	public int getLocalClientThreadPool()
 	{
 		return localClientThreadPool;
 	}
 
 	//-------------------------------------------------------------------------
-	public int getLocalSSLServerThreadPool ()
+	public int getLocalSSLServerThreadPool()
 	{
 		return localSSLServerThreadPool;
 	}
 
 	//-------------------------------------------------------------------------
-	public int getLocalServerThreadPool ()
+	public int getLocalServerThreadPool()
 	{
 		return localServerThreadPool;
 	}
 
 	//-------------------------------------------------------------------------
-	public int getLocalSSLClientThreadPool ()
+	public int getLocalSSLClientThreadPool()
 	{
 		return localSSLClientThreadPool;
 	}

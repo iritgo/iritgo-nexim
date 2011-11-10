@@ -33,40 +33,40 @@ public class MessageImpl extends DefaultSessionProcessor implements Message
 {
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
-		XmlPullParser xpp = session.getXmlPullParser ();
+		XmlPullParser xpp = session.getXmlPullParser();
 
-		String type = xpp.getAttributeValue ("", "type");
+		String type = xpp.getAttributeValue("", "type");
 
-		IMMessage message = new IMMessage ();
+		IMMessage message = new IMMessage();
 
-		String to = xpp.getAttributeValue ("", "to");
-		String from = xpp.getAttributeValue ("", "from");
+		String to = xpp.getAttributeValue("", "to");
+		String from = xpp.getAttributeValue("", "from");
 
 		if (session instanceof IMClientSession)
 		{
-			if (from == null || from.length () == 0)
+			if (from == null || from.length() == 0)
 			{
-				from = ((IMClientSession) session).getUser ().getJIDAndRessource ();
+				from = ((IMClientSession) session).getUser().getJIDAndRessource();
 			}
 
 			// Handle ping your self
-			if (to == null || to.length () == 0)
+			if (to == null || to.length() == 0)
 			{
-				to = ((IMClientSession) session).getUser ().getJIDAndRessource ();
+				to = ((IMClientSession) session).getUser().getJIDAndRessource();
 			} // end of if ()
 		}
 
-		message.setTo (to);
-		message.setFrom (from);
-		message.setType (type);
+		message.setTo(to);
+		message.setFrom(from);
+		message.setType(type);
 
-		super.process (session, message);
+		super.process(session, message);
 
-		IMRouter router = session.getRouter ();
+		IMRouter router = session.getRouter();
 
-		router.route (session, message);
+		router.route(session, message);
 
 		/*
 		 String iqMsg = session.getMessageData().getId();

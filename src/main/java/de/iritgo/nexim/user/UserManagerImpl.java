@@ -48,7 +48,7 @@ public class UserManagerImpl implements UserManager
 	/**
 	 * @param rosterManager
 	 */
-	public void setRosterManager (RosterManager rosterManager)
+	public void setRosterManager(RosterManager rosterManager)
 	{
 		this.rosterManager = rosterManager;
 	}
@@ -56,7 +56,7 @@ public class UserManagerImpl implements UserManager
 	/**
 	 * @param userDAO
 	 */
-	public void setUserDAO (UserDAO userDAO)
+	public void setUserDAO(UserDAO userDAO)
 	{
 		this.userDAO = userDAO;
 	}
@@ -64,7 +64,7 @@ public class UserManagerImpl implements UserManager
 	/**
 	 * @param logger
 	 */
-	public void setDefaultNeximLogger (DefaultNeximLogger logger)
+	public void setDefaultNeximLogger(DefaultNeximLogger logger)
 	{
 		this.logger = logger;
 	}
@@ -72,7 +72,7 @@ public class UserManagerImpl implements UserManager
 	/**
 	 * @param userPermissionService
 	 */
-	public void setUserPermissionService (UserPermissionService userPermissionService)
+	public void setUserPermissionService(UserPermissionService userPermissionService)
 	{
 		this.userPermissionService = userPermissionService;
 	}
@@ -80,7 +80,7 @@ public class UserManagerImpl implements UserManager
 	/**
 	 * @param configuration The new configuration.
 	 */
-	public void setConfiguration (Configuration configuration)
+	public void setConfiguration(Configuration configuration)
 	{
 		this.configuration = configuration;
 	}
@@ -88,11 +88,11 @@ public class UserManagerImpl implements UserManager
 	/**
 	 * @see de.iritgo.nexim.user.UserManager#isAuthenticationTypeSupported(de.iritgo.nexim.user.UserManager.AuthenticationType)
 	 */
-	public boolean isAuthenticationTypeSupported (UserManager.AuthenticationType type)
+	public boolean isAuthenticationTypeSupported(UserManager.AuthenticationType type)
 	{
-		for (String configuredType : configuration.getSupportedAuthenticationTypes ())
+		for (String configuredType : configuration.getSupportedAuthenticationTypes())
 		{
-			if (type.equals (UserManager.AuthenticationType.valueOf (configuredType)))
+			if (type.equals(UserManager.AuthenticationType.valueOf(configuredType)))
 			{
 				return true;
 			}
@@ -104,69 +104,69 @@ public class UserManagerImpl implements UserManager
 	/**
 	 * @see de.iritgo.nexim.user.UserManager#authenticate(de.iritgo.nexim.user.User, de.iritgo.nexim.user.UserManager.AuthenticationType, java.lang.String, java.lang.String)
 	 */
-	public final void authenticate (User user, UserManager.AuthenticationType type, String value, String sessionId)
+	public final void authenticate(User user, UserManager.AuthenticationType type, String value, String sessionId)
 		throws Exception
 	{
-		if (! userDAO.isValidPassword (user, type, value, sessionId))
+		if (! userDAO.isValidPassword(user, type, value, sessionId))
 		{
-			throw new Exception ("Invalid password");
+			throw new Exception("Invalid password");
 		}
 	}
 
 	/**
 	 * @see de.iritgo.nexim.user.UserManager#createNewUser()
 	 */
-	public User createNewUser () throws Exception
+	public User createNewUser() throws Exception
 	{
-		return new User ();
+		return new User();
 	}
 
-	public void addUser (String jid) throws RegistrationNotAllowedException
+	public void addUser(String jid) throws RegistrationNotAllowedException
 	{
-		User user = getDummyUserFormJID (jid);
+		User user = getDummyUserFormJID(jid);
 
-		addUser (user);
+		addUser(user);
 	}
 
 	/**
 	 * @see de.iritgo.nexim.user.UserManager#addUser(de.iritgo.nexim.user.User)
 	 */
-	public void addUser (User user) throws RegistrationNotAllowedException
+	public void addUser(User user) throws RegistrationNotAllowedException
 	{
-		if (userPermissionService.allowNewUserRegistration ()
-						&& userPermissionService.allowNewUserRegistration (user.getName ()))
+		if (userPermissionService.allowNewUserRegistration()
+						&& userPermissionService.allowNewUserRegistration(user.getName()))
 		{
-			userDAO.addUser (user);
+			userDAO.addUser(user);
 		}
 		else
 		{
-			throw new RegistrationNotAllowedException ();
+			throw new RegistrationNotAllowedException();
 		}
 	}
 
 	/**
 	 * @see de.iritgo.nexim.user.UserManager#removeUser(java.lang.String)
 	 */
-	public void removeUser (String jid) throws UnRegistrationNotAllowedException
+	public void removeUser(String jid) throws UnRegistrationNotAllowedException
 	{
-		User user = getDummyUserFormJID (jid);
+		User user = getDummyUserFormJID(jid);
 
-		removeUser (user);
+		removeUser(user);
 	}
 
 	/**
 	 * @see de.iritgo.nexim.user.UserManager#removeUser(de.iritgo.nexim.user.User)
 	 */
-	public void removeUser (User user) throws UnRegistrationNotAllowedException
+	public void removeUser(User user) throws UnRegistrationNotAllowedException
 	{
-		if (userPermissionService.allowRemoveUserRegistration ()
-						&& userPermissionService.allowRemoveUserRegistration (user.getName ()))
+		if (userPermissionService.allowRemoveUserRegistration()
+						&& userPermissionService.allowRemoveUserRegistration(user.getName()))
 		{
-			userDAO.removeUser (user.getName ());
+			userDAO.removeUser(user.getName());
 		}
 		else
 		{
-			throw new UnRegistrationNotAllowedException ();
+			throw new UnRegistrationNotAllowedException();
 		}
 	}
 
@@ -174,20 +174,20 @@ public class UserManagerImpl implements UserManager
 	 * @param jidName
 	 * @return
 	 */
-	private User getDummyUserFormJID (String jidName)
+	private User getDummyUserFormJID(String jidName)
 	{
-		User user = new User ();
-		int index = jidName.indexOf ('/');
+		User user = new User();
+		int index = jidName.indexOf('/');
 
 		if (index < 0)
 		{
-			user.setName (jidName);
-			user.setPassword (jidName);
+			user.setName(jidName);
+			user.setPassword(jidName);
 		}
 		else
 		{
-			user.setName (jidName.substring (0, index));
-			user.setPassword (jidName.substring (index + 1));
+			user.setName(jidName.substring(0, index));
+			user.setPassword(jidName.substring(index + 1));
 		}
 
 		return user;

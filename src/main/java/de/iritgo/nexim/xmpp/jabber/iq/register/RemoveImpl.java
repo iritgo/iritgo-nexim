@@ -31,8 +31,8 @@ public class RemoveImpl extends DefaultSessionProcessor implements Remove
 	//-------------------------------------------------------------------------
 	@Override
 	@SuppressWarnings("unchecked")
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
-		((Map<Integer, Boolean>) context).put (Query.CTX_SHOULD_REMOVE, Boolean.FALSE);
+		((Map<Integer, Boolean>) context).put(Query.CTX_SHOULD_REMOVE, Boolean.FALSE);
 	}
 }

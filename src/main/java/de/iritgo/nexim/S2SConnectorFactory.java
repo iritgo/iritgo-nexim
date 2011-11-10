@@ -23,5 +23,5 @@ package de.iritgo.nexim;
 
 public interface S2SConnectorFactory
 {
-	public S2SConnector createS2SConnector ();
+	public S2SConnector createS2SConnector();
 }

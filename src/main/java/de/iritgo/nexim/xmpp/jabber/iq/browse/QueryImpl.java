@@ -32,50 +32,50 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 {
 	private ServerParameters serverParameters;
 
-	public void setServerParameters (ServerParameters serverParameters)
+	public void setServerParameters(ServerParameters serverParameters)
 	{
 		this.serverParameters = serverParameters;
 	}
 
 	//-------------------------------------------------------------------------
 	@Override
-	public void process (final IMSession session, final Object context) throws Exception
+	public void process(final IMSession session, final Object context) throws Exception
 	{
 		IMClientSession clientSession = (IMClientSession) session;
-		String type = ((IMIq) context).getType ();
+		String type = ((IMIq) context).getType();
 
 		// GET
-		if (IMIq.TYPE_GET.equals (type))
+		if (IMIq.TYPE_GET.equals(type))
 		{
-			get (clientSession, context);
+			get(clientSession, context);
 		}
-		else if (IMIq.TYPE_SET.equals (type))
+		else if (IMIq.TYPE_SET.equals(type))
 		{
-			set (clientSession, context);
+			set(clientSession, context);
 		}
 	}
 
 	//-------------------------------------------------------------------------
-	private void get (final IMClientSession session, Object context) throws Exception
+	private void get(final IMClientSession session, Object context) throws Exception
 	{
 		//final XmlPullParser xpp = session.getXmlPullParser();
-		String iqId = ((IMIq) context).getId ();
+		String iqId = ((IMIq) context).getId();
 
 		String s = "<iq type='result'";
 
-		s += " from='" + serverParameters.getHostName () + "'";
-		s += " to='" + session.getUser ().getJIDAndRessource () + "'";
+		s += " from='" + serverParameters.getHostName() + "'";
+		s += " to='" + session.getUser().getJIDAndRessource() + "'";
 		s += " id='" + iqId + "'";
 		s += ">";
-		s += "<service jid='" + serverParameters.getHostName ()
+		s += "<service jid='" + serverParameters.getHostName()
 						+ "' name='OpenIM Server' type='jabber' xmlns='jabber:iq:browse'>";
-		s += "<item category='service' jid='" + serverParameters.getHostName ()
+		s += "<item category='service' jid='" + serverParameters.getHostName()
 						+ "' name='OpenIM User Directory' type='jud'>";
 		s += "<ns>jabber:iq:register</ns>";
 		s += "</item>";
 		s += "</service></iq>";
 
-		session.writeOutputStream (s);
+		session.writeOutputStream(s);
 	}
 
 	//-------------------------------------------------------------------------
@@ -83,9 +83,9 @@ public class QueryImpl extends DefaultSessionProcessor implements Query
 	 * @param session
 	 * @param context
 	 */
-	private void set (final IMClientSession session, final Object context) throws Exception
+	private void set(final IMClientSession session, final Object context) throws Exception
 	{
 		//final XmlPullParser xpp = session.getXmlPullParser();
-		getLogger ().warn ("Skipping jabber:iq:browse:query set");
+		getLogger().warn("Skipping jabber:iq:browse:query set");
 	}
 }

@@ -41,39 +41,39 @@ public class IMConnectionHandlerImpl extends DefaultSessionProcessor implements 
 
 	private S2SConnectorManager s2sConnectorManager;
 
-	public void setServerParameters (ServerParameters serverParameters)
+	public void setServerParameters(ServerParameters serverParameters)
 	{
 		this.serverParameters = serverParameters;
 	}
 
-	public void setSessionsManager (SessionsManager sessionsManager)
+	public void setSessionsManager(SessionsManager sessionsManager)
 	{
 		this.sessionsManager = sessionsManager;
 	}
 
-	public void setImRouter (IMRouter iMRouter)
+	public void setImRouter(IMRouter iMRouter)
 	{
 		this.router = iMRouter;
 	}
 
-	public void setS2SConnectorManager (S2SConnectorManager s2sConnectorManager)
+	public void setS2SConnectorManager(S2SConnectorManager s2sConnectorManager)
 	{
 		this.s2sConnectorManager = s2sConnectorManager;
 	}
 
 	//-------------------------------------------------------------------------
-	public void initialize ()
+	public void initialize()
 	{
-		s2sConnectorManager.setConnectionHandler (this);
-		router.setS2SConnectorManager (s2sConnectorManager);
+		s2sConnectorManager.setConnectionHandler(this);
+		router.setS2SConnectorManager(s2sConnectorManager);
 	}
 
-	public void sessionClosed (@SuppressWarnings("unused") IoSession iosession, IMSession session)
+	public void sessionClosed(@SuppressWarnings("unused") IoSession iosession, IMSession session)
 	{
-		sessionsManager.release (session);
+		sessionsManager.release(session);
 	}
 
-	public IMSession sessionOpened (IoSession iosession, boolean clientConnectionMode)
+	public IMSession sessionOpened(IoSession iosession, boolean clientConnectionMode)
 	{
 		IMSession session = null;
 
@@ -81,85 +81,85 @@ public class IMConnectionHandlerImpl extends DefaultSessionProcessor implements 
 		{
 			if (clientConnectionMode)
 			{
-				session = sessionsManager.getNewClientSession ();
+				session = sessionsManager.getNewClientSession();
 			}
 			else
 			{
-				session = sessionsManager.getNewServerSession ();
+				session = sessionsManager.getNewServerSession();
 			}
 
-			session.setImRouter (router);
+			session.setImRouter(router);
 
-			getLogger ().debug (
-							"######## [" + serverParameters.getHostName () + "] New session instance: "
-											+ session.getId ());
+			getLogger().debug(
+							"######## [" + serverParameters.getHostName() + "] New session instance: "
+											+ session.getId());
 
 			//TODO: Encoding
-			session.setDefaultEncoding ("UTF-8");
-			session.setup (iosession);
+			session.setDefaultEncoding("UTF-8");
+			session.setup(iosession);
 		}
 		catch (Exception e)
 		{
-			getLogger ().error (e.getMessage (), e);
+			getLogger().error(e.getMessage(), e);
 		}
 
 		return session;
 	}
 
-	public void handleEncodingHandshake (IMSession session) throws java.io.IOException, java.net.ProtocolException
+	public void handleEncodingHandshake(IMSession session) throws java.io.IOException, java.net.ProtocolException
 	{
-		session.setNamespace ("jabber:client");
+		session.setNamespace("jabber:client");
 
-		String s = "<stream:stream xmlns:stream='http://etherx.jabber.org/streams' " + "id='" + session.getId ()
-						+ "' xmlns='jabber:client' from='" + serverParameters.getHostName () + "'>";
+		String s = "<stream:stream xmlns:stream='http://etherx.jabber.org/streams' " + "id='" + session.getId()
+						+ "' xmlns='jabber:client' from='" + serverParameters.getHostName() + "'>";
 
 		;
 
-		session.writeOutputStream (s);
+		session.writeOutputStream(s);
 	}
 
-	public void process (String xmlMessage, IMSession session)
+	public void process(String xmlMessage, IMSession session)
 	{
-		final XmlPullParser xpp = session.getXmlPullParser ();
+		final XmlPullParser xpp = session.getXmlPullParser();
 
 		try
 		{
-			xpp.setInput (new StringReader (xmlMessage));
-			super.process (session);
+			xpp.setInput(new StringReader(xmlMessage));
+			super.process(session);
 		}
 		catch (XmlPullParserException e)
 		{
-			e.printStackTrace ();
+			e.printStackTrace();
 		}
 		catch (Exception e)
 		{
 			// TODO Auto-generated catch block
-			e.printStackTrace ();
+			e.printStackTrace();
 		}
 	}
 
-	public void setup (IoSession ioSession, IMSession session)
+	public void setup(IoSession ioSession, IMSession session)
 	{
 		try
 		{
-			session.setup (ioSession);
+			session.setup(ioSession);
 		}
 		catch (Exception e)
 		{
 			// TODO Auto-generated catch block
-			e.printStackTrace ();
+			e.printStackTrace();
 		}
 	}
 
-	public void dispose ()
+	public void dispose()
 	{
-		getLogger ().debug ("Disposing Router");
+		getLogger().debug("Disposing Router");
 		// We must stop all sessions!
 		// Hope the pull parser stops gracefully!
-		router.releaseSessions ();
+		router.releaseSessions();
 
 		// Unfortunately we may also have sessions that was never authenticated
 		// and therefore is not yet part of the router sessions
-		sessionsManager.releaseSessions ();
+		sessionsManager.releaseSessions();
 	}
 }

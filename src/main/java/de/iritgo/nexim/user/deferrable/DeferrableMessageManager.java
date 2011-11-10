@@ -26,7 +26,7 @@ import java.util.List;
 
 public interface DeferrableMessageManager
 {
-	public List getDeferrableList (String username);
+	public List getDeferrableList(String username);
 
-	public void setDeferrableList (String username, List rosterList);
+	public void setDeferrableList(String username, List rosterList);
 }

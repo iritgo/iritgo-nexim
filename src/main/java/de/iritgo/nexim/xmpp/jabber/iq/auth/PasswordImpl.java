@@ -29,8 +29,8 @@ import de.iritgo.nexim.session.IMSession;
 public class PasswordImpl extends DefaultSessionProcessor implements Password
 {
 	@Override
-	public void processText (final IMSession session, final Object context) throws Exception
+	public void processText(final IMSession session, final Object context) throws Exception
 	{
-		((IMClientSession) session).getUser ().setPassword (session.getXmlPullParser ().getText ().trim ());
+		((IMClientSession) session).getUser().setPassword(session.getXmlPullParser().getText().trim());
 	}
 }

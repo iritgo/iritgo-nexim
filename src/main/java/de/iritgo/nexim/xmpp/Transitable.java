@@ -25,21 +25,21 @@ public interface Transitable
 {
 	public static final String TYPE_ERROR = "error";
 
-	public void setTo (String to);
+	public void setTo(String to);
 
-	public String getTo ();
+	public String getTo();
 
-	public void setFrom (String from);
+	public void setFrom(String from);
 
-	public String getFrom ();
+	public String getFrom();
 
-	public void setType (String type);
+	public void setType(String type);
 
-	public String getType ();
+	public String getType();
 
-	public void setError (String errormsg);
+	public void setError(String errormsg);
 
-	public void setErrorCode (int errorCode);
+	public void setErrorCode(int errorCode);
 
-	public String toString ();
+	public String toString();
 }

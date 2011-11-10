@@ -23,7 +23,7 @@ package de.iritgo.nexim.session;
 
 public interface SessionProcessor
 {
-	public void process (IMSession session) throws Exception;
+	public void process(IMSession session) throws Exception;
 
-	public void process (IMSession session, Object context) throws Exception;
+	public void process(IMSession session, Object context) throws Exception;
 }

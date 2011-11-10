@@ -52,67 +52,67 @@ public class XStreamStore
 
 	private String xmlProlog;
 
-	public XStreamStore (File file, DefaultNeximLogger logger)
+	public XStreamStore(File file, DefaultNeximLogger logger)
 	{
-		this (file, logger, DEFAULT_ENCODING);
+		this(file, logger, DEFAULT_ENCODING);
 	}
 
-	public XStreamStore (File file, DefaultNeximLogger logger, String encoding)
+	public XStreamStore(File file, DefaultNeximLogger logger, String encoding)
 	{
 		this.file = file;
 		this.logger = logger;
-		xstream = new XStream (new DomDriver ());
+		xstream = new XStream(new DomDriver());
 
 		String enc = encoding != null ? encoding : DEFAULT_ENCODING;
 
 		xmlProlog = "<?xml version='1.0' encoding='" + enc + "'?>";
 	}
 
-	public void load ()
+	public void load()
 	{
-		map = loadMap ();
+		map = loadMap();
 	}
 
 	//  --------------------------------------------------------------------------
-	public void alias (String name, Class classz)
+	public void alias(String name, Class classz)
 	{
-		xstream.alias (name, classz);
+		xstream.alias(name, classz);
 	}
 
 	//  --------------------------------------------------------------------------
-	public void substitute (String from, String to)
+	public void substitute(String from, String to)
 	{
 		substituteFrom = from;
 		substituteTo = to;
 	}
 
 	//  --------------------------------------------------------------------------
-	public Object get (Object key)
+	public Object get(Object key)
 	{
 		if (map == null)
 		{
-			map = loadMap ();
+			map = loadMap();
 		}
 
 		Object value = null;
 
 		synchronized (map)
 		{
-			value = map.get (key);
+			value = map.get(key);
 		}
 
 		return value;
 	}
 
 	//  --------------------------------------------------------------------------
-	public Object remove (Object key)
+	public Object remove(Object key)
 	{
 		Object value = null;
 
 		synchronized (map)
 		{
-			value = map.remove (key);
-			saveMap (map);
+			value = map.remove(key);
+			saveMap(map);
 		}
 
 		return value;
@@ -120,40 +120,40 @@ public class XStreamStore
 
 	//  --------------------------------------------------------------------------
 	@SuppressWarnings("unchecked")
-	public void put (Object key, Object value)
+	public void put(Object key, Object value)
 	{
 		if (map == null)
 		{
-			map = loadMap ();
+			map = loadMap();
 		}
 
 		synchronized (map)
 		{
-			value = map.put (key, value);
-			saveMap (map);
+			value = map.put(key, value);
+			saveMap(map);
 		}
 	}
 
-	private DefaultNeximLogger getLogger ()
+	private DefaultNeximLogger getLogger()
 	{
 		return logger;
 	}
 
-	public void save ()
+	public void save()
 	{
 		synchronized (map)
 		{
-			saveMap (map);
+			saveMap(map);
 		}
 	}
 
-	private void saveMap (Map map)
+	private void saveMap(Map map)
 	{
-		String xstreamData = xstream.toXML (map);
+		String xstreamData = xstream.toXML(map);
 
 		if (substituteFrom != null && substituteTo != null)
 		{
-			xstreamData = StringUtils.replace (xstreamData, substituteFrom, substituteTo);
+			xstreamData = StringUtils.replace(xstreamData, substituteFrom, substituteTo);
 		}
 
 		xstreamData = xmlProlog + "\n" + xstreamData;
@@ -163,12 +163,12 @@ public class XStreamStore
 
 		try
 		{
-			fos = new FileOutputStream (file);
-			fos.write (xstreamData.getBytes ());
+			fos = new FileOutputStream(file);
+			fos.write(xstreamData.getBytes());
 		}
 		catch (IOException e)
 		{
-			getLogger ().error (e.getMessage (), e);
+			getLogger().error(e.getMessage(), e);
 		}
 		finally
 		{
@@ -176,46 +176,46 @@ public class XStreamStore
 			{
 				try
 				{
-					fos.close ();
+					fos.close();
 				}
 				catch (IOException e)
 				{
-					getLogger ().error (e.getMessage ());
+					getLogger().error(e.getMessage());
 				}
 			}
 		}
 	}
 
 	//--------------------------------------------------------------------------
-	private ConcurrentHashMap loadMap ()
+	private ConcurrentHashMap loadMap()
 	{
 		ConcurrentHashMap map = null;
 
-		if (file.exists ())
+		if (file.exists())
 		{
 			try
 			{
-				FileInputStream fis = new FileInputStream (file);
-				String xmlData = IOUtils.toString (fis);
+				FileInputStream fis = new FileInputStream(file);
+				String xmlData = IOUtils.toString(fis);
 
-				fis.close ();
+				fis.close();
 
 				if (substituteFrom != null && substituteTo != null)
 				{
-					xmlData = StringUtils.replace (xmlData, substituteTo, substituteFrom);
+					xmlData = StringUtils.replace(xmlData, substituteTo, substituteFrom);
 				}
 
-				map = new ConcurrentHashMap ((Map) xstream.fromXML (xmlData));
+				map = new ConcurrentHashMap((Map) xstream.fromXML(xmlData));
 			}
 			catch (Exception e)
 			{
-				getLogger ().error (e.getMessage (), e);
+				getLogger().error(e.getMessage(), e);
 			}
 		}
 		else
 		{
-			System.out.println ("No " + file + " => starting with void store");
-			map = new ConcurrentHashMap ();
+			System.out.println("No " + file + " => starting with void store");
+			map = new ConcurrentHashMap();
 		}
 
 		return map;

@@ -41,44 +41,44 @@ public class DeferrableMessageDAOImpl implements DeferrableMessageDAO
 	private DefaultNeximLogger defaultNeximLogger;
 
 	/** Set the default nexim logger implementation         */
-	public void setDefaultNeximLogger (DefaultNeximLogger defaultNeximLogger)
+	public void setDefaultNeximLogger(DefaultNeximLogger defaultNeximLogger)
 	{
 		this.defaultNeximLogger = defaultNeximLogger;
 	}
 
-	public void setFilename (String filename)
+	public void setFilename(String filename)
 	{
 		this.filename = filename;
 	}
 
-	public void setEncoding (String encoding)
+	public void setEncoding(String encoding)
 	{
 		this.encoding = encoding;
 	}
 
-	public void initialize ()
+	public void initialize()
 	{
-		File storeFile = new File (filename);
+		File storeFile = new File(filename);
 
-		if (! storeFile.exists ())
+		if (! storeFile.exists())
 		{
-			storeFile.getParentFile ().mkdirs ();
+			storeFile.getParentFile().mkdirs();
 		}
 
 		//TODO: XStream as Service!!!
-		repository = new XStreamStore (storeFile, defaultNeximLogger, encoding);
-		repository.substitute ("de.iritgo.nexim.xmpp.IMMessage", "message");
-		repository.load ();
+		repository = new XStreamStore(storeFile, defaultNeximLogger, encoding);
+		repository.substitute("de.iritgo.nexim.xmpp.IMMessage", "message");
+		repository.load();
 	}
 
 	//--------------------------------------------------------------------------
-	public List getDeferrableList (String username)
+	public List getDeferrableList(String username)
 	{
 		if (repository == null)
 		{
 			try
 			{
-				initialize ();
+				initialize();
 			}
 			catch (Exception x)
 			{
@@ -89,24 +89,24 @@ public class DeferrableMessageDAOImpl implements DeferrableMessageDAO
 
 		try
 		{
-			list = (List) repository.get (username);
+			list = (List) repository.get(username);
 		}
 		catch (Exception e)
 		{
-			System.out.println ("User " + username + " message list not found");
+			System.out.println("User " + username + " message list not found");
 		}
 
 		return list;
 	}
 
 	//--------------------------------------------------------------------------
-	public void setDeferrableList (String username, List deferrableList)
+	public void setDeferrableList(String username, List deferrableList)
 	{
 		if (repository == null)
 		{
 			try
 			{
-				initialize ();
+				initialize();
 			}
 			catch (Exception x)
 			{
@@ -115,7 +115,7 @@ public class DeferrableMessageDAOImpl implements DeferrableMessageDAO
 
 		if (username != null && deferrableList != null)
 		{
-			repository.put (username, deferrableList);
+			repository.put(username, deferrableList);
 		}
 	}
 }

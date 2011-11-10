@@ -26,25 +26,25 @@ import java.util.List;
 
 public interface ServerParameters
 {
-	public int getLocalClientPort ();
+	public int getLocalClientPort();
 
-	public int getLocalSSLClientPort ();
+	public int getLocalSSLClientPort();
 
-	public int getLocalServerPort ();
+	public int getLocalServerPort();
 
-	public int getLocalSSLServerPort ();
+	public int getLocalSSLServerPort();
 
-	public List getHostNameList ();
+	public List getHostNameList();
 
-	public String getHostName ();
+	public String getHostName();
 
-	public int getRemoteServerPort ();
+	public int getRemoteServerPort();
 
-	public int getLocalClientThreadPool ();
+	public int getLocalClientThreadPool();
 
-	public int getLocalSSLServerThreadPool ();
+	public int getLocalSSLServerThreadPool();
 
-	public int getLocalServerThreadPool ();
+	public int getLocalServerThreadPool();
 
-	public int getLocalSSLClientThreadPool ();
+	public int getLocalSSLClientThreadPool();
 }

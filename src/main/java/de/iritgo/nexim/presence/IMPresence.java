@@ -40,17 +40,17 @@ public interface IMPresence extends Transitable
 
 	public static final String TYPE_PROBE = "probe";
 
-	public void setStatus (String status);
+	public void setStatus(String status);
 
-	public String getStatus ();
+	public String getStatus();
 
-	public String getPriority ();
+	public String getPriority();
 
-	public void setPriority (String priority);
+	public void setPriority(String priority);
 
-	public void setShow (String show);
+	public void setShow(String show);
 
-	public String getShow ();
+	public String getShow();
 
-	public Object clone ();
+	public Object clone();
 }
